@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { accountService } from "../services/account.service";
 import { StatusCodes } from "http-status-codes";
-import { CreateUserBody, LoginBody } from "../models/RequestBody";
-import { LoginResult } from "../models/ResponseBody";
+import { CreateUserBody, LoginBody } from "../models/Body/RequestBody";
+import { LoginResult } from "../models/Body/ResponseBody";
 
 export async function login(req: Request, res: Response) {
         let body : LoginBody = req.body

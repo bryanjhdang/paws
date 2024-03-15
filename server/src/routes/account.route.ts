@@ -1,4 +1,3 @@
-
 import express, { Express, Request, Response, Router } from "express";
 import * as AccountController from "../controllers/account.controller";
 
