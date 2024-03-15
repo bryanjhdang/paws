@@ -1,6 +1,14 @@
+import { Text, Flex } from "@mantine/core";
+import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
+
 function SettingsPage() {
   return (
-    <p>Settings Page</p>  
+    <Flex>
+      <NavbarSimple />
+      <Flex>
+        <Text>SETTINGS CONTENT SHOULD GO IN HERE</Text>
+      </Flex>
+    </Flex>
   )
 }
 
