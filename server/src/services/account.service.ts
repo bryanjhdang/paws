@@ -1,5 +1,5 @@
-import { LoginResult } from "../models/ResponseBody";
-import { LoginBody } from "../models/RequestBody";
+import { LoginResult } from "../models/Body/ResponseBody";
+import { LoginBody } from "../models/Body/RequestBody";
 import { FireStoreService } from "./firestore.service";
 import { Database } from "./interface/database.interface";
 
