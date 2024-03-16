@@ -10,7 +10,7 @@ import FriendsPage from "./pages/Friends/Friends";
 import ProfilePage from "./pages/Profile/Profile";
 import SettingsPage from "./pages/Settings/Settings";
 import { useAuth0 } from "@auth0/auth0-react";
-import { PageLoader } from "./components/PageLoader";
+import { PageLoader } from "./components/PageLoader/PageLoader";
 import { AuthenticationGuard } from "./components/AuthenticationGuard";
 import { CallbackPage } from "./pages/Callback/Callback";
 import { NotFoundPage } from "./pages/NotFound/NotFound";
