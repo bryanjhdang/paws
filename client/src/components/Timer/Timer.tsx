@@ -43,8 +43,23 @@ export function Timer(): JSX.Element {
   function convertSecondsToProgressWheelValue(seconds: number): number {
     let value: number = 0;
 
-    // reverse the conversion
-    value = seconds / 60;
+    /* 
+        ring progress value to minutes mapping (as ring only goes up to 100)
+        0 -> 0
+        25 -> 30 minutes
+        50 -> 60 minutes
+        75 -> 90 minutes
+        100 -> 120 minutes
+        therefore slider value to seconds and milliseconds mapping is:
+        0 -> 0
+        25 -> 1800 seconds -> 1800000 milliseconds
+        50 -> 3600 seconds -> 3600000 milliseconds
+        75 -> 5400 seconds -> 5400000 milliseconds
+        100 -> 7200 seconds -> 7200000 milliseconds
+    */
+    // formula to convert slider value to seconds
+    //seconds = Math.floor((value / 100) * 7200);
+    value = (seconds / 7200) * 100;
 
     return value;
   }
@@ -63,7 +78,7 @@ export function Timer(): JSX.Element {
 
     setTimerProgressTextValue(convertSecondsToProgressTextValue(seconds));
     setTimerSliderValue(value);
-    setTimerProgressWheelValue(value);
+    setTimerProgressWheelValue(convertSecondsToProgressWheelValue(seconds));
   }
   function handleTimerStartButton(): void {
     console.log("Timer Started");
@@ -132,31 +147,31 @@ export function Timer(): JSX.Element {
     const stepValue: number = 5;
     const maxValue: number = 120;
     const marks = [
-        { value: 0, label: "0 minutes" },
-        { value: 5, label: "" },
-        { value: 10, label: "" },
-        { value: 15, label: "" },
-        { value: 20, label: "" },
-        { value: 25, label: "" },
-        { value: 30, label: "30 minutes" },
-        { value: 35, label: "" },
-        { value: 40, label: "" },
-        { value: 45, label: "" },
-        { value: 50, label: "" },
-        { value: 55, label: "" },
-        { value: 60, label: "60 minutes" },
-        { value: 65, label: "" },
-        { value: 70, label: "" },
-        { value: 75, label: "" },
-        { value: 80, label: "" },
-        { value: 85, label: "" },
-        { value: 90, label: "90 minutes" },
-        { value: 95, label: "" },
-        { value: 100, label: "" },
-        { value: 105, label: "" },
-        { value: 110, label: "" },
-        { value: 115, label: "" },
-        { value: 120, label: "120 minutes" },
+      { value: 0, label: "0 minutes" },
+      { value: 5, label: "" },
+      { value: 10, label: "" },
+      { value: 15, label: "" },
+      { value: 20, label: "" },
+      { value: 25, label: "" },
+      { value: 30, label: "30 minutes" },
+      { value: 35, label: "" },
+      { value: 40, label: "" },
+      { value: 45, label: "" },
+      { value: 50, label: "" },
+      { value: 55, label: "" },
+      { value: 60, label: "60 minutes" },
+      { value: 65, label: "" },
+      { value: 70, label: "" },
+      { value: 75, label: "" },
+      { value: 80, label: "" },
+      { value: 85, label: "" },
+      { value: 90, label: "90 minutes" },
+      { value: 95, label: "" },
+      { value: 100, label: "" },
+      { value: 105, label: "" },
+      { value: 110, label: "" },
+      { value: 115, label: "" },
+      { value: 120, label: "120 minutes" },
     ];
 
     return (
