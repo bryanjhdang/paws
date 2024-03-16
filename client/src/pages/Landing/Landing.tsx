@@ -11,7 +11,7 @@ function LandingPage() {
         navigate('/timer');
     }
 
-    function signInButton() {
+    function signInButton(): JSX.Element {
         return (
             <>
                 <Button
@@ -29,7 +29,7 @@ function LandingPage() {
         );
     }
 
-    function templifyTitle() {
+    function templifyTitle(): JSX.Element {
         return (
             <>
                 <Center>
