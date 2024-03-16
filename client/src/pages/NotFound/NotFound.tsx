@@ -1,14 +1,13 @@
+import { Flex } from "@mantine/core";
 import React from "react";
-// import { PageLayout } from "../components/page-layout";
 
+// todo: flesh our this stub for unhandled routes.  home button, etc?
 export const NotFoundPage: React.FC = () => {
   return (
-    // <PageLayout>
-      <div className="content-layout">
-        <h1 id="page-title" className="content__title">
-          Not Found
-        </h1>
-      </div>
-    // </PageLayout>
+    <Flex>
+      <h2>
+        Not Found
+      </h2>
+    </Flex>
   );
 };
