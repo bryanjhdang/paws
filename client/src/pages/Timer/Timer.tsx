@@ -3,10 +3,7 @@ import { useState } from "react";
 import {
   Flex,
   Box,
-  TextInput,
-  Divider,
   Text,
-  ActionIcon,
   Slider,
   Space,
   Title,
@@ -15,14 +12,13 @@ import {
   RingProgress,
   Center,
 } from "@mantine/core";
-import { IconFolderOpen, IconTag } from "@tabler/icons-react";
 
 import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
 import { TaskInput } from "../../components/TaskInput/TaskInput";
+import { Timer } from "../../components/Timer/Timer";
 
 function TimerPage() {
   const [active, setActive] = useState<string>("Timer");
-  const [task, setTask] = useState<string>("");
 
   const [timerValue, setTimerValue] = useState<string>("0:00");
   const [timerValueDecimal, setTimerValueDecimal] = useState<number>(0);
@@ -255,7 +251,7 @@ function TimerPage() {
             w={"100%"}
             flex={1}
           >
-            {timer()}
+            <Timer />
           </Flex>
         </Flex>
       </Flex>
