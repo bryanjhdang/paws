@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Text, Flex, Group, Center, alpha } from "@mantine/core";
+import { Center, Flex, Text, Group, Space} from "@mantine/core";
 import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
 
 function TimerPage() {
@@ -9,9 +9,10 @@ function TimerPage() {
         <>
             <Flex direction={"row"}>
                 <NavbarSimple active={active} setActive={setActive} />
-                
-                <Flex bg={"rgba(0, 120, 120, 0.5)"} direction={"column"} align={"center"} justify={"flex-start"} style={{ flex: 1 }}>
-                    
+
+                <Flex direction={"column"} justify={"flex-start"} align={"center"} style={{ flex: 1 }} bg={"blue"}>
+                    <Text>Test</Text>
+                    <Text>Hello</Text>
                 </Flex>
             </Flex>
         </>
