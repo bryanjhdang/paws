@@ -14,22 +14,51 @@ export function Timer(): JSX.Element {
   /* ---------------------------------- State --------------------------------- */
   const [timerSliderValue, setTimerSliderValue] = useState<number>(0);
 
-  const [timerProgressTextValue, setTimerProgressTextValue] = useState<string>(`0:00`);
-  
+  const [timerProgressTextValue, setTimerProgressTextValue] =
+    useState<string>(`0:00`);
+
   const [timerProgressWheelValue, setTimerProgressWheelValue] =
     useState<number>(0);
-    const [timerProgressWheelRounding, setTimerProgressWheelRounding] = useState<boolean>(false);
+  const [timerProgressWheelRounding, setTimerProgressWheelRounding] =
+    useState<boolean>(false);
 
   /* ---------------------------- Helper Functions ---------------------------- */
+  function convertSliderValueToSeconds(value: number): number {
+    let seconds: number = 0;
 
+    /* 
+            slider value to minutes mapping (as slider only goes up to 100)
+            0 -> 0
+            25 -> 30 minutes
+            50 -> 60 minutes
+            75 -> 90 minutes
+            100 -> 120 minutes
+
+            therefore slider value to seconds and milliseconds mapping is:
+            0 -> 0
+            25 -> 1800 seconds -> 1800000 milliseconds
+            50 -> 3600 seconds -> 3600000 milliseconds
+            75 -> 5400 seconds -> 5400000 milliseconds
+            100 -> 7200 seconds -> 7200000 milliseconds
+        */
+    // formula to convert slider value to seconds
+    seconds = Math.floor((value / 100) * 7200);
+
+    return seconds;
+  }
 
   /* ----------------------------- Event Handlers ----------------------------- */
   function handleTimerSlider(value: number): void {
+    // if rounding is enabled, it shows even when the value is 0
+    // therefore we need to disable it when the value is 0
     if (value !== 0) {
-        setTimerProgressWheelRounding(true);
+      setTimerProgressWheelRounding(true);
     } else {
-        setTimerProgressWheelRounding(false);
+      setTimerProgressWheelRounding(false);
     }
+
+    let seconds = convertSliderValueToSeconds(value);
+    console.log("minutes:seconds", seconds / 60, ":", seconds % 60);
 
     setTimerProgressTextValue(value.toString());
     setTimerSliderValue(value);

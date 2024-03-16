@@ -1,4 +1,4 @@
-import { ActionIcon, Divider, Flex, TextInput } from "@mantine/core";
+import { ActionIcon, Divider, Flex, TextInput, Box } from "@mantine/core";
 import { IconFolderOpen, IconTag } from "@tabler/icons-react";
 import { useState } from "react";
 
@@ -25,26 +25,28 @@ export function TaskInput(): JSX.Element {
 
   return (
     <>
-      <Flex direction={"row"} align={"center"}>
-        <TextInput
-          size="xl"
-          variant="unstyled"
-          placeholder={"What are you working on?"}
-          pr={10}
-          w={"100%"}
-          value={task}
-          onChange={(event) => setTask(event.currentTarget.value)}
-        />
-        <Flex gap={5}>
-          {taskBoxButton(<IconFolderOpen />, handleProjectIconClick)}
-          {taskBoxButton(<IconTag />, handleTagIconClick)}
+      <Box p={10} w={"100%"}>
+        <Flex direction={"row"} align={"center"}>
+          <TextInput
+            size="xl"
+            variant="unstyled"
+            placeholder={"What are you working on?"}
+            pr={10}
+            w={"100%"}
+            value={task}
+            onChange={(event) => setTask(event.currentTarget.value)}
+          />
+          <Flex gap={5}>
+            {taskBoxButton(<IconFolderOpen />, handleProjectIconClick)}
+            {taskBoxButton(<IconTag />, handleTagIconClick)}
+          </Flex>
         </Flex>
-      </Flex>
-      <Divider
-        mt={2}
-        label={"i hate frontend dev kms"}
-        labelPosition={"right"}
-      />
+        <Divider
+          mt={2}
+          label={"i hate frontend dev kms"}
+          labelPosition={"right"}
+        />
+      </Box>
     </>
   );
 }

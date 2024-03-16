@@ -84,20 +84,9 @@ function TimerPage() {
           align={"center"}
           flex={1}
         >
-          {/* task header */}
-          <Box p={10} w={"100%"}>
             <TaskInput />
-          </Box>
-
-          <Flex
-            direction={"column"}
-            justify={"center"}
-            align={"center"}
-            w={"100%"}
-            flex={1}
-          >
             <Timer />
-          </Flex>
+          
         </Flex>
       </Flex>
     </>
