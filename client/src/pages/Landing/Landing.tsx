@@ -1,11 +1,20 @@
 // TODO: If the user comes here but we find that they are logged in, redirect to "/timer" page
 
+import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Center, Box, Flex, Text, Title, Button } from "@mantine/core";
+import { useEffect } from "react";
 
 function LandingPage() {
-//   const { isAuthenticated } = useAuth0();
-  const { loginWithRedirect } = useAuth0();    
+  const { loginWithRedirect, isAuthenticated } = useAuth0();   
+  const navigate = useNavigate();
+  
+    // todo: some flicker in transition from Landing to Timer
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/timer');
+        } 
+    }, [isAuthenticated, navigate]);
     
     const handleLogin = async () => {
         await loginWithRedirect({
