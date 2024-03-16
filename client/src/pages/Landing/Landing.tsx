@@ -7,6 +7,7 @@ function LandingPage() {
     const navigate = useNavigate();
 
     function handleSignIn() {
+        // TODO: this will navigate to Auth0's login page (what stokely said)
         navigate('/timer');
     }
 
