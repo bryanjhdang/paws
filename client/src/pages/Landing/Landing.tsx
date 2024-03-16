@@ -29,7 +29,7 @@ function LandingPage() {
     );
   }
 
-  function templifyTitle() {
+  function tempifyTitle() {
     return (
       <>
         <Center>
@@ -58,7 +58,7 @@ function LandingPage() {
       <Center style={{ height: "100vh" }}>
         <Box style={{ width: 200 }}>
           <Flex direction="column" gap="md">
-            {templifyTitle()}
+            {tempifyTitle()}
             {signInButton()}
           </Flex>
         </Box>
