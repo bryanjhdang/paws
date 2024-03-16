@@ -18,6 +18,7 @@ import {
 import { IconFolderOpen, IconTag } from "@tabler/icons-react";
 
 import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
+import { TaskInput } from "../../components/TaskInput/TaskInput";
 
 function TimerPage() {
   const [active, setActive] = useState<string>("Timer");
@@ -34,12 +35,6 @@ function TimerPage() {
     useState<boolean>(true);
 
   // event handlers
-  function handleProjectIconClick(): void {
-    console.log("project icon clicked");
-  }
-  function handleTagIconClick(): void {
-    console.log("tag icon clicked");
-  }
   function calculateTimerMilliseconds(hour: number, minute: number): number {
     let milliseconds: number = (hour * 60 + minute) * 60 * 1000;
     return milliseconds;
@@ -73,7 +68,7 @@ function TimerPage() {
 
     // timerValueMilliseconds is how long the timer should run in milliseconds
     // timerValueDecimal is the percentage of the ring progress
-    
+
   }
   async function handleTimerStop(): Promise<void> {
     console.log("timer stopped");
@@ -82,36 +77,6 @@ function TimerPage() {
   }
 
   // components
-  function taskBoxButton(icon: JSX.Element, onClick: Function): JSX.Element {
-    return (
-      <>
-        <ActionIcon variant="default" size="xl" onClick={() => onClick()}>
-          {icon}
-        </ActionIcon>
-      </>
-    );
-  }
-  function taskInput(): JSX.Element {
-    return (
-      <>
-        <Flex direction={"row"} align={"center"}>
-          <TextInput
-            size="xl"
-            variant="unstyled"
-            placeholder={"What are you working on?"}
-            pr={10}
-            w={"100%"}
-            value={task}
-            onChange={(event) => setTask(event.currentTarget.value)}
-          />
-          <Flex gap={5}>
-            {taskBoxButton(<IconFolderOpen />, handleProjectIconClick)}
-            {taskBoxButton(<IconTag />, handleTagIconClick)}
-          </Flex>
-        </Flex>
-      </>
-    );
-  }
   function timerDisplay(): JSX.Element {
     return (
       <>
@@ -280,12 +245,7 @@ function TimerPage() {
         >
           {/* task header */}
           <Box p={10} w={"100%"}>
-            {taskInput()}
-            <Divider
-              mt={2}
-              label={"i hate frontend dev kms"}
-              labelPosition={"right"}
-            />
+            <TaskInput />
           </Box>
 
           <Flex
