@@ -1,4 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { Button } from "@mantine/core";
 import React from "react";
 
 export const LoginButton: React.FC = () => {
@@ -16,8 +17,8 @@ export const LoginButton: React.FC = () => {
   };
 
   return (
-    <button className="button__login" onClick={handleLogin}>
+    <Button onClick={handleLogin}>
       Log In
-    </button>
+    </Button>
   );
 };
