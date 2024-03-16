@@ -3,8 +3,14 @@
 import { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Text, Button } from "@mantine/core";
+import { useAuth0 } from '@auth0/auth0-react';
+import { SignupButton } from '../../components/Buttons/SignupButton';
+import { LoginButton } from '../../components/Buttons/LoginButton';
+import { LogoutButton } from '../../components/Buttons/LogoutButton';
 
 function LandingPage() {
+  const { isAuthenticated } = useAuth0();
+  
   const navigate = useNavigate();
 
   const goToTimer = (event: MouseEvent<HTMLAnchorElement>) => {
@@ -21,6 +27,19 @@ function LandingPage() {
           Timer
         </Button>
       </a>
+
+      {!isAuthenticated && (
+        <>
+          <SignupButton />
+          <LoginButton />
+        </>
+      )}
+      {isAuthenticated && (
+        <>
+          <LogoutButton />
+        </>
+      )}
+
     </>
   );
 }
