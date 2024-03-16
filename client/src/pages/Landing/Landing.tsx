@@ -29,33 +29,7 @@ function LandingPage() {
     );
   }
 
-    function templifyTitle() {
-        return (
-            <>
-                <Center>
-                    <Title
-                        order={1}
-                        size={100}
-                    >
-                        <Text
-                            inherit
-                            span
-                            fw={900}
-                            variant='gradient'
-                            gradient={{
-                                from: 'rgba(255, 157, 71, 1)',
-                                to: 'rgba(252, 210, 96, 1)',
-                                deg: 90
-                            }}
-                        >
-                            TEMPIFY
-                        </Text>
-                    </Title>
-                </Center>
-            </>
-        );
-    }
-  function templifyTitle(): JSX.Element {
+  function templifyTitle() {
     return (
       <>
         <Center>
@@ -71,7 +45,7 @@ function LandingPage() {
                 deg: 90,
               }}
             >
-              TEMPLIFY
+              TEMPIFY
             </Text>
           </Title>
         </Center>
