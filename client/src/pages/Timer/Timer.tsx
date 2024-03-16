@@ -8,8 +8,8 @@ import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
 function TimerPage() {
     const [active, setActive] = useState('Timer');
     const [task, setTask] = useState('');
-    const [timer, setTimer] = useState('0:00');
-
+    const [timerValue, setTimerValue] = useState('0:00');
+    
 
     // event handlers
     function handleProjectIconClick(): void {
@@ -22,7 +22,7 @@ function TimerPage() {
         let hours = Math.floor(value / 100);
         let minutes = (value % 100) * 0.6;
         let time = `${hours.toString()}:${Math.round(minutes).toString().padStart(2, '0')}`;
-        setTimer(time);
+        setTimerValue(time);
     }
     function handleTimerStart(): void {
         console.log("timer started");
@@ -45,7 +45,6 @@ function TimerPage() {
             </>
         );
     }
-
     function taskBoxRow(): JSX.Element {
         return (
             <>
@@ -70,7 +69,6 @@ function TimerPage() {
             </>
         );
     }
-
     function timerDisplay(): JSX.Element {
         return (
             <>
@@ -89,7 +87,7 @@ function TimerPage() {
                             deg: 90
                         }}
                     >
-                        {timer}
+                        {timerValue}
                     </Text>
                 </Title>
 
@@ -99,7 +97,6 @@ function TimerPage() {
             </>
         );
     }
-
     function timerSlider(): JSX.Element {
         return (
             <>
@@ -118,7 +115,6 @@ function TimerPage() {
             </>
         );
     }
-
     function timerStartButton(): JSX.Element {
         return (
             <>
@@ -131,29 +127,20 @@ function TimerPage() {
                         to: 'orange',
                         deg: 90
                     }}
-                    
                 >
                     START
                 </Button>
             </>
         );
     }
-
-    function timerStopButton(): JSX.Element {
+    function timer(): JSX.Element {
         return (
             <>
-                <Button
-                    size="xl"
-                    onClick={handleTimerStop}
-                    variant="gradient"
-                    gradient={{
-                        from: 'red',
-                        to: 'orange',
-                        deg: 90
-                    }}
-                >
-                    STOP
-                </Button>
+                {timerDisplay()}
+                <Space h={"md"} />
+                {timerSlider()}
+                <Space h={"xl"} />
+                {timerStartButton()}
             </>
         );
     }
@@ -172,14 +159,7 @@ function TimerPage() {
                     </Box>
 
                     <Flex direction={"column"} justify={"center"} align={"center"} w={"100%"} flex={1}>
-                        {/* timer */}
-                        {timerDisplay()}
-
-                        <Space h={"md"} />
-
-                        {timerSlider()}
-                        <Space h={"xl"} />
-                        {timerStartButton()}
+                        {timer()}
                     </Flex>
 
                 </Flex>
