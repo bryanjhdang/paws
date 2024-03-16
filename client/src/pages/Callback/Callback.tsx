@@ -1,39 +1,34 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import React from "react";
-// import { NavBar } from "../components/navigation/desktop/nav-bar";
-// import { MobileNavBar } from "../components/navigation/mobile/mobile-nav-bar";
-// import { PageLayout } from "../components/page-layout";
+import { Flex } from "@mantine/core";
+import React, { useState } from "react";
+import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
 
+// This callback used as an initial redirect by Auth0, to render the navbar (and any other desired elements)
+// and avoid flickering or other UI errors
 export const CallbackPage: React.FC = () => {
   const { error } = useAuth0();
 
-  // todo: render sidebar here as well to avoid flickering on redirect
+  // todo: unsure about what the state of the sidebar should be set to in this instance
+  const [active, setActive] = useState('Timer');
 
+  // todo: this error message could look nicer
   if (error) {
     return (
-      // <PageLayout>
-        <div>
-          <h1>
-            Error
-          </h1>
-          <div>
+      <Flex>
+        <NavbarSimple active={active} setActive={setActive} />
+        <Flex>
+          <h1>Error</h1>
             <p>
               <span>{error.message}</span>
             </p>
-          </div>
-        </div>
-      // </PageLayout>
+        </Flex>
+      </Flex>
     );
   }
 
   return (
-    <div>
-      {/* <NavBar />
-      <MobileNavBar /> */}
-      {/* <div className="page-layout__content" /> */}
-
-      Hello World
-      <div />
-    </div>
+    <Flex>
+      <NavbarSimple active={active} setActive={setActive} />
+    </Flex>
   );
 };
