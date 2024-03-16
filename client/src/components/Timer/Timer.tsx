@@ -8,17 +8,27 @@ import {
   Flex,
   Button,
   Space,
+  Transition,
+  ActionIcon,
 } from "@mantine/core";
+import {
+  IconPlayerStop,
+  IconPlayerPause,
+  IconPlayerPlay,
+} from "@tabler/icons-react";
 
 export function Timer(): JSX.Element {
   /* ---------------------------------- State --------------------------------- */
-  const [timerSliderValue, setTimerSliderValue] = useState<number>(0);
+  const [timerValue, setTimerValue] = useState<number>(0); // in seconds
   const [timerProgressTextValue, setTimerProgressTextValue] =
     useState<string>(`0:00`);
   const [timerProgressWheelValue, setTimerProgressWheelValue] =
     useState<number>(0);
   const [timerProgressWheelRounding, setTimerProgressWheelRounding] =
     useState<boolean>(false);
+
+  const [mountTimerInput, setMountTimerInput] = useState<boolean>(true);
+  const [timerPaused, setTimerPaused] = useState<boolean>(false);
 
   /* ---------------------------- Helper Functions ---------------------------- */
   function convertSliderValueToSeconds(value: number): number {
@@ -75,25 +85,26 @@ export function Timer(): JSX.Element {
     }
 
     let seconds = convertSliderValueToSeconds(value);
-
+    setTimerValue(seconds);
     setTimerProgressTextValue(convertSecondsToProgressTextValue(seconds));
-    setTimerSliderValue(value);
     setTimerProgressWheelValue(convertSecondsToProgressWheelValue(seconds));
   }
   function handleTimerStartButton(): void {
-    console.log("Timer Started");
+    console.log(
+      "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
+    );
+    setMountTimerInput(false);
+  }
+  function handleTimerStopButton(): void {
+    console.log("Timer Stopped");
+    setMountTimerInput(true);
+  }
+  function handleTimerPauseButton(): void {
+    console.log(timerPaused ? "Timer Resumed" : "Timer Paused");
+    setTimerPaused(!timerPaused);
   }
 
   /* ------------------------------- Components ------------------------------- */
-  function timerToolTip(): JSX.Element {
-    return (
-      <>
-        <Text size="sm" c={"grey"}>
-          minutes:seconds
-        </Text>
-      </>
-    );
-  }
   function timerProgressText(): JSX.Element {
     return (
       <>
@@ -112,6 +123,53 @@ export function Timer(): JSX.Element {
             {timerProgressTextValue}
           </Text>
         </Title>
+      </>
+    );
+  }
+  function timerStartButton(): JSX.Element {
+    return (
+      <>
+        <Button
+          size="xl"
+          w={"50%"}
+          onClick={handleTimerStartButton}
+          variant="gradient"
+          gradient={{
+            from: "yellow",
+            to: "orange",
+            deg: 90,
+          }}
+        >
+          START
+        </Button>
+      </>
+    );
+  }
+  function timerStopButton(): JSX.Element {
+    return (
+      <>
+        <ActionIcon
+          variant="default"
+          bg={"red"}
+          size="xl"
+          onClick={handleTimerStopButton}
+        >
+          <IconPlayerStop />
+        </ActionIcon>
+      </>
+    );
+  }
+  function timerPauseButton(): JSX.Element {
+    return (
+      <>
+        <ActionIcon
+          variant="default"
+          bg={"cyan"}
+          size="xl"
+          onClick={handleTimerPauseButton}
+        >
+          {timerPaused ? <IconPlayerPlay /> : <IconPlayerPause />}
+        </ActionIcon>
       </>
     );
   }
@@ -135,7 +193,29 @@ export function Timer(): JSX.Element {
                 flex={1}
               >
                 {timerProgressText()}
-                {timerToolTip()}
+
+                <Transition
+                  mounted={!mountTimerInput}
+                  transition={"slide-down"}
+                  duration={500}
+                  timingFunction="ease"
+                  keepMounted
+                >
+                  {(transitionStyle) => (
+                    <Flex
+                      style={{ ...transitionStyle, zIndex: 1 }}
+                      w={"100%"}
+                      justify={"center"}
+                      align={"center"}
+                      p={10}
+                      direction={"row"}
+                      gap={10}
+                    >
+                      {timerStopButton()}
+                      {timerPauseButton()}
+                    </Flex>
+                  )}
+                </Transition>
               </Flex>
             </Center>
           }
@@ -144,7 +224,6 @@ export function Timer(): JSX.Element {
     );
   }
   function timerSlider(): JSX.Element {
-    const stepValue: number = 5;
     const maxValue: number = 120;
     const marks = [
       { value: 0, label: "0 minutes" },
@@ -187,25 +266,6 @@ export function Timer(): JSX.Element {
       </>
     );
   }
-  function timerStartButton(): JSX.Element {
-    return (
-      <>
-        <Button
-          size="xl"
-          w={"50%"}
-          onClick={handleTimerStartButton}
-          variant="gradient"
-          gradient={{
-            from: "yellow",
-            to: "orange",
-            deg: 90,
-          }}
-        >
-          START
-        </Button>
-      </>
-    );
-  }
 
   return (
     <>
@@ -218,10 +278,27 @@ export function Timer(): JSX.Element {
       >
         {timerProgressWheel()}
 
-        {/* TODO: transition animation to stop/pause buttons */}
-        {timerSlider()}
-        <Space h={50} />
-        {timerStartButton()}
+        <Transition
+          mounted={mountTimerInput}
+          transition={"slide-up"}
+          duration={200}
+          timingFunction="ease"
+          keepMounted
+        >
+          {(transitionStyle) => (
+            <Flex
+              style={{ ...transitionStyle, zIndex: 1 }}
+              w={"100%"}
+              justify={"center"}
+              align={"center"}
+              direction={"column"}
+            >
+              {timerSlider()}
+              <Space h={40} />
+              {timerStartButton()}
+            </Flex>
+          )}
+        </Transition>
       </Flex>
     </>
   );
