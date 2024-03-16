@@ -12,7 +12,7 @@ import SettingsPage from './pages/Settings/Settings';
 
 function App() {
   return (
-    <MantineProvider defaultColorScheme='dark'>
+    <MantineProvider defaultColorScheme='light'>
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
