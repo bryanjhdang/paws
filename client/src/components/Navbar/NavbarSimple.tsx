@@ -71,7 +71,9 @@ export function NavbarSimple({ active, setActive }: NavbarProps) {
         {footerLinks}
         
         {/* TODO: clean up the styling for logout button.  Just use a callback instead? */}
-        <LogoutButton />
+        <Group justify="center">
+          <LogoutButton />
+        </Group>
       </div>
     </nav>
   );
