@@ -8,7 +8,7 @@ import { Auth0ProviderWithNavigate } from "./utils/Auth0/Auth0ProviderWithNaviga
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <MantineProvider>
+    <MantineProvider defaultColorScheme='dark'>
       <BrowserRouter>
         <Auth0ProviderWithNavigate>
           <App />
