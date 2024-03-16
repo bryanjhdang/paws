@@ -9,7 +9,7 @@ function LandingPage() {
   const { loginWithRedirect, isAuthenticated } = useAuth0();   
   const navigate = useNavigate();
   
-    // todo: some flicker in transition from Landing to Timer
+    // todo: some flicker in transition from Landing to Timer, may be inherent to current styling
     useEffect(() => {
         if (isAuthenticated) {
             navigate('/timer');
