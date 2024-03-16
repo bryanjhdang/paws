@@ -1,31 +1,28 @@
 // TODO: If the user comes here but we find that they are logged in, redirect to "/timer" page
 
-import { MouseEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import { Text, Button, Space } from "@mantine/core";
 import { useAuth0 } from "@auth0/auth0-react";
-import { SignupButton } from "../../components/Buttons/SignupButton";
-import { LoginButton } from "../../components/Buttons/LoginButton";
-import { LogoutButton } from "../../components/Buttons/LogoutButton";
-import { useNavigate } from 'react-router-dom';
 import { Center, Box, Flex, Text, Title, Button } from "@mantine/core";
 
 function LandingPage() {
-  const { isAuthenticated } = useAuth0();
-
-  const navigate = useNavigate();
-    const navigate = useNavigate();
-
-    function handleSignIn() {
-        // TODO: this will navigate to Auth0's login page (what stokely said)
-        navigate('/timer');
-    }
+//   const { isAuthenticated } = useAuth0();
+  const { loginWithRedirect } = useAuth0();    
+    
+    const handleLogin = async () => {
+        await loginWithRedirect({
+            appState: {
+                returnTo: "/timer",
+            },
+            authorizationParams: {
+                prompt: "login",
+            },
+        });
+    };
 
     function signInButton() {
         return (
             <>
                 <Button
-                    onClick={handleSignIn}
+                    onClick={handleLogin}
                     variant="gradient"
                     gradient={{
                         from: 'yellow',
