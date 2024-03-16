@@ -10,9 +10,8 @@ function TimerPage() {
             <Flex direction={"row"}>
                 <NavbarSimple active={active} setActive={setActive} />
 
-                <Flex direction={"column"} justify={"flex-start"} align={"center"} style={{ flex: 1 }} bg={"blue"}>
-                    <Text>Test</Text>
-                    <Text>Hello</Text>
+                <Flex direction={"column"} justify={"flex-start"} align={"center"} style={{ flex: 1 }}>
+                    <Text>Changes go here</Text>
                 </Flex>
             </Flex>
         </>
