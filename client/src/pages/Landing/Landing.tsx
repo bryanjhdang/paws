@@ -1,28 +1,77 @@
 // TODO: If the user comes here but we find that they are logged in, redirect to "/timer" page
 
-import { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Text, Button } from "@mantine/core";
+import { Center, Box, Flex, Text, Title, Button } from "@mantine/core";
 
 function LandingPage() {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const goToTimer = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    navigate('/timer');
-  }
+    function handleSignIn() {
+        // TODO: this will navigate to Auth0's login page (what stokely said)
+        navigate('/timer');
+    }
 
-  return (
-    <>
-      <Text>This is the landing / sign-in page. It's under construction.</Text>
-      <Text>Press the button to head to the "main app".</Text>
-      <a onClick={goToTimer}>
-        <Button>
-          Timer
-        </Button>
-      </a>
-    </>
-  );
+    function signInButton() {
+        return (
+            <>
+                <Button
+                    onClick={handleSignIn}
+                    variant="gradient"
+                    gradient={{
+                        from: 'yellow',
+                        to: 'orange',
+                        deg: 90
+                    }}
+                >
+                    SIGN IN
+                </Button>
+            </>
+        );
+    }
+
+    function templifyTitle() {
+        return (
+            <>
+                <Center>
+                    <Title
+                        order={1}
+                        size={100}
+                    >
+                        <Text
+                            inherit
+                            span
+                            fw={900}
+                            variant='gradient'
+                            gradient={{
+                                from: 'rgba(255, 157, 71, 1)',
+                                to: 'rgba(252, 210, 96, 1)',
+                                deg: 90
+                            }}
+                        >
+                            TEMPLIFY
+                        </Text>
+                    </Title>
+                </Center>
+            </>
+        );
+    }
+
+    return (
+        <>
+            <Center style={{ height: '100vh' }}>
+                <Box style={{ width: 200 }}>
+                    <Flex direction="column" gap="md">
+                        {templifyTitle()}
+                        {signInButton()}
+                    </Flex>
+                </Box>
+            </Center>
+        </>
+    );
+
+
+
+
 }
 
 export default LandingPage;
