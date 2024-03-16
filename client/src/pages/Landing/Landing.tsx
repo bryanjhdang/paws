@@ -48,7 +48,7 @@ function LandingPage() {
                                 deg: 90
                             }}
                         >
-                            TEMPLIFY
+                            TEMPIFY
                         </Text>
                     </Title>
                 </Center>
