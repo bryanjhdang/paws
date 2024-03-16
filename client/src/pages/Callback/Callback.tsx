@@ -7,6 +7,8 @@ import React from "react";
 export const CallbackPage: React.FC = () => {
   const { error } = useAuth0();
 
+  // todo: render sidebar here as well to avoid flickering on redirect
+
   if (error) {
     return (
       // <PageLayout>
