@@ -8,20 +8,13 @@ import { BADQUERY } from "dns";
 
 const timeEntryController : Router = express.Router();
 
-interface GetTimeEntryQuery {
-    name : string,
-    startTime : Date,
-    endTime : Date,
-    projectId : string
-}
-
 interface GetTimeEntryResponse {
     timeEntries : TimeEntry[]
 }
 timeEntryController.get('/', (req : Request, res : Response) => {
 
     try {
-        var query : GetTimeEntryQuery = {
+        var query = {
             name : req.query.name ? req.query.name.toString() : "",
             startTime :  req.query.start ? new Date(parseInt(req.query.start.toString())) : new Date(Number.MIN_VALUE),
             endTime : req.query.end ? new Date(parseInt(req.query.end.toString())) : new Date(Number.MAX_VALUE),
