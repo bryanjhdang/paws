@@ -6,7 +6,7 @@ function TimerPage() {
     const [active, setActive] = useState('Timer');
 
     return (
-        <>
+        <Flex>
             <Flex direction={"row"}>
                 <NavbarSimple active={active} setActive={setActive} />
 
@@ -14,7 +14,7 @@ function TimerPage() {
                     <Text>Changes go here</Text>
                 </Flex>
             </Flex>
-        </>
+        </Flex>
     );
 }
 
