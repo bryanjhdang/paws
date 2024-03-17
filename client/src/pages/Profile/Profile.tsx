@@ -6,12 +6,12 @@ function ProfilePage() {
   const [active, setActive] = useState('Profile');
 
   return (
-    <>
+    <Flex>
       <NavbarSimple active={active} setActive={setActive} />
       <Flex>
         <Text>PROFILE CONTENT SHOULD GO IN HERE</Text>
       </Flex>
-    </>
+    </Flex>
   )
 }
 

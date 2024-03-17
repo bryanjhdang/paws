@@ -8,7 +8,7 @@ function SettingsPage() {
   const [active, setActive] = useState('Settings');
 
   return (
-    <>
+    <Flex>
       <NavbarSimple active={active} setActive={setActive} />
       <Flex
         direction="column"
@@ -19,7 +19,7 @@ function SettingsPage() {
         <NotificationSettings />
         <PetSettings />
       </Flex>
-    </>
+    </Flex>
   )
 }
 
