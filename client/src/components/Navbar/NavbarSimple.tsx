@@ -2,7 +2,6 @@ import { Text, Group } from '@mantine/core';
 import { IconClock, IconPaw, IconChartBar, IconUsers, IconSettings, IconUser } from '@tabler/icons-react';
 import classes from './NavbarSimple.module.css';
 import { useNavigate } from 'react-router-dom';
-import { LogoutButton } from '../Buttons/LogoutButton';
 
 interface NavbarProps {
   active: string;
@@ -69,11 +68,6 @@ export function NavbarSimple({ active, setActive }: NavbarProps) {
 
       <div className={classes.footer}>
         {footerLinks}
-        
-        {/* TODO: clean up the styling for logout button.  Just use a callback instead? */}
-        <Group justify="center">
-          <LogoutButton />
-        </Group>
       </div>
     </nav>
   );
