@@ -16,7 +16,7 @@ export class AccountService {
     return "cookie goes here!";
   }
 
-  createUser(username: String, hashedPasword: String, name: String): String {
+  createUser(username: String, name: String): String {
 
     return "cookie for creating new user goes here!";
   }

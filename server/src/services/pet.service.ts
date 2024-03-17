@@ -1,19 +1,20 @@
 import { firestoreHelper } from "../helpers/firestore.helper";
 import { DatabaseHelper } from "../helpers/interface/database.helper";
 import { Pet } from "../models/Pet";
+import { User } from "../models/User";
 
 export class PetService {
     constructor(private db: DatabaseHelper) { };
 
-    getCoins(userId : string) : number {
+    getCoins(user : User) : number {
         return 0;
     }
 
-    addCoins(userId: string, count : number) : number {
+    addCoins(user: User, count : number) : number {
         return 0;
     }
 
-    getPet(userId: string) : Pet {
+    getPet(user: User) : Pet {
         return new Pet();
     }
 }

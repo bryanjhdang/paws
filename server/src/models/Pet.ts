@@ -1,6 +1,7 @@
 export class Pet {
     constructor(
         id: string = '',
-        name: string = ''
+        name: string = '',
+        imageUrl: string = ''
     ) { };
 }
