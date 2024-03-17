@@ -19,7 +19,7 @@ export class TimeEntryService {
     return new TimeEntry;
   }
 
-  getEntries(start: Date, end: Date, proejctId: string, name: string) {
+  query(user: User, start: Date, end: Date, proejctId: string, name: string) {
     return [];
   }
 
