@@ -1,7 +1,6 @@
-import { useState } from 'react'
 import './App.css'
 import '@mantine/core/styles.css';
-import { MantineProvider } from '@mantine/core';
+import { Flex, MantineProvider } from '@mantine/core';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/Landing/Landing';
 import TimerPage from './pages/Timer/Timer';
@@ -13,17 +12,19 @@ import SettingsPage from './pages/Settings/Settings';
 
 function App() {
   return (
-    <MantineProvider defaultColorScheme='dark'>
+    <MantineProvider>
       <Router>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/timer" element={<TimerPage />} />
-          <Route path="/pet" element={<PetPage />} />
-          <Route path="/statistics" element={<StatisticsPage />} />
-          <Route path="/friends" element={<FriendsPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-        </Routes>
+        <Flex bg="#fef9f7">
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/timer" element={<TimerPage />} />
+            <Route path="/pet" element={<PetPage />} />
+            <Route path="/statistics" element={<StatisticsPage />} />
+            <Route path="/friends" element={<FriendsPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+          </Routes>
+        </Flex>
       </Router>
     </MantineProvider>
   )
