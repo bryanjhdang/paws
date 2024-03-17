@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Text, Flex } from "@mantine/core";
+import { Flex } from "@mantine/core";
 import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
+import { SimpleHeader } from "../../components/Headers";
+import { ThemeSettings, PetSettings, NotificationSettings } from "./SettingsOptions"
 
 function SettingsPage() {
   const [active, setActive] = useState('Settings');
@@ -8,8 +10,14 @@ function SettingsPage() {
   return (
     <Flex>
       <NavbarSimple active={active} setActive={setActive} />
-      <Flex>
-        <Text>SETTINGS CONTENT SHOULD GO IN HERE</Text>
+      <Flex
+        direction="column"
+        style={{ flex: 1 }}
+      >
+        <SimpleHeader text="Settings" />
+        <ThemeSettings />
+        <NotificationSettings />
+        <PetSettings />
       </Flex>
     </Flex>
   )
