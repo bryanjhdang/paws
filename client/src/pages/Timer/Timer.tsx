@@ -1,21 +1,35 @@
 import { useState } from "react";
-import { Center, Flex, Text, Group, Space} from "@mantine/core";
+
+import {
+  Flex,
+} from "@mantine/core";
+
 import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
+import { TaskInput } from "../../components/TaskInput/TaskInput";
+import { Timer } from "../../components/Timer/Timer";
 
 function TimerPage() {
-    const [active, setActive] = useState('Timer');
+  const [active, setActive] = useState<string>("Timer");
 
-    return (
-        <Flex>
-            <Flex direction={"row"}>
-                <NavbarSimple active={active} setActive={setActive} />
+  return (
+    <>
+      <Flex direction={"row"}>
+        <NavbarSimple active={active} setActive={setActive} />
 
-                <Flex direction={"column"} justify={"flex-start"} align={"center"} style={{ flex: 1 }}>
-                    <Text>Changes go here</Text>
-                </Flex>
-            </Flex>
+        {/* Main Content */}
+        <Flex
+          direction={"column"}
+          justify={"flex-start"}
+          align={"center"}
+          flex={1}
+        >
+            <TaskInput />
+            <Timer />
+          
         </Flex>
-    );
+      </Flex>
+    </>
+  );
 }
 
 export default TimerPage;
