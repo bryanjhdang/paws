@@ -1,5 +1,3 @@
-// TODO: If the user comes here but we find that they are logged in, redirect to "/timer" page
-
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Center, Box, Flex, Text, Title, Button } from "@mantine/core";
@@ -71,31 +69,6 @@ function LandingPage() {
             </>
         );
     }
-
-  const navigate = useNavigate();
-
-  function handleSignIn() {
-    // TODO: this will navigate to Auth0's login page (what stokely said)
-    navigate("/timer");
-  }
-
-  function signInButton(): JSX.Element {
-    return (
-      <>
-        <Button
-          onClick={handleSignIn}
-          variant="gradient"
-          gradient={{
-            from: "yellow",
-            to: "orange",
-            deg: 90,
-          }}
-        >
-          SIGN IN
-        </Button>
-      </>
-    );
-  }
 
   function tempifyTitle() {
     return (
