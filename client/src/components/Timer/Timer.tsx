@@ -28,6 +28,7 @@ export function Timer(): JSX.Element {
     useState<boolean>(false);
 
   const [mountTimerInput, setMountTimerInput] = useState<boolean>(true);
+  const [timerStarted, setTimerStarted] = useState<boolean>(false);
   const [timerPaused, setTimerPaused] = useState<boolean>(false);
 
   /* ---------------------------- Helper Functions ---------------------------- */
@@ -74,7 +75,12 @@ export function Timer(): JSX.Element {
     return value;
   }
 
+  /* ------------------------- Timer Lifecycle Methods ------------------------ */
+
   /* ----------------------------- Event Handlers ----------------------------- */
+  let timer: any;
+  let timeRemaining: number = 0;
+
   function handleTimerSlider(value: number): void {
     // if rounding is enabled, it shows even when the value is 0
     // therefore we need to disable it when the value is 0
@@ -93,12 +99,48 @@ export function Timer(): JSX.Element {
     console.log(
       "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
     );
+
+    setTimerStarted(true);
+    timeRemaining = timerValue;
+    timer = setInterval(() => {
+      if (timeRemaining > 0) {
+        setTimerValue(timeRemaining - 1);
+        setTimerProgressTextValue(
+          convertSecondsToProgressTextValue(timeRemaining - 1)
+        );
+        setTimerProgressWheelValue(
+          convertSecondsToProgressWheelValue(timeRemaining - 1)
+        );
+
+        timeRemaining--;
+        console.log("Time Remaining: " + timeRemaining + " seconds");
+
+        if (timeRemaining === 0) {
+          clearInterval(timer);
+          setTimerStarted(false);
+
+          setMountTimerInput(true);
+
+          // set the timer value back to what the user had original
+          setTimerProgressTextValue(
+            convertSecondsToProgressTextValue(timerValue)
+          );
+          setTimerProgressWheelValue(
+            convertSecondsToProgressWheelValue(timerValue)
+          );
+        }
+      }
+    }, 1000);
+
     setMountTimerInput(false);
   }
+
+  //TODO: stop button implementation
   function handleTimerStopButton(): void {
     console.log("Timer Stopped");
     setMountTimerInput(true);
   }
+  //TODO: pause button implementation
   function handleTimerPauseButton(): void {
     console.log(timerPaused ? "Timer Resumed" : "Timer Paused");
     setTimerPaused(!timerPaused);
