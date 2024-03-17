@@ -10,6 +10,7 @@ export class User {
         public timeEntries: TimeEntry[] = [],
         public currentTimerStart: number = 0,
         public projects: Project[] = [],
-        public totalCoins: number = 0
+        public totalCoins: number = 0,
+        currentTimeEntry : TimeEntry = TimeEntry
     ) { };
 }
