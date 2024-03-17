@@ -2,13 +2,14 @@ import { Pet } from "./Pet";
 import { Project } from "./Project";
 import { TimeEntry } from "./TimeEntry";
 
-export interface User {
-    id: number,
-    displayName: string, 
-    username: string,
-    hashedPassword: string,
-    pet: Pet,
-    timeEntries : TimeEntry[],
-    currentTimerStart: number,
-    projects : Project[]
+export class User {
+    constructor(
+        public id: string = '',
+        public displayName: string = '',
+        public pet: Pet = new Pet(),
+        public timeEntries: TimeEntry[] = [],
+        public currentTimerStart: number = 0,
+        public projects: Project[] = [],
+        public totalCoins: number = 0
+    ) { };
 }

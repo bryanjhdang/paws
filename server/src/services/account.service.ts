@@ -1,29 +1,31 @@
-import { LoginResult } from "../models/Body/ResponseBody";
-import { LoginBody } from "../models/Body/RequestBody";
-import { FireStoreService } from "./firestore.service";
-import { Database } from "./interface/database.interface";
-
-class AccountService {
-    constructor(private db : Database) {};
+import { FirestoreHelper, firestoreHelper } from "../helpers/firestore.helper";
+import { DatabaseHelper } from "../helpers/interface/database.helper";
+import { User } from "../models/User";
 
 
-    validate(username : String, hashedPassword : String) : String {
+export class AccountService {
+  constructor(private db: DatabaseHelper) { };
+
+  getUserInfo(id : string) : User {
+    return new User;
+  }
+
+  validate(username: String, hashedPassword: String): String {
 
 
-        return "cookie goes here!";
-    }
+    return "cookie goes here!";
+  }
 
-    createUser(username : String, hashedPasword : String, name : String) : String {
-        this.db.addUser();
+  createUser(username: String, hashedPasword: String, name: String): String {
 
-        return "cookie for creating new user goes here!";
-    }
+    return "cookie for creating new user goes here!";
+  }
 }
 
 
 const accountService = new AccountService(
-    // you can switch this out if needed 
-    new FireStoreService()
-    );
+  // you can switch this out if needed 
+  firestoreHelper
+);
 
 export { accountService }; 
