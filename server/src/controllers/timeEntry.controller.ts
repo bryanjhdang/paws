@@ -1,11 +1,45 @@
 import express, { Request, Response, Router } from "express";
-import { timeEntryService } from "../services/timeEntry.service";
+import { TimeEntryService, timeEntryService } from "../services/timeEntry.service";
 import { TimeEntry } from "../models/TimeEntry";
 import { StatusCodes } from "http-status-codes";
 import { petService } from "../services/pet.service";
 import { Project } from "../models/Project";
+import { BADQUERY } from "dns";
 
 const timeEntryController : Router = express.Router();
+
+interface GetTimeEntryQuery {
+    name : string,
+    startTime : Date,
+    endTime : Date,
+    projectId : string
+}
+
+interface GetTimeEntryResponse {
+    timeEntries : TimeEntry[]
+}
+timeEntryController.get('/', (req : Request, res : Response) => {
+
+    try {
+        var query : GetTimeEntryQuery = {
+            name : req.query.name ? req.query.name.toString() : "",
+            startTime :  req.query.start ? new Date(parseInt(req.query.start.toString())) : new Date(Number.MIN_VALUE),
+            endTime : req.query.end ? new Date(parseInt(req.query.end.toString())) : new Date(Number.MAX_VALUE),
+            projectId : req.query.projectId ? req.query.projectId.toString() : "",
+        }
+    } catch (error) {
+        return res.status(StatusCodes.UNPROCESSABLE_ENTITY)
+            .json({message : "Invalid parameters for query string!"});
+    }
+
+    let response : GetTimeEntryResponse = {
+        timeEntries: timeEntryService.query(res.locals.user, query.startTime, query.endTime, query.projectId, query.name)
+    }
+
+    res.status(StatusCodes.CREATED)
+        .json(response)
+});
+
 
 interface StartRequest {
     entryName : string,
