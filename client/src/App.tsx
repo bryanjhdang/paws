@@ -1,6 +1,6 @@
 import "./App.css";
 import "@mantine/core/styles.css";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/Landing/Landing";
 import TimerPage from "./pages/Timer/Timer";
 import PetPage from "./pages/Pet/Pet";
@@ -13,9 +13,8 @@ import { PageLoader } from "./components/PageLoader/PageLoader";
 import { AuthenticationGuard } from "./utils/Auth0/AuthenticationGuard";
 import { CallbackPage } from "./pages/Callback/Callback";
 import { NotFoundPage } from "./pages/NotFound/NotFound";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { MantineProvider } from '@mantine/core';
-        
+
 export const App: React.FC = () => {
   const { isLoading } = useAuth0();
 
@@ -27,40 +26,36 @@ export const App: React.FC = () => {
       </div>
     );
   }
-    
+
   return (
-    <MantineProvider defaultColorScheme='dark'>
-      <Router>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route
-              path="/timer"
-              element={<AuthenticationGuard component={TimerPage} />}
-            />
-            <Route
-              path="/pet"
-              element={<AuthenticationGuard component={PetPage} />}
-            />
-            <Route
-              path="/statistics"
-              element={<AuthenticationGuard component={StatisticsPage} />}
-            />
-            <Route
-              path="/friends"
-              element={<AuthenticationGuard component={FriendsPage} />}
-            />
-            <Route
-              path="/profile"
-              element={<AuthenticationGuard component={ProfilePage} />}
-            />
-            <Route
-              path="/settings"
-              element={<AuthenticationGuard component={SettingsPage} />}
-            />
-            <Route path="/callback" element={<CallbackPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-      </Router>
-    </MantineProvider>
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route
+        path="/timer"
+        element={<AuthenticationGuard component={TimerPage} />}
+      />
+      <Route
+        path="/pet"
+        element={<AuthenticationGuard component={PetPage} />}
+      />
+      <Route
+        path="/statistics"
+        element={<AuthenticationGuard component={StatisticsPage} />}
+      />
+      <Route
+        path="/friends"
+        element={<AuthenticationGuard component={FriendsPage} />}
+      />
+      <Route
+        path="/profile"
+        element={<AuthenticationGuard component={ProfilePage} />}
+      />
+      <Route
+        path="/settings"
+        element={<AuthenticationGuard component={SettingsPage} />}
+      />
+      <Route path="/callback" element={<CallbackPage />} />
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   )
 }
