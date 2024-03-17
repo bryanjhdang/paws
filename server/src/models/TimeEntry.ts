@@ -1,8 +1,11 @@
 import { Project } from "./Project";
 
-export interface TimeEntry {
-    startTime: number,
-    endTime: number,
-    project: Project,
-    name: string
+export class TimeEntry {
+    constructor(
+        startTime: number = 0,
+        endTime: number = 0,
+        project: Project = new Project(),
+        name: string = '',
+        earnedCoins: number = 0
+    ) { };
 }

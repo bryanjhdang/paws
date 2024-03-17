@@ -1,4 +1,6 @@
-export interface Pet {
-    id: number,
-    name: string
+export class Pet {
+    constructor(
+        id: string = '',
+        name: string = ''
+    ) { };
 }
