@@ -6,6 +6,7 @@ import cors from "cors";
 import { petController } from "./controllers/pet.controller";
 import { timeEntryController } from "./controllers/timeEntry.controller";
 import { accountController } from "./controllers/account.controller";
+import { authenticate } from "./middlewares/auth.middleware";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ const port = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 
+app.use(authenticate);
 
 app.use('/account', accountController);
 
