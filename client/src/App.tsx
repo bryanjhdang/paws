@@ -14,7 +14,7 @@ function App() {
   return (
     <MantineProvider>
       <Router>
-        <Flex bg="#fef9f7">
+        <Flex>
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/timer" element={<TimerPage />} />
