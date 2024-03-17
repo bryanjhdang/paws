@@ -45,7 +45,7 @@ interface GetInfoRequest {
 }
 interface GetInfoResponse extends Pet {
 }
-petController.get('/info', (req: Request, res: Response) => {
+petController.get('/', (req: Request, res: Response) => {
     let response : GetInfoResponse = petService.getPet(res.locals.user);
 
     return res.status(StatusCodes.OK)

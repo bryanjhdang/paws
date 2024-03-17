@@ -1,9 +1,17 @@
 import express, { Request, Response, Router } from "express";
 import { accountService } from "../services/account.service";
 import { StatusCodes } from "http-status-codes";
+import { User } from "../models/User";
 
 const accountController: Router = express.Router();
 
+interface getUserInfoResponse extends User {};
+accountController.get('/', (req : Request, res : Response) => {
+    
+    let response : getUserInfoResponse = res.locals.user;
+    res.status(StatusCodes.OK)
+        .json(response);
+})
 
 interface CreateRequest {
     username: string;
