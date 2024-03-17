@@ -13,7 +13,6 @@ import { PageLoader } from "./components/PageLoader/PageLoader";
 import { AuthenticationGuard } from "./utils/Auth0/AuthenticationGuard";
 import { CallbackPage } from "./pages/Callback/Callback";
 import { NotFoundPage } from "./pages/NotFound/NotFound";
-import { MantineProvider } from '@mantine/core';
 
 export const App: React.FC = () => {
   const { isLoading } = useAuth0();

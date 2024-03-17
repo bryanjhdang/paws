@@ -41,11 +41,7 @@ export function TaskInput(): JSX.Element {
             {taskBoxButton(<IconTag />, handleTagIconClick)}
           </Flex>
         </Flex>
-        <Divider
-          mt={2}
-          label={"i hate frontend dev kms"}
-          labelPosition={"right"}
-        />
+        <Divider mt={2}/>
       </Box>
     </>
   );

@@ -1,25 +1,41 @@
 import { useState } from "react";
-import { Text, Flex, Space, Avatar, Stack } from "@mantine/core";
+import { Flex, Avatar, Stack, Group, Text, Divider } from "@mantine/core";
 import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
 import { useAuth0 } from "@auth0/auth0-react";
+import { SimpleHeader } from "../../components/Headers";
+import { AccountSettings } from "./ProfileOptions";
 
-// example of retrieving user information
+function ProfileDisplay() {
+  const { user } = useAuth0();
+  if (!user) return null;
+
+  return (
+    <Group p={30}>
+      <Avatar src={user.picture} size="xxl" />
+      <Stack ml={30} gap="xs" style={{ flex: 1 }}>
+        <Text fw={500}>Personal Details</Text>
+        <Divider />
+        <Text>NAME: {user.name}</Text>
+        <Text>EMAIL: {user.email}</Text>
+      </Stack>
+    </Group>
+  )
+}
+
 function ProfilePage() {
   const [active, setActive] = useState("Profile");
-  const { user } = useAuth0();
-
-  if (!user) {
-    return null;
-  }
 
   return (
     <Flex>
       <NavbarSimple active={active} setActive={setActive} />
-      <Stack ml="lg" mt="lg">
-        <Text fw={500}>PROFILE CONTENT:</Text>
-        <Avatar src={user.picture} radius="xl" size="lg" />
-        <Space h="lg" />
-        <pre>{JSON.stringify(user, null, 2)}</pre>
+      <Stack style={{ flex: 1 }}>
+        <SimpleHeader text="Profile" />
+        <Stack mx="lg">
+          <ProfileDisplay />
+          <AccountSettings />
+          {/* Uncomment this to see all the fields that are avaiable from the user variable */}
+          {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
+        </Stack>
       </Stack>
     </Flex>
   );
