@@ -12,7 +12,7 @@ function ProfileDisplay() {
   return (
     <Group p={30}>
       <Avatar src={user.picture} size="xxl" />
-      <Stack ml={30} gap="xs" style={{ flex: 1 }}>
+      <Stack ml={30} gap="xs" flex={1}>
         <Text fw={500}>Personal Details</Text>
         <Divider />
         <Text>NAME: {user.name}</Text>
@@ -28,7 +28,7 @@ function ProfilePage() {
   return (
     <Flex>
       <NavbarSimple active={active} setActive={setActive} />
-      <Stack style={{ flex: 1 }}>
+      <Stack flex={1}>
         <SimpleHeader text="Profile" />
         <Stack mx="lg">
           <ProfileDisplay />
