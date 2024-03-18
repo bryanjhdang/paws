@@ -10,7 +10,7 @@ function SettingsPage() {
   return (
     <Flex>
       <NavbarSimple active={active} setActive={setActive} />
-      <Stack style={{ flex: 1 }}>
+      <Stack flex={1}>
         <SimpleHeader text="Settings" />
         <Stack mx="lg">
           <ThemeSettings />
