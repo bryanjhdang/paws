@@ -1,20 +1,6 @@
 import { useState, useEffect } from "react";
-import {
-  RingProgress,
-  Title,
-  Text,
-  Slider,
-  Center,
-  Flex,
-  Button,
-  Space,
-  Transition,
-  ActionIcon,
-} from "@mantine/core";
-import {
-  IconPlayerStop,
-  IconPlayerPlay,
-} from "@tabler/icons-react";
+import { RingProgress, Title, Text, Slider, Center, Flex, Button, Space, Transition, ActionIcon } from "@mantine/core";
+import { IconPlayerStop } from "@tabler/icons-react";
 
 export function Timer(): JSX.Element {
   /* ---------------------------------- State --------------------------------- */

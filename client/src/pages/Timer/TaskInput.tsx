@@ -1,12 +1,15 @@
-import { ActionIcon, Divider, Flex, TextInput, Box } from "@mantine/core";
+import { ActionIcon, Divider, Flex, TextInput } from "@mantine/core";
 import { IconFolderOpen, IconTag } from "@tabler/icons-react";
 import { useState } from "react";
+import ProjectButton from "./ProjectButton";
+import TagButton from "./TagButton";
 
 export function TaskInput(): JSX.Element {
   const [task, setTask] = useState<string>("");
 
   function handleProjectIconClick(): void {
     console.log("project icon clicked");
+    // pop up
   }
 
   function handleTagIconClick(): void {
@@ -15,34 +18,31 @@ export function TaskInput(): JSX.Element {
 
   function taskBoxButton(icon: JSX.Element, onClick: Function): JSX.Element {
     return (
-      <>
-        <ActionIcon variant="default" size="xl" onClick={() => onClick()}>
-          {icon}
-        </ActionIcon>
-      </>
+      <ActionIcon variant="default" size="xl" onClick={() => onClick()}>
+        {icon}
+      </ActionIcon>
     );
   }
 
   return (
     <>
-      <Box p={10} w={"100%"}>
-        <Flex direction={"row"} align={"center"}>
-          <TextInput
-            size="xl"
-            variant="unstyled"
-            placeholder={"What are you working on?"}
-            pr={10}
-            w={"100%"}
-            value={task}
-            onChange={(event) => setTask(event.currentTarget.value)}
-          />
-          <Flex gap={5}>
-            {taskBoxButton(<IconFolderOpen />, handleProjectIconClick)}
-            {taskBoxButton(<IconTag />, handleTagIconClick)}
-          </Flex>
+      <Flex px={20} align={"center"}>
+        <TextInput
+          size="xl"
+          variant="unstyled"
+          placeholder={"What are you working on?"}
+          w={"100%"}
+          value={task}
+          onChange={(event) => setTask(event.currentTarget.value)}
+        />
+        <Flex gap={10}>
+          {taskBoxButton(<IconFolderOpen />, handleProjectIconClick)}
+          {taskBoxButton(<IconTag />, handleTagIconClick)}
+          <ProjectButton />
+          <TagButton />
         </Flex>
-        <Divider mt={2}/>
-      </Box>
+      </Flex>
+      <Divider />
     </>
   );
 }
