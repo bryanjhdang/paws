@@ -13,7 +13,6 @@ import {
 } from "@mantine/core";
 import {
   IconPlayerStop,
-  IconPlayerPause,
   IconPlayerPlay,
 } from "@tabler/icons-react";
 
@@ -29,8 +28,6 @@ export function Timer(): JSX.Element {
 
   const [mountTimerInput, setMountTimerInput] = useState<boolean>(true);
   const [timerStarted, setTimerStarted] = useState<boolean>(false);
-  const [timerPaused, setTimerPaused] = useState<boolean>(false);
-
   /* ---------------------------- Helper Functions ---------------------------- */
   function convertSliderValueToSeconds(value: number): number {
     let seconds: number = 0;
@@ -140,11 +137,6 @@ export function Timer(): JSX.Element {
     console.log("Timer Stopped");
     setMountTimerInput(true);
   }
-  //TODO: pause button implementation
-  function handleTimerPauseButton(): void {
-    console.log(timerPaused ? "Timer Resumed" : "Timer Paused");
-    setTimerPaused(!timerPaused);
-  }
 
   /* ------------------------------- Components ------------------------------- */
   function timerProgressText(): JSX.Element {
@@ -201,20 +193,6 @@ export function Timer(): JSX.Element {
       </>
     );
   }
-  function timerPauseButton(): JSX.Element {
-    return (
-      <>
-        <ActionIcon
-          variant="default"
-          bg={"cyan"}
-          size="xl"
-          onClick={handleTimerPauseButton}
-        >
-          {timerPaused ? <IconPlayerPlay /> : <IconPlayerPause />}
-        </ActionIcon>
-      </>
-    );
-  }
   function timerProgressWheel(): JSX.Element {
     return (
       <>
@@ -254,7 +232,6 @@ export function Timer(): JSX.Element {
                       gap={10}
                     >
                       {timerStopButton()}
-                      {timerPauseButton()}
                     </Flex>
                   )}
                 </Transition>
