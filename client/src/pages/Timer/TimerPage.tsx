@@ -1,9 +1,5 @@
 import { useState } from "react";
-
-import {
-  Flex,
-} from "@mantine/core";
-
+import { Flex } from "@mantine/core";
 import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
 import { TaskInput } from "./TaskInput";
 import { Timer } from "./Timer";
