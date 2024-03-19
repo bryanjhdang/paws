@@ -2,7 +2,7 @@ import { ActionIcon, Divider, Flex, TextInput } from "@mantine/core";
 import { IconFolderOpen, IconTag } from "@tabler/icons-react";
 import { useState } from "react";
 import ProjectButton from "./ProjectButton";
-import TagButton from "./TagButton";
+
 
 export function TaskInput(): JSX.Element {
   const [task, setTask] = useState<string>("");
@@ -11,11 +11,7 @@ export function TaskInput(): JSX.Element {
     console.log("project icon clicked");
     // pop up
   }
-
-  function handleTagIconClick(): void {
-    console.log("tag icon clicked");
-  }
-
+  
   function taskBoxButton(icon: JSX.Element, onClick: Function): JSX.Element {
     return (
       <ActionIcon variant="default" size="xl" onClick={() => onClick()}>
@@ -37,9 +33,7 @@ export function TaskInput(): JSX.Element {
         />
         <Flex gap={10}>
           {taskBoxButton(<IconFolderOpen />, handleProjectIconClick)}
-          {taskBoxButton(<IconTag />, handleTagIconClick)}
           <ProjectButton />
-          <TagButton />
         </Flex>
       </Flex>
       <Divider />
