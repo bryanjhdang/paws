@@ -3,7 +3,7 @@ import { User } from "../models/User";
 
 export class OAuthHelper {
     getUser(OAuthSub: string): User {
-        return new User;
+        return new User();
     }
 }
 
