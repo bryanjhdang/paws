@@ -91,9 +91,7 @@ interface createProjectResponse extends Project {
 timeEntryController.post('/project', (req : Request, res: Response) => {
     let body : createProjectRequest = req.body;
 
-    let createProjectResponse : createProjectResponse = {
-        project: timeEntryService.createProject(res.locals.user, body.name, body.hexColour)
-    }
+    let createProjectResponse : createProjectResponse = timeEntryService.createProject(res.locals.user, body.name, body.hexColour);
     res.status(StatusCodes.CREATED)
         .json(createProjectResponse);
 });
