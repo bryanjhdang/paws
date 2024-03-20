@@ -8,7 +8,7 @@ export class User {
         public displayName: string = '',
         public pet: Pet = new Pet(),
         public timeEntries: TimeEntry[] = [],
-        public currentTimeEntry: TimeEntry | undefined,
+        public currentTimeEntry: TimeEntry | undefined = new TimeEntry(),
         public projects: Project[] = [],
         public totalCoins: number = 0,
     ) { };
