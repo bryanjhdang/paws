@@ -6,7 +6,8 @@ import { oAuthHelper } from "../helpers/oAuth.helper";
 
 export function authenticate(req : Request, res : Response, next : NextFunction) {
     const accountHelper : AccountHelper  = oAuthHelper;
-    res.locals.user = accountHelper.getUser("TESTid"); 
-    console.log("autheticated!");
-    next();
+    accountHelper.getUser("nemLmP1npemf5VSzAKRC").then(user => {
+        res.locals.user = user;
+        next();
+    }); 
 }
