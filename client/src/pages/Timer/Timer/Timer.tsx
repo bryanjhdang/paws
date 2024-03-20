@@ -87,10 +87,10 @@ export function Timer(): JSX.Element {
         if (timerValue > 0) {
           setTimerValue(timerValue - 1); // decrement the timer value by 1
           setTimerProgressTextValue(
-            convertSecondsToProgressTextValue(timerValue - 1) // update the timer display text
+            convertSecondsToProgressTextValue(timerValue) // update the timer display text
           );
           setTimerProgressWheelValue(
-            convertSecondsToProgressWheelValue(timerValue - 1) // update the timer display wheel
+            convertSecondsToProgressWheelValue(timerValue) // update the timer display wheel
           );
 
           console.log("Time Remaining: " + timerValue + " seconds");
