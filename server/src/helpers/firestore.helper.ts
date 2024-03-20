@@ -51,7 +51,7 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
   private deserializeProject(projectId : string, project: any): Project {
-    return new Project(projectId, project.name, project.hex)
+    return new Project(projectId, project.hex, project.name)
   }
 
 
