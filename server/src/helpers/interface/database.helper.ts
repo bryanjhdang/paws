@@ -27,7 +27,7 @@ export interface DatabaseHelper {
 
     // updateProject(project : Project) : void;
 
-    // getProjects(userId: string) : Promise<Project[]>;
+    getProjects(userId: string) : Promise<Project[]>;
 
     // deleteProject(projectId: string) : void;
 }
