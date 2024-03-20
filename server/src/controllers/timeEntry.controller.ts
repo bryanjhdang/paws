@@ -86,14 +86,27 @@ interface createProjectRequest {
     name : string,
     hexColour : string, 
 }
-interface createProjectResponse extends Project {
+interface createProjectResponse  {
+    projectId: string;
 }
 timeEntryController.post('/project', (req : Request, res: Response) => {
     let body : createProjectRequest = req.body;
 
-    let createProjectResponse : createProjectResponse = timeEntryService.createProject(res.locals.user, body.name, body.hexColour);
-    res.status(StatusCodes.CREATED)
-        .json(createProjectResponse);
+    let idPromise = timeEntryService.createProject(res.locals.user, body.name, body.hexColour);
+    idPromise
+    .then((id) => {
+        let response : createProjectResponse = {
+            projectId: id
+        }
+
+        res.status(StatusCodes.CREATED)
+        .json(response);
+    }).catch(() => {
+        res.status(StatusCodes.NOT_FOUND)
+            .json({messsage: `Could not create projects for user ${res.locals.user.id}`});
+    });
+   
+   
 });
 
 interface getProjectResponse {
@@ -101,11 +114,20 @@ interface getProjectResponse {
 }
 timeEntryController.get('/project', (req : Request, res: Response) => {
 
-    let getProjectResponse = {
-        projects : timeEntryService.getProjects(res.locals.user)
-    }
-    res.status(StatusCodes.OK)
-        .json(getProjectResponse);
+    timeEntryService.getProjects(res.locals.user)
+    .then(projects => {
+        let getProjectResponse = {
+            projects : projects
+        }
+        res.status(StatusCodes.OK)
+            .json(getProjectResponse);
+    })
+    .catch(() => {
+        res.status(StatusCodes.NOT_FOUND)
+        .json({messsage: `Could not find projects for user ${res.locals.user.id}`});
+    })
+    ;
+
 })
 
 export { timeEntryController };

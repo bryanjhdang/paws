@@ -1,3 +1,4 @@
+import { userInfo } from "os";
 import { Pet } from "./Pet";
 import { Project } from "./Project";
 import { TimeEntry } from "./TimeEntry";
@@ -7,9 +8,7 @@ export class User {
         public id: string = '' ,
         public displayName: string = '',
         public pet: Pet = new Pet(),
-        public timeEntries: TimeEntry[] = [],
         public currentTimeEntry: TimeEntry | undefined = new TimeEntry(),
-        public projects: Project[] = [],
         public totalCoins: number = 0,
     ) { };
 
@@ -18,9 +17,7 @@ export class User {
             id: this.id,
             displayName: this.displayName,
             pet: this.pet.makeSimple(),
-            timeEntries: this.timeEntries.map(entry => entry.makeSimple()),
-            currentTimeEntry: this.currentTimeEntry ? this.currentTimeEntry.makeSimple() : undefined,
-            projects: this.projects.map(proj => proj.makeSimple()),
+            currentTimeEntry: this.currentTimeEntry ? this.currentTimeEntry.makeSimple(this.id) : undefined,
             totalCoins: this.totalCoins
         } 
     };

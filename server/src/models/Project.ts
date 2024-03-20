@@ -5,8 +5,9 @@ export class Project {
         public name: string = ''
     ) { };
 
-    makeSimple() {
+    makeSimple(userId : string) {
         return { 
+            userId: userId,
             id: this.id,
             hex: this.hex,
             name: this.name
