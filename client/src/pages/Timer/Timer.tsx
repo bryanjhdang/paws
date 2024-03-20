@@ -5,8 +5,8 @@ import {
 } from "@mantine/core";
 
 import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
-import { TaskInput } from "../../components/TaskInput/TaskInput";
-import { Timer } from "../../components/Timer/Timer";
+import { TaskInput } from "./TaskInput/TaskInput";
+import { Timer } from "./Timer/Timer";
 
 function TimerPage() {
   const [active, setActive] = useState<string>("Timer");
