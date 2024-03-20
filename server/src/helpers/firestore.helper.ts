@@ -24,49 +24,36 @@ export class FirestoreHelper implements DatabaseHelper {
             this.db = admin.firestore();
             this.userDB = this.db.collection("users");
 
-
-            // const testUser = new User(
-            //     '123', // id
-            //     'John Doe', // displayName
-            //     new Pet('456', 'Fluffy', 'https://example.com/fluffy.jpg'), // pet
-            //     [
-            //         new TimeEntry('111', 1615814400, 1615825200, new Project('789', '#FF0000', 'Project A'), 'Work on Project A', 10), // timeEntries
-            //         new TimeEntry('222', 1615900800, 1615911600, new Project('789', '#FF0000', 'Project A'), 'Work on Project A', 15)  // additional time entry
-            //     ],
-            //     new TimeEntry('333', 1615987200, 1615998000, new Project('123', '#00FF00', 'Project B'), 'Work on Project B', 20), // currentTimeEntry
-            //     [
-            //         new Project('789', '#FF0000', 'Project A'), // projects
-            //         new Project('123', '#00FF00', 'Project B')  // additional project
-            //     ],
-            //     100 // totalCoins
-            // );
-            // this.userDB.add(testUser.makeSimple()).then(res => {
-            //     console.log(res.id);
-            // });
-
-
-
-            // //     var res = this.userDB.doc('sameple1').get().then(snap => {
-            // //         console.log(snap.data()!.test);
-
-            // // });
-            var test = this.getUser("nemLmP1npemf5VSzAKRC").then(user => console.log(user));
         } catch (error) {
             console.log("\x1b[31m", "ERROR: Unable to connect to Firestore Instance, did you include your Firestore key in the keys folder?");
             throw error;
         }
     }
 
-    saveUser(user: User) {
-        var test = this.userDB.add(user);
+    async updateUser(user: User) {
+        this.userDB.doc(user.id).update(user.makeSimple());
     }
 
     async getUser(userId: string): Promise<User> {
-        var snap = await this.userDB.doc(userId).get();
+        var data = (await this.userDB.doc(userId).get()).data();
 
-        var data = snap.data();
+        if (data) {
+            return this.createUser(userId, data);
+        }
 
-        // console.log(data);
+        throw new Error(`Unable to find user with id ${userId}`);
+    }
+
+    async deleteUser(user: User): Promise<void> {
+        this.userDB.doc(user.id).delete();
+    }
+
+    async addUser(user: User) : Promise<string> {
+        const res = await this.userDB.add(user.makeSimple());
+        return res.id;
+    }
+
+    private createUser(userId : string, data : admin.firestore.DocumentData) : User {
         return new User(
             userId,
             data!.displayName,
@@ -76,7 +63,6 @@ export class FirestoreHelper implements DatabaseHelper {
             data!.project.map((element: any) => this.createProject(element)),
             data!.totalCoins
         );
-
     }
 
     private createTimeEntry(element: any): TimeEntry {
@@ -86,13 +72,6 @@ export class FirestoreHelper implements DatabaseHelper {
     private createProject(project: any): Project {
         return new Project(project.id, project.name, project.hex)
     }
-
-
-    async addUser(user: User) {
-        const res = await this.userDB.add(user);
-        return res.id;
-    }
-
 
 }
 
