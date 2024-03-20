@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   RingProgress,
   Title,
@@ -29,7 +29,7 @@ export function Timer(): JSX.Element {
 
   const [mountTimerInput, setMountTimerInput] = useState<boolean>(true);
   const [timerStarted, setTimerStarted] = useState<boolean>(false);
-  const [timerPaused, setTimerPaused] = useState<boolean>(false);
+  const [timerStopped, setTimerStopped] = useState<boolean>(false);
 
   /* ---------------------------- Helper Functions ---------------------------- */
   function convertSliderValueToSeconds(value: number): number {
@@ -78,8 +78,9 @@ export function Timer(): JSX.Element {
   /* ------------------------- Timer Lifecycle Methods ------------------------ */
 
   /* ----------------------------- Event Handlers ----------------------------- */
-  let timer: any;
-  let timeRemaining: number = 0;
+  var timer: any;
+  var timeRemaining: number = 0;
+  const intervalReference = useRef<NodeJS.Timeout | null>(null);
 
   function handleTimerSlider(value: number): void {
     // if rounding is enabled, it shows even when the value is 0
@@ -95,7 +96,7 @@ export function Timer(): JSX.Element {
     setTimerProgressTextValue(convertSecondsToProgressTextValue(seconds));
     setTimerProgressWheelValue(convertSecondsToProgressWheelValue(seconds));
   }
-  function handleTimerStartButton(): void {
+  function handleTimerStartButton2(): void {
     console.log(
       "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
     );
@@ -103,47 +104,100 @@ export function Timer(): JSX.Element {
     setTimerStarted(true);
     timeRemaining = timerValue;
     timer = setInterval(() => {
-      if (timeRemaining > 0) {
-        setTimerValue(timeRemaining - 1);
-        setTimerProgressTextValue(
-          convertSecondsToProgressTextValue(timeRemaining - 1)
-        );
-        setTimerProgressWheelValue(
-          convertSecondsToProgressWheelValue(timeRemaining - 1)
-        );
-
-        timeRemaining--;
-        console.log("Time Remaining: " + timeRemaining + " seconds");
-
-        if (timeRemaining === 0) {
-          clearInterval(timer);
-          setTimerStarted(false);
-
-          setMountTimerInput(true);
-
-          // set the timer value back to what the user had original
+      if (timerStopped == false) {
+        if (timeRemaining > 0) {
+          setTimerValue(timeRemaining - 1);
           setTimerProgressTextValue(
-            convertSecondsToProgressTextValue(timerValue)
+            convertSecondsToProgressTextValue(timeRemaining - 1)
           );
           setTimerProgressWheelValue(
-            convertSecondsToProgressWheelValue(timerValue)
+            convertSecondsToProgressWheelValue(timeRemaining - 1)
           );
+
+          timeRemaining--;
+          console.log("Time Remaining: " + timeRemaining + " seconds");
+
+          if (timeRemaining === 0) {
+            clearInterval(timer);
+            setTimerStarted(false);
+
+            setMountTimerInput(true);
+
+            // set the timer value back to what the user had original
+            setTimerProgressTextValue(
+              convertSecondsToProgressTextValue(timerValue)
+            );
+            setTimerProgressWheelValue(
+              convertSecondsToProgressWheelValue(timerValue)
+            );
+
+            console.log(timerValue);
+            console.log("Timer Finished");
+          }
         }
+      } else {
+        clearInterval(timer);
+        setTimerStarted(false);
+        setMountTimerInput(true);
+        console.log("Timer Stopped");
       }
     }, 1000);
 
     setMountTimerInput(false);
   }
 
+  function handleTimerStartButton(): void {
+    console.log(
+      "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
+    );
+
+    setTimerStarted(true);
+    setMountTimerInput(false);
+  }
+
+  useEffect(() => {
+    if (timerStarted == true && !intervalReference.current) {
+      intervalReference.current = setInterval(() => {
+        if (timerValue > 0) {
+          setTimerValue(timerValue - 1);
+          setTimerProgressTextValue(
+            convertSecondsToProgressTextValue(timerValue - 1)
+          );
+          setTimerProgressWheelValue(
+            convertSecondsToProgressWheelValue(timerValue - 1)
+          );
+
+          console.log("Time Remaining: " + timerValue + " seconds");
+
+          if (timerValue === 0) {
+            clearInterval(intervalReference.current!);
+            intervalReference.current = null;
+            setTimerStarted(false);
+            setMountTimerInput(true);
+            console.log("Timer Finished");
+          }
+        } else {
+          clearInterval(intervalReference.current!);
+          intervalReference.current = null;
+          setTimerStarted(false);
+        }
+      }, 1000);
+    }
+
+    return () => {
+      if (intervalReference.current) {
+        clearInterval(intervalReference.current);
+        intervalReference.current = null;
+      }
+    };
+  }, [timerStarted, timerValue]);
+
   //TODO: stop button implementation
   function handleTimerStopButton(): void {
     console.log("Timer Stopped");
+    setTimerStarted(false);
+    setTimerStopped(true);
     setMountTimerInput(true);
-  }
-  //TODO: pause button implementation
-  function handleTimerPauseButton(): void {
-    console.log(timerPaused ? "Timer Resumed" : "Timer Paused");
-    setTimerPaused(!timerPaused);
   }
 
   /* ------------------------------- Components ------------------------------- */
@@ -201,20 +255,6 @@ export function Timer(): JSX.Element {
       </>
     );
   }
-  function timerPauseButton(): JSX.Element {
-    return (
-      <>
-        <ActionIcon
-          variant="default"
-          bg={"cyan"}
-          size="xl"
-          onClick={handleTimerPauseButton}
-        >
-          {timerPaused ? <IconPlayerPlay /> : <IconPlayerPause />}
-        </ActionIcon>
-      </>
-    );
-  }
   function timerProgressWheel(): JSX.Element {
     return (
       <>
@@ -254,7 +294,6 @@ export function Timer(): JSX.Element {
                       gap={10}
                     >
                       {timerStopButton()}
-                      {timerPauseButton()}
                     </Flex>
                   )}
                 </Transition>
