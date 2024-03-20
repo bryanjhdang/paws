@@ -43,17 +43,16 @@ export class FirestoreHelper implements DatabaseHelper {
       new Pet(data!.pet.id, data!.pet.name, data!.pet.imageUrl),
       data!.timeEntries.map((element: any) => this.deserializeTimeEntry(element)),
       data?.currentTimeEntry ? this.deserializeTimeEntry(data.currentTimeEntry) : undefined,
-      data!.project.map((element: any) => this.deserializeProject(element)),
       data!.totalCoins
     );
   }
 
   private deserializeTimeEntry(element: any): TimeEntry {
-    return new TimeEntry(element.id, element.startTime, element.endTime, this.deserializeProject(element.project), element.name, element.earnedCoins);
+    return new TimeEntry(element.id, element.startTime, element.endTime, element.projectId, element.name, element.earnedCoins);
   }
 
-  private deserializeProject(project: any): Project {
-    return new Project(project.id, project.name, project.hex)
+  private deserializeProject(projectId : string, project: any): Project {
+    return new Project(projectId, project.name, project.hex)
   }
 
 
@@ -96,6 +95,25 @@ export class FirestoreHelper implements DatabaseHelper {
       });
 
     });
+  }
+
+  getProjects(userId: string): Promise<Project[]> {
+    return new Promise<Project[]>((resolve, reject) => {
+      this.projectDB.where('userId', "==", userId).get()
+      .then(snap => {
+        let result : Project[] = [];
+        snap.forEach(doc => {
+          if (doc) {
+            result.push(this.deserializeProject(doc.id, doc.data()));
+          }
+        });
+
+        resolve(result);
+      })
+      .catch(() => {
+        reject(Error(`Unable to find projects for user ${userId}`));
+      })
+    })
   }
 
 }

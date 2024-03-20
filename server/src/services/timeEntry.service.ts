@@ -25,8 +25,8 @@ export class TimeEntryService {
     return [];
   }
 
-  getProjects(user: User) {
-    return [];
+  getProjects(user: User) : Promise<Project[]> {
+    return firestoreHelper.getProjects(user.id);
   }
 
   createProject(user : User, name : string, hexColour : string) : Promise<string> {

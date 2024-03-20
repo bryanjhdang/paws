@@ -5,7 +5,7 @@ export class TimeEntry {
         public id : string = '',
         public startTime: number = 0,
         public endTime: number = 0,
-        public project: Project = new Project(),
+        public projectId: string = '',
         public name: string = '',
         public earnedCoins: number = 0
     ) { };
@@ -15,7 +15,7 @@ export class TimeEntry {
             id: this.id,
             startTime: this.startTime,
             endTime: this.endTime,
-            project: this.project.makeSimple(userId),
+            projectId: this.projectId,
             name: this.name,
             earnedCoins: this.earnedCoins
         }
