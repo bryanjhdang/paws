@@ -57,18 +57,18 @@ interface ProjectButtonProps {
 
 export function ProjectButton({ selectedProject, setSelectedProject }: ProjectButtonProps) {
   const [opened, { open, close }] = useDisclosure();
-  const [projects, setProjects] = useState<Project[]>();
+  const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => {
-    async function getProjectsData() {
-      const data = await getProjects();
-      setProjects(data);
-    }
-    getProjectsData();
+    getProjects().then(
+      (response) => {
+        setProjects(response);
+      }
+    );
   }, []);
 
   const handleAddProject = (project: Project) => {
-    // setProjects([...projects, project]);
+    setProjects([...projects, project]);
     postProject(project);
   };
 
@@ -94,18 +94,21 @@ export function ProjectButton({ selectedProject, setSelectedProject }: ProjectBu
           >
             <Text fz={"sm"}>No Project</Text>
           </Menu.Item>
-          
+
           <Menu.Divider />
           <Menu.Label>Projects</Menu.Label>
-          {projects.map(project => (
-            <Menu.Item
-              key={project.id}
-              onClick={() => setSelectedProject(project)}
-              leftSection={<IconPointFilled style={{ width: (14), height: (14), color: project.hex }} />}
-            >
-              <Text fz={"sm"} c={project.hex}>{project.name}</Text>
-            </Menu.Item>
-          ))}
+          {projects
+            .slice()
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map(project => (
+              <Menu.Item
+                key={project.id}
+                onClick={() => setSelectedProject(project)}
+                leftSection={<IconPointFilled style={{ width: (14), height: (14), color: project.hex }} />}
+              >
+                <Text fz={"sm"} c={project.hex}>{project.name}</Text>
+              </Menu.Item>
+            ))}
 
           <Menu.Divider />
           <Menu.Item
