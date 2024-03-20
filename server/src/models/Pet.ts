@@ -1,7 +1,15 @@
 export class Pet {
     constructor(
-        id: string = '',
-        name: string = '',
-        imageUrl: string = ''
+        public id: string = '',
+        public name: string = '',
+        public imageUrl: string = ''
     ) { };
+
+    makeSimple() {
+        return {
+            id: this.id, 
+            name: this.name,
+            imageUrl : this.imageUrl
+        }
+    }
 }

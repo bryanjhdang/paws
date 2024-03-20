@@ -28,7 +28,7 @@ export class TimeEntryService {
   }
 
   createProject(user : User, name : string, hexColour : string) : Project {
-    return Project;
+    return new Project;
   }
 }
 
