@@ -11,11 +11,7 @@ import {
   Transition,
   ActionIcon,
 } from "@mantine/core";
-import {
-  IconPlayerStop,
-  IconPlayerPause,
-  IconPlayerPlay,
-} from "@tabler/icons-react";
+import { IconPlayerStop } from "@tabler/icons-react";
 
 export function Timer(): JSX.Element {
   /* ---------------------------------- State --------------------------------- */
@@ -28,8 +24,7 @@ export function Timer(): JSX.Element {
     useState<boolean>(false);
 
   const [mountTimerInput, setMountTimerInput] = useState<boolean>(true);
-  const [timerStarted, setTimerStarted] = useState<boolean>(false);
-  const [timerStopped, setTimerStopped] = useState<boolean>(false);
+  const [timerRunning, setTimerRunning] = useState<boolean>(false);
 
   /* ---------------------------- Helper Functions ---------------------------- */
   function convertSliderValueToSeconds(value: number): number {
@@ -76,12 +71,82 @@ export function Timer(): JSX.Element {
   }
 
   /* ------------------------- Timer Lifecycle Methods ------------------------ */
+  const intervalReference = useRef<NodeJS.Timeout | null>(null);
+  useEffect(() => {
+    // this useEffect is used to start the timer when the timerRunning state is true
+    // runs when the timerRunning state changes, along with the timerValue state
+
+    // if the timer is running and the interval reference is null (there is no timer running), start the timer
+    // the interval reference is a ref object that the reference to a component (that is mutable)
+    // basically an ID reference to the setInterval function that
+    // stays alive for the entire lifecycle of the component
+    if (timerRunning == true && !intervalReference.current) {
+      // we then set the interval reference to a setInterval function that runs every 1000 milliseconds
+      intervalReference.current = setInterval(() => {
+        // if the timerValue > 0, that means that the timer is still running
+        if (timerValue > 0) {
+          setTimerValue(timerValue - 1); // decrement the timer value by 1
+          setTimerProgressTextValue(
+            convertSecondsToProgressTextValue(timerValue - 1) // update the timer display text
+          );
+          setTimerProgressWheelValue(
+            convertSecondsToProgressWheelValue(timerValue - 1) // update the timer display wheel
+          );
+
+          console.log("Time Remaining: " + timerValue + " seconds");
+
+          // if the timer value is 0, that means that the timer has finished
+          if (timerValue === 0) {
+            // we take the reference to the interval (that has stayed alive through each rerender) and clear it
+            clearInterval(intervalReference.current!);
+            intervalReference.current = null; // clear the timer reference so that a new one can be created
+            setTimerRunning(false);
+            setMountTimerInput(true);
+            console.log("Timer Finished");
+          }
+        } else {
+          // this is an edge case where the timer value is 0, but the timer is still running
+          clearInterval(intervalReference.current!);
+          intervalReference.current = null;
+          setTimerRunning(false);
+          setMountTimerInput(true);
+          console.log("edge case timer stopped");
+        }
+      }, 1000);
+    }
+
+    // this is a cleanup function that runs when the component is unmounted
+    return () => {
+      if (intervalReference.current) {
+        clearInterval(intervalReference.current);
+        intervalReference.current = null;
+      }
+    };
+  }, [timerRunning, timerValue]); // this useEffect runs/is triggered when the timerRunning or timerValue state changes
 
   /* ----------------------------- Event Handlers ----------------------------- */
-  var timer: any;
-  var timeRemaining: number = 0;
-  const intervalReference = useRef<NodeJS.Timeout | null>(null);
+  function handleTimerStopButton(): void {
+    console.log("Timer Stopped");
 
+    // just some extra safety checks to ensure that the timer is stopped
+    clearInterval(intervalReference.current!);
+    intervalReference.current = null;
+    console.log("Time remaining: " + timerValue + " seconds");
+    // you can use the timerValue state to do something with the remaining time if need be
+
+    setTimerRunning(false);
+    setMountTimerInput(true);
+  }
+  function handleTimerStartButton(): void {
+    console.log(
+      "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
+    );
+
+    // the amount of time the timer will run for is set in the timerValue state so use that
+
+    setTimerRunning(true); // sets the trigger to start the timer
+    setMountTimerInput(false);
+  }
   function handleTimerSlider(value: number): void {
     // if rounding is enabled, it shows even when the value is 0
     // therefore we need to disable it when the value is 0
@@ -95,109 +160,6 @@ export function Timer(): JSX.Element {
     setTimerValue(seconds);
     setTimerProgressTextValue(convertSecondsToProgressTextValue(seconds));
     setTimerProgressWheelValue(convertSecondsToProgressWheelValue(seconds));
-  }
-  function handleTimerStartButton2(): void {
-    console.log(
-      "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
-    );
-
-    setTimerStarted(true);
-    timeRemaining = timerValue;
-    timer = setInterval(() => {
-      if (timerStopped == false) {
-        if (timeRemaining > 0) {
-          setTimerValue(timeRemaining - 1);
-          setTimerProgressTextValue(
-            convertSecondsToProgressTextValue(timeRemaining - 1)
-          );
-          setTimerProgressWheelValue(
-            convertSecondsToProgressWheelValue(timeRemaining - 1)
-          );
-
-          timeRemaining--;
-          console.log("Time Remaining: " + timeRemaining + " seconds");
-
-          if (timeRemaining === 0) {
-            clearInterval(timer);
-            setTimerStarted(false);
-
-            setMountTimerInput(true);
-
-            // set the timer value back to what the user had original
-            setTimerProgressTextValue(
-              convertSecondsToProgressTextValue(timerValue)
-            );
-            setTimerProgressWheelValue(
-              convertSecondsToProgressWheelValue(timerValue)
-            );
-
-            console.log(timerValue);
-            console.log("Timer Finished");
-          }
-        }
-      } else {
-        clearInterval(timer);
-        setTimerStarted(false);
-        setMountTimerInput(true);
-        console.log("Timer Stopped");
-      }
-    }, 1000);
-
-    setMountTimerInput(false);
-  }
-
-  function handleTimerStartButton(): void {
-    console.log(
-      "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
-    );
-
-    setTimerStarted(true);
-    setMountTimerInput(false);
-  }
-
-  useEffect(() => {
-    if (timerStarted == true && !intervalReference.current) {
-      intervalReference.current = setInterval(() => {
-        if (timerValue > 0) {
-          setTimerValue(timerValue - 1);
-          setTimerProgressTextValue(
-            convertSecondsToProgressTextValue(timerValue - 1)
-          );
-          setTimerProgressWheelValue(
-            convertSecondsToProgressWheelValue(timerValue - 1)
-          );
-
-          console.log("Time Remaining: " + timerValue + " seconds");
-
-          if (timerValue === 0) {
-            clearInterval(intervalReference.current!);
-            intervalReference.current = null;
-            setTimerStarted(false);
-            setMountTimerInput(true);
-            console.log("Timer Finished");
-          }
-        } else {
-          clearInterval(intervalReference.current!);
-          intervalReference.current = null;
-          setTimerStarted(false);
-        }
-      }, 1000);
-    }
-
-    return () => {
-      if (intervalReference.current) {
-        clearInterval(intervalReference.current);
-        intervalReference.current = null;
-      }
-    };
-  }, [timerStarted, timerValue]);
-
-  //TODO: stop button implementation
-  function handleTimerStopButton(): void {
-    console.log("Timer Stopped");
-    setTimerStarted(false);
-    setTimerStopped(true);
-    setMountTimerInput(true);
   }
 
   /* ------------------------------- Components ------------------------------- */
