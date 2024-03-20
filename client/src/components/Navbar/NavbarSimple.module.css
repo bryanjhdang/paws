@@ -5,7 +5,7 @@
   padding-right: var(--mantine-spacing-sm);
   display: flex;
   flex-direction: column;
-  background-color: #DBAF59;
+  background-color: #F2D179;
 }
 
 .navbarMain {
@@ -15,6 +15,7 @@
 .header {
   color: var(--mantine-color-dark-7);
   padding-top: var(--mantine-spacing-md);
+  padding-left: var(--mantine-spacing-lg);
   margin-bottom: calc(var(--mantine-spacing-md) * 1.5);
 }
 
