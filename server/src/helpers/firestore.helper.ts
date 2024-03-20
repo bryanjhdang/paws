@@ -24,10 +24,6 @@ export class FirestoreHelper implements DatabaseHelper {
             this.db = admin.firestore();
             this.userDB = this.db.collection("users");
 
-            // var stringlist: TimeEntry[] = [];
-            // stringlist.push(new TimeEntry());
-            // stringlist.push(new TimeEntry());
-            // stringlist.map(entry => entry.makeSimple());
 
             // const testUser = new User(
             //     '123', // id
@@ -54,7 +50,7 @@ export class FirestoreHelper implements DatabaseHelper {
             // //         console.log(snap.data()!.test);
 
             // // });
-            var test = this.getUser("nemLmP1npemf5VSzAKRC ").then(user => console.log(user));
+            var test = this.getUser("nemLmP1npemf5VSzAKRC").then(user => console.log(user));
         } catch (error) {
             console.log("\x1b[31m", "ERROR: Unable to connect to Firestore Instance, did you include your Firestore key in the keys folder?");
             throw error;
@@ -70,14 +66,14 @@ export class FirestoreHelper implements DatabaseHelper {
 
         var data = snap.data();
 
-
+        // console.log(data);
         return new User(
             userId,
             data!.displayName,
             new Pet(data!.pet.id, data!.pet.name, data!.pet.imageUrl),
             data!.timeEntries.map((element: any) => this.createTimeEntry(element)),
             data?.currentTimeEntry ? this.createTimeEntry(data.currentTimeEntry) : undefined,
-            data!.projects.map((element: any) => this.createProject(element.project)),
+            data!.project.map((element: any) => this.createProject(element)),
             data!.totalCoins
         );
 
