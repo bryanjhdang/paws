@@ -24,7 +24,7 @@ export function TaskInput({ task, setTask, selectedProject, setSelectedProject }
         <Flex>
           <ProjectButton 
             selectedProject={selectedProject} 
-            onSelectProject={setSelectedProject} 
+            setSelectedProject={setSelectedProject} 
           />
         </Flex>
       </Flex>
