@@ -1,3 +1,4 @@
+import { resolve } from "path";
 import { FirestoreHelper, firestoreHelper } from "../helpers/firestore.helper";
 import { DatabaseHelper } from "../helpers/interface/database.helper";
 import { User } from "../models/User";
@@ -6,8 +7,8 @@ import { User } from "../models/User";
 export class AccountService {
   constructor(private db: DatabaseHelper) { };
 
-  getUserInfo(id : string) : User {
-    return new User;
+  async getUserInfo(id : string) : Promise<User> {
+    return firestoreHelper.getUser(id);
   }
 
   validate(username: String, hashedPassword: String): String {

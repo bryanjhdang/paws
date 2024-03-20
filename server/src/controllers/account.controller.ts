@@ -7,10 +7,22 @@ const accountController: Router = express.Router();
 
 interface getUserInfoResponse extends User {};
 accountController.get('/', (req : Request, res : Response) => {
-    
-    let response : getUserInfoResponse = res.locals.user;
-    res.status(StatusCodes.OK)
-        .json(response);
+    const id = req.query.id;
+    if (!id) {
+        return res.status(StatusCodes.UNPROCESSABLE_ENTITY)
+            .json("message : Missing id field in query");
+    }
+
+    let userPromise = accountService.getUserInfo(id.toString());
+    userPromise
+    .then(user => {
+        res.status(StatusCodes.OK)
+        .json(user);
+    })
+    .catch(() => {
+        res.status(StatusCodes.NOT_FOUND)
+            .json({messsage: `Missing could not find user ${id}`});
+    });
 })
 
 interface CreateRequest {
