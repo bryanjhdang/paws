@@ -44,7 +44,9 @@ export async function postProject(project: Project) {
 		}
 	})
 	.then ((response) => {
-		return response;
+		console.log(response);
+		console.log(response.data.id);
+		// project.id = response;
 	}, (error) => {
 		console.log(error);
 		throw(error);
