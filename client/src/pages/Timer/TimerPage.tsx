@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Flex } from "@mantine/core";
 import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
 import { TaskInput } from "./TaskInput/TaskInput";
 import { Timer } from "./Timer/Timer";
-import { Project, TimeEntry } from "../../classes/models";
+import { Project } from "../../classes/models";
 
 function TimerPage() {
   const [task, setTask] = useState<string>("");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [active, setActive] = useState<string>("Timer");
 
-  interface SubmitTimeEntryProps {
+  /* interface SubmitTimeEntryProps {
     task: string;
     selectedProject: Project;
   }
@@ -18,14 +18,14 @@ function TimerPage() {
   const createTimeEntry = ({ task, selectedProject } : SubmitTimeEntryProps ): void => {
     console.log(task + selectedProject);
     // Make a time entry here
-  }
+  } */
 
   return (
     <>
       <Flex direction={"row"}>
         <NavbarSimple active={active} setActive={setActive} />
         <Flex direction={"column"} flex={1}>
-          <TaskInput 
+          <TaskInput
             task={task}
             setTask={setTask}
             selectedProject={selectedProject}
