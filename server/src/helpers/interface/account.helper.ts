@@ -1,5 +1,5 @@
 import { User } from "../../models/User";
 
 export interface AccountHelper {
-    getUser(id: string) : User;
+    getUser(id: string) : Promise<User>;
 }
