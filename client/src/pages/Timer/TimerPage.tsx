@@ -13,6 +13,7 @@ function TimerPage() {
         <NavbarSimple active={active} setActive={setActive} />
         <Flex direction={"column"} flex={1}>
           <TaskInput />
+          <Timer />
         </Flex>
       </Flex>
     </>
