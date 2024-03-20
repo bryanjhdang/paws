@@ -53,15 +53,22 @@ export async function postProject(project: Project) {
 	});
 }
 
-export async function getProjects() {
-	axios({
-		method: 'get',
-		url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/projects`
+export async function getProjects() : Promise<Project[]> {
+	const createProjects = (any: any) : Project[] => {
+		return any.projects.map((element : any) => {
+			return new Project(element.id, element.hexColor, element.name);
+		});
+	}
+	
+	return new Promise<Project[]>((resolve, reject) => {
+		axios({
+			method: 'get',
+			url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/projects`
+		})
+		.then ((response) => {
+			resolve(createProjects(response));
+		}, (error) => {
+			reject(error)
+		});
 	})
-	.then ((response) => {
-		return response;
-	}, (error) => {
-		console.log(error);
-		throw(error);
-	});
 }
