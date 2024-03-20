@@ -1,48 +1,34 @@
-import { ActionIcon, Divider, Flex, TextInput, Box } from "@mantine/core";
-import { IconFolderOpen, IconTag } from "@tabler/icons-react";
-import { useState } from "react";
+import { Divider, Flex, TextInput } from "@mantine/core";
+import { Project } from "../../../classes/models";
+import { ProjectButton } from "./ProjectButton";
 
-export function TaskInput(): JSX.Element {
-  const [task, setTask] = useState<string>("");
+interface TaskInputProps {
+  task: string;
+  setTask: React.Dispatch<React.SetStateAction<string>>;
+  selectedProject: Project | null;
+  setSelectedProject: React.Dispatch<React.SetStateAction<Project | null>>;
+}
 
-  function handleProjectIconClick(): void {
-    console.log("project icon clicked");
-  }
-
-  function handleTagIconClick(): void {
-    console.log("tag icon clicked");
-  }
-
-  function taskBoxButton(icon: JSX.Element, onClick: Function): JSX.Element {
-    return (
-      <>
-        <ActionIcon variant="default" size="xl" onClick={() => onClick()}>
-          {icon}
-        </ActionIcon>
-      </>
-    );
-  }
-
+export function TaskInput({ task, setTask, selectedProject, setSelectedProject }: TaskInputProps): JSX.Element {
   return (
     <>
-      <Box p={10} w={"100%"}>
-        <Flex direction={"row"} align={"center"}>
-          <TextInput
-            size="xl"
-            variant="unstyled"
-            placeholder={"What are you working on?"}
-            pr={10}
-            w={"100%"}
-            value={task}
-            onChange={(event) => setTask(event.currentTarget.value)}
+      <Flex px={20} align={"center"}>
+        <TextInput
+          size="xl"
+          variant="unstyled"
+          placeholder={"What are you working on?"}
+          w={"100%"}
+          value={task}
+          onChange={(event) => setTask(event.currentTarget.value)}
+        />
+        <Flex>
+          <ProjectButton 
+            selectedProject={selectedProject} 
+            setSelectedProject={setSelectedProject} 
           />
-          <Flex gap={5}>
-            {taskBoxButton(<IconFolderOpen />, handleProjectIconClick)}
-            {taskBoxButton(<IconTag />, handleTagIconClick)}
-          </Flex>
         </Flex>
-        <Divider mt={2}/>
-      </Box>
+      </Flex>
+      <Divider />
     </>
   );
 }

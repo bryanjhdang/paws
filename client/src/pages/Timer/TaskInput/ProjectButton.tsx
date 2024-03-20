@@ -2,7 +2,7 @@ import { DEFAULT_THEME, Modal, Button, Menu, TextInput, ColorPicker, Text, Stack
 import { useDisclosure } from '@mantine/hooks';
 import { IconFolderOpen, IconPlus, IconPointFilled } from "@tabler/icons-react";
 import { useState } from "react";
-import { Project } from "../../classes/models";
+import { Project } from "../../../classes/models";
 
 interface NewProjectModalProps {
   opened: boolean;
