@@ -1,8 +1,9 @@
 import { DEFAULT_THEME, Modal, Button, Menu, TextInput, ColorPicker, Text, Stack } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 import { IconFolderOpen, IconPlus, IconPointFilled } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Project } from "../../../classes/models";
+import { getProjects, postProject } from "../../../classes/HTTPhelpers";
 
 interface NewProjectModalProps {
   opened: boolean;
@@ -56,15 +57,19 @@ interface ProjectButtonProps {
 
 export function ProjectButton({ selectedProject, setSelectedProject }: ProjectButtonProps) {
   const [opened, { open, close }] = useDisclosure();
+  const [projects, setProjects] = useState<Project[]>();
 
-  // This should be retrieved from a GET request
-  const [projects, setProjects] = useState<Project[]>([
-    new Project("1", "#007bff", "CMPT 372"),
-    new Project("2", "#dc3545", "CMPT 410"),
-  ]);
+  useEffect(() => {
+    async function getProjectsData() {
+      const data = await getProjects();
+      setProjects(data);
+    }
+    getProjectsData();
+  }, []);
 
   const handleAddProject = (project: Project) => {
-    setProjects([...projects, project]);
+    // setProjects([...projects, project]);
+    postProject(project);
   };
 
   return (
