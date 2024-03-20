@@ -6,6 +6,8 @@ import rootPath from "get-root-path";
 import { TimeEntry } from "../models/TimeEntry";
 import { Pet } from "../models/Pet";
 import { Project } from "../models/Project";
+import { resolve } from "path";
+import { rejects } from "assert";
 dotenv.config();
 
 
@@ -34,14 +36,20 @@ export class FirestoreHelper implements DatabaseHelper {
         this.userDB.doc(user.id).update(user.makeSimple());
     }
 
-    async getUser(userId: string): Promise<User> {
-        var data = (await this.userDB.doc(userId).get()).data();
-
-        if (data) {
-            return this.createUser(userId, data);
-        }
-
-        throw new Error(`Unable to find user with id ${userId}`);
+    getUser(userId: string): Promise<User> {
+        return new Promise<User>((resolve, reject) => {
+            this.userDB.doc(userId).get().then(snap => {
+                const data = snap.data();
+                if (data) {
+                    resolve(this.createUser(userId, data));
+                } else {
+                    reject(Error(`Unable to find data for user with id ${userId}`));
+                }            
+            })
+            .catch(err => {
+                reject(Error(`Unable to find user with id ${userId}`));
+            })
+        })
     }
 
     async deleteUser(user: User): Promise<void> {
