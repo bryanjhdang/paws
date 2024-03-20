@@ -41,7 +41,6 @@ export class FirestoreHelper implements DatabaseHelper {
       userId,
       data!.displayName,
       new Pet(data!.pet.id, data!.pet.name, data!.pet.imageUrl),
-      data!.timeEntries.map((element: any) => this.deserializeTimeEntry(element)),
       data?.currentTimeEntry ? this.deserializeTimeEntry(data.currentTimeEntry) : undefined,
       data!.totalCoins
     );
