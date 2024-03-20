@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Flex } from "@mantine/core";
 import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
-import { TaskInput } from "./TaskInput";
-import { Timer } from "./Timer";
+import { TaskInput } from "./TaskInput/TaskInput";
+import { Timer } from "./Timer/Timer";
 import { Project, TimeEntry } from "../../classes/models";
 
 function TimerPage() {
