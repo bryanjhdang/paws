@@ -8,9 +8,7 @@ export class User {
         public id: string = '' ,
         public displayName: string = '',
         public pet: Pet = new Pet(),
-        public timeEntries: TimeEntry[] = [],
         public currentTimeEntry: TimeEntry | undefined = new TimeEntry(),
-        public projects: Project[] = [],
         public totalCoins: number = 0,
     ) { };
 
@@ -19,9 +17,7 @@ export class User {
             id: this.id,
             displayName: this.displayName,
             pet: this.pet.makeSimple(),
-            timeEntries: this.timeEntries.map(entry => entry.makeSimple(this.id)),
             currentTimeEntry: this.currentTimeEntry ? this.currentTimeEntry.makeSimple(this.id) : undefined,
-            projects: this.projects.map(proj => proj.makeSimple(this.id)),
             totalCoins: this.totalCoins
         } 
     };
