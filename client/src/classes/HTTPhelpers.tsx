@@ -11,19 +11,43 @@ export function postAccountCreate(): void {
 }
 
 // Pet
-export function getPet(): void {
+export function getPet(): Promise<Pet> {
+	const createPet = (any: any): Pet => {
+		return new Pet(any.data.id, any.data.name, any.data.imageUrl);
+	}
 
+	return new Promise<Pet>((resolve, reject) => {
+		axios({
+			method: 'get',
+			url: `${import.meta.env.VITE_API_SERVER_URL}/pet` 
+		})
+		.then((response) => {
+			resolve(createPet(response));
+		}, (error) => {
+			reject(error);
+		});
+	})
 }
 
-export function getCoins(): number {
-	// make api call
-	return 0;
+export function getCoins(): Promise<number> {
+	return new Promise<number>((resolve, reject) => {
+		axios({
+			method: 'get',
+			url: `${import.meta.env.VITE_API_SERVER_URL}/pet/coins`
+		})
+		.then((response) => {
+			console.log(response);
+			resolve(response.data);
+		}, (error) => {
+			reject(error);
+		});
+	})
 }
 
 // TimeEntry
 export function getTimeEntry(): Promise<TimeEntry[]> {
 	const createTimeEntries = (any : any): TimeEntry[] => {
-		return any.data.map((element: any) => {
+		return any.data.timeEntries.map((element: any) => {
 			return new TimeEntry(
 				element.id,
 				element.startTime,
