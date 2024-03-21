@@ -48,8 +48,8 @@ export class TimeEntryService {
     });
   }
 
-  query(user: User, start: Date, end: Date, proejctId: string, name: string) {
-    return [];
+  query(user: User, start: Date, end: Date, proejctId: string, name: string) : Promise<TimeEntry[]> {
+    return firestoreHelper.getTimeEntries(user.id);
   }
 
   getProjects(user: User) : Promise<Project[]> {
