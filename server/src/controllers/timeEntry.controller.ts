@@ -26,12 +26,19 @@ timeEntryController.get('/', (req : Request, res : Response) => {
             .json({message : "Invalid parameters for query string!"});
     }
 
-    let response : GetTimeEntryResponse = {
-        timeEntries: timeEntryService.query(res.locals.user, query.startTime, query.endTime, query.projectId, query.name)
-    }
-
-    res.status(StatusCodes.CREATED)
-        .json(response)
+    timeEntryService.query(res.locals.user, query.startTime, query.endTime, query.projectId, query.name)
+    .then(entries => {
+        let response : GetTimeEntryResponse = {
+            timeEntries: entries
+        }
+    
+        res.status(StatusCodes.OK)
+            .json(response)
+    })
+    .catch(() => {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({message : `Could not get time entries for user ${res.locals.user.id}`});
+    });
 });
 
 
