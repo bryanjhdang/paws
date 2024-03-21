@@ -9,7 +9,7 @@ function FriendsPage() {
     <Flex>
       <NavbarSimple active={active} setActive={setActive} />
       <Flex>
-        <Text>FRIENDS CONTENT SHOULD GO IN HERE</Text>
+        <Text>The pet stuff is under construction. Come back after the checkpoint.</Text>
       </Flex>
     </Flex>
   )
