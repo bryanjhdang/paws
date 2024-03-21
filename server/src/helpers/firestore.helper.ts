@@ -8,6 +8,7 @@ import { Pet } from "../models/Pet";
 import { Project } from "../models/Project";
 import { resolve } from "path";
 import { rejects } from "assert";
+import { time } from "console";
 dotenv.config();
 
 
@@ -55,7 +56,7 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
 
-  async updateUser(user: User) {
+  updateUser(user: User) {
     this.userDB.doc(user.id).update(user.makeSimple());
   }
 
@@ -82,6 +83,20 @@ export class FirestoreHelper implements DatabaseHelper {
   async addUser(user: User): Promise<string> {
     const res = await this.userDB.add(user.makeSimple());
     return res.id;
+  }
+
+  createTimeEntry(userId : string, timeEntry: TimeEntry): Promise<TimeEntry> {
+    return new Promise<TimeEntry>((resolve, reject) => {
+      console.log(timeEntry.makeSimple(userId));
+      this.timeEntryDB.add(timeEntry.makeSimple(userId))
+      .then((res) => {
+        timeEntry.id = res.id;
+        resolve(timeEntry);
+      })
+      .catch(() => {
+        reject(Error("Unable to create time entry"));
+      })
+    });
   }
 
   createProject(userId: string, project: Project): Promise<string> {

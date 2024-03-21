@@ -12,7 +12,7 @@ export interface DatabaseHelper {
     deleteUser(user: User) : void;
 
 
-    // createTimeEntry(timeEntry : TimeEntry) : Promise<string>;
+    createTimeEntry(userId : string, timeEntry : TimeEntry) : Promise<TimeEntry>;
 
     // updateTimeEntry(timeEntry : TimeEntry) : void;
 
