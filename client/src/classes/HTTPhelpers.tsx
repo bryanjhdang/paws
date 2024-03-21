@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Project, TimeEntry } from "./models";
+import { Pet, Project, TimeEntry } from "./models";
 
 // Account
 export function getAccount(): void {
