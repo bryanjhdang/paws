@@ -30,27 +30,27 @@ export const App: React.FC = () => {
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route
-        path="/timer"
+        path="/timerPage"
         element={<AuthenticationGuard component={TimerPage} />}
       />
       <Route
-        path="/pet"
+        path="/petPage"
         element={<AuthenticationGuard component={PetPage} />}
       />
       <Route
-        path="/statistics"
+        path="/statisticsPage"
         element={<AuthenticationGuard component={StatisticsPage} />}
       />
       <Route
-        path="/friends"
+        path="/friendsPage"
         element={<AuthenticationGuard component={FriendsPage} />}
       />
       <Route
-        path="/profile"
+        path="/profilePage"
         element={<AuthenticationGuard component={ProfilePage} />}
       />
       <Route
-        path="/settings"
+        path="/settingsPage"
         element={<AuthenticationGuard component={SettingsPage} />}
       />
       <Route path="/callback" element={<CallbackPage />} />

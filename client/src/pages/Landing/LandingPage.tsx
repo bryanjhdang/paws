@@ -10,14 +10,14 @@ function LandingPage() {
   // todo: some flicker in transition from Landing to Timer, may be inherent to current styling
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/timer");
+      navigate("/timerPage");
     }
   }, [isAuthenticated, navigate]);
 
   const handleLogin = async () => {
     await loginWithRedirect({
       appState: {
-        returnTo: "/timer",
+        returnTo: "/timerPage",
       },
       authorizationParams: {
         prompt: "login",

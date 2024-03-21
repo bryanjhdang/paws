@@ -9,15 +9,15 @@ interface NavbarProps {
 }
 
 const data = [
-  { link: '/timer', label: 'Timer', icon: IconClock },
-  { link: '/pet', label: 'Pet', icon: IconPaw },
-  { link: '/statistics', label: 'Statistics', icon: IconChartBar },
-  { link: '/friends', label: 'Friends', icon: IconUsers }
+  { link: '/timerPage', label: 'Timer', icon: IconClock },
+  { link: '/petPage', label: 'Pet', icon: IconPaw },
+  { link: '/statisticsPage', label: 'Statistics', icon: IconChartBar },
+  { link: '/friendsPage', label: 'Friends', icon: IconUsers }
 ];
 
 const footerData = [
-  { link: '/profile', label: 'Profile', icon: IconUser },
-  { link: '/settings', label: 'Settings', icon: IconSettings }
+  { link: '/profilePage', label: 'Profile', icon: IconUser },
+  { link: '/settingsPage', label: 'Settings', icon: IconSettings }
 ];
 
 export function NavbarSimple({ active, setActive }: NavbarProps) {
