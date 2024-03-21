@@ -25,7 +25,7 @@ export class TimeEntry {
     public id: string,
     public startTime: number,
     public endTime: number,
-    public project: Project,
+    public projectId: string,
     public name: string,
     public earnedCoins: number,
   ) { }
