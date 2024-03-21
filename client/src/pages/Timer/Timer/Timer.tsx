@@ -12,7 +12,7 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { IconPlayerStop } from "@tabler/icons-react";
-import { getAccount, getProjects, postTimeEntryStart, postTimeEntryStop } from "../../../classes/HTTPhelpers";
+import { getAccount, postTimeEntryStart, postTimeEntryStop } from "../../../classes/HTTPhelpers";
 import { Project, TimeEntry } from "../../../classes/models";
 
 interface TimerProps {
