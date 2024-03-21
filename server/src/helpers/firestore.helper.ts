@@ -20,11 +20,16 @@ export class FirestoreHelper implements DatabaseHelper {
 
   constructor() {
     try {
-      var serviceAccount = rootPath + process.env.FIRESTORE_KEY || "oopsie whoopsie" as admin.ServiceAccount;
+      if (process.env.FIRESTORE_KEY != "CLOUD") {
+        var serviceAccount = rootPath + process.env.FIRESTORE_KEY || "oopsie whoopsie" as admin.ServiceAccount;
 
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
-      });
+        admin.initializeApp({
+          credential: admin.credential.cert(serviceAccount)
+        });
+    } else {
+      console.log("\x1b[34m", "Connecting to Firestore over Google Cloud, make sure you authorized the instance to connect");
+    }
+
 
       this.db = admin.firestore();
       this.userDB = this.db.collection("users");
