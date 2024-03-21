@@ -9,7 +9,7 @@ function TimerPage() {
   const [task, setTask] = useState<string>("");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [active, setActive] = useState<string>("Timer");
-  
+
   return (
     <>
       <Flex direction={"row"}>
