@@ -2,6 +2,7 @@ import { resolve } from "path";
 import { FirestoreHelper, firestoreHelper } from "../helpers/firestore.helper";
 import { DatabaseHelper } from "../helpers/interface/database.helper";
 import { User } from "../models/User";
+import { Pet } from "../models/Pet";
 
 
 export class AccountService {
@@ -17,9 +18,9 @@ export class AccountService {
     return "cookie goes here!";
   }
 
-  createUser(username: String, name: String): String {
-
-    return "cookie for creating new user goes here!";
+  createUser(username: string, name: string): Promise<string> {
+    let user = new User('', name, new Pet(), undefined, 0);
+    return firestoreHelper.addUser(user);
   }
 }
 
