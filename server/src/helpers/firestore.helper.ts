@@ -81,16 +81,18 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
   async addUser(user: User): Promise<string> {
-    const res = await this.userDB.add(user.makeSimple());
-    return res.id;
+    let document = this.userDB.doc();
+    user.id = document.id;
+    this.userDB.doc(user.id).set(user.makeSimple());
+    return user.id;
   }
 
   createTimeEntry(userId : string, timeEntry: TimeEntry): Promise<TimeEntry> {
     return new Promise<TimeEntry>((resolve, reject) => {
-      console.log(timeEntry.makeSimple(userId));
-      this.timeEntryDB.add(timeEntry.makeSimple(userId))
+      let doc = this.timeEntryDB.doc();
+      timeEntry.id = doc.id;
+      this.timeEntryDB.doc(timeEntry.id).set(timeEntry.makeSimple(userId))
       .then((res) => {
-        timeEntry.id = res.id;
         resolve(timeEntry);
       })
       .catch(() => {
@@ -101,9 +103,11 @@ export class FirestoreHelper implements DatabaseHelper {
 
   createProject(userId: string, project: Project): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      this.projectDB.add(project.makeSimple(userId))
+      let doc = this.projectDB.doc();
+      project.id = doc.id;
+      this.projectDB.doc(project.id).set(project.makeSimple(userId))
       .then((res) => {
-        resolve(res.id);  
+        resolve(project.id);  
       }).catch(() => {
         reject(Error(`Unable to create project with name ${project.name}`));
       });
