@@ -21,21 +21,68 @@ export function getCoins(): number {
 }
 
 // TimeEntry
-export function getTimeEntry(): void {
+export function getTimeEntry(): Promise<TimeEntry[]> {
+	const createTimeEntries = (any : any): TimeEntry[] => {
+		return any.data.map((element: any) => {
+			return new TimeEntry(
+				element.id,
+				element.startTime,
+				element.endTime,
+				element.project,
+				element.name,
+				element.earnedCoins
+			);
+		});
+	}
 
+	return new Promise<TimeEntry[]>((resolve, reject) => {	
+		axios({
+			method: 'get',
+			url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry`
+		})
+		.then((response) => {
+			resolve(createTimeEntries(response));
+		}, (error) => {
+			reject(error);
+		})
+	})
 }
 
-export function postTimeEntryStart(): void {
-
+export function postTimeEntryStart(timeEntry : TimeEntry): void {
+	axios({
+		method: 'post',
+		url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/start`,
+		data: {
+			entryName: timeEntry.name,
+			projectId: timeEntry.projectId,
+			startTime: timeEntry.startTime,
+			endTime: timeEntry.endTime
+		}
+	})
+	.then((response) => {
+		console.log(response);
+	}, (error) => {
+		throw(error);
+	});
 }
 
-export function postTimeEntryStop(): void {
-
+export function postTimeEntryStop(endTimeNumber : number): void {
+	axios({
+		method: 'post',
+		url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/stop`,
+		data: {
+			endTime: endTimeNumber
+		}
+	})
+	.then((response) => {
+		console.log(response);
+	}, (error) => {
+		throw(error);
+	});
 }
 
 // Projects
 export async function postProject(project: Project) {
-
 	axios({
 		method: 'post',
 		url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/project`,
@@ -53,7 +100,6 @@ export async function postProject(project: Project) {
 
 export async function getProjects(): Promise<Project[]> {
 	const createProjects = (any: any): Project[] => {
-		console.log(any.data.projects);
 		return any.data.projects.map((element: any) => {
 			return new Project(element.id, element.hex, element.name);
 		});
@@ -64,10 +110,10 @@ export async function getProjects(): Promise<Project[]> {
 			method: 'get',
 			url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/project`
 		})
-			.then((response) => {
-				resolve(createProjects(response));
-			}, (error) => {
-				reject(error)
-			});
+		.then((response) => {
+			resolve(createProjects(response));
+		}, (error) => {
+			reject(error)
+		});
 	})
 }
