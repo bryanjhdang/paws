@@ -1,9 +1,32 @@
-import axios, { AxiosPromise, AxiosResponse } from "axios";
-import { Pet, Project, TimeEntry } from "./models";
+import axios from "axios";
+import { Pet, Project, TimeEntry, User } from "./models";
 
 // Account
-export function getAccount(): void {
+export function getAccount(accountId: string): Promise<User> {
+	const createUser = (any : any): User => {
+		return new User(
+			any.data.id,
+			any.data.displayName,
+			any.data.pet,
+			any.data.timeEntries,
+			any.data.currentTimerStart,
+			any.data.projects,
+			any.data.totalCoins,
+			any.data.currentTimeEntry
+		);
+	}
 
+	return new Promise<User>((resolve, reject) => {
+		axios({
+			method: 'get',
+			url: `${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}` 
+		})
+		.then((response) => {
+			resolve(createUser(response));
+		}, (error) => {
+			reject(error);
+		});
+	})
 }
 
 export function postAccountCreate(): void {
