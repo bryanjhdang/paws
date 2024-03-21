@@ -103,7 +103,7 @@ timeEntryController.post('/upload', (req: Request, res: Response) => {
 
 interface createProjectRequest {
     name : string,
-    hexColour : string, 
+    hex : string, 
 }
 interface createProjectResponse  {
     projectId: string;
@@ -111,7 +111,7 @@ interface createProjectResponse  {
 timeEntryController.post('/project', (req : Request, res: Response) => {
     let body : createProjectRequest = req.body;
 
-    let idPromise = timeEntryService.createProject(res.locals.user, body.name, body.hexColour);
+    let idPromise = timeEntryService.createProject(res.locals.user, body.name, body.hex);
     idPromise
     .then((id) => {
         let response : createProjectResponse = {

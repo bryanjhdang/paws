@@ -12,8 +12,15 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { IconPlayerStop } from "@tabler/icons-react";
+import { postTimeEntryStart, postTimeEntryStop } from "../../../classes/HTTPhelpers";
+import { Project, TimeEntry } from "../../../classes/models";
 
-export function Timer(): JSX.Element {
+interface TimerProps {
+  task: string,
+  selectedProject: Project | null;
+}
+
+export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
   /* ---------------------------------- State --------------------------------- */
   const [timerValue, setTimerValue] = useState<number>(0); // in seconds
   const [timerProgressTextValue, setTimerProgressTextValue] =
@@ -86,14 +93,13 @@ export function Timer(): JSX.Element {
         // if the timerValue > 0, that means that the timer is still running
         if (timerValue > 0) {
           setTimerValue(timerValue - 1); // decrement the timer value by 1
+          console.log("Time remaining: " + timerValue + " seconds");
           setTimerProgressTextValue(
-            convertSecondsToProgressTextValue(timerValue) // update the timer display text
+            convertSecondsToProgressTextValue(timerValue - 1) // update the timer display text
           );
           setTimerProgressWheelValue(
-            convertSecondsToProgressWheelValue(timerValue) // update the timer display wheel
+            convertSecondsToProgressWheelValue(timerValue - 1) // update the timer display wheel
           );
-
-          console.log("Time Remaining: " + timerValue + " seconds");
 
           // if the timer value is 0, that means that the timer has finished
           if (timerValue === 0) {
@@ -106,6 +112,12 @@ export function Timer(): JSX.Element {
           }
         } else {
           // this is an edge case where the timer value is 0, but the timer is still running
+          setTimerValue(0);
+          setTimerProgressTextValue(convertSecondsToProgressTextValue(0));
+          setTimerProgressWheelValue(convertSecondsToProgressWheelValue(0));
+
+          console.log("Timer finished with " + timerValue + " seconds");
+
           clearInterval(intervalReference.current!);
           intervalReference.current = null;
           setTimerRunning(false);
@@ -128,6 +140,10 @@ export function Timer(): JSX.Element {
   function handleTimerStopButton(): void {
     console.log("Timer Stopped");
 
+    // TODO: uncomment the line below me when we're ready to stop it
+    postTimeEntryStop(Date.now());
+    // console.log(Date.now());
+
     // just some extra safety checks to ensure that the timer is stopped
     clearInterval(intervalReference.current!);
     intervalReference.current = null;
@@ -138,6 +154,17 @@ export function Timer(): JSX.Element {
     setMountTimerInput(true);
   }
   function handleTimerStartButton(): void {
+    const newTimeEntry = new TimeEntry(
+      "NULL",
+      Date.now(),
+      Date.now() + (timerValue * 1000),
+      selectedProject?.id || "",
+      task,
+      -1
+    );
+
+    postTimeEntryStart(newTimeEntry);
+
     console.log(
       "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
     );
