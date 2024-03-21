@@ -18,7 +18,7 @@ export interface DatabaseHelper {
 
     // getTimeEntry(timeEntryId: string) : Promise<TimeEntry>;
 
-    // getTimeEntries(userId: string) : Promise<TimeEntry[]>;
+    getTimeEntries(userId: string) : Promise<TimeEntry[]>;
 
     // deleteTimeEnty(timeEntryId: string) : void;
 

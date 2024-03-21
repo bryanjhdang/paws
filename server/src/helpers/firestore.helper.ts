@@ -51,8 +51,8 @@ export class FirestoreHelper implements DatabaseHelper {
     return new TimeEntry(element.id, element.startTime, element.endTime, element.projectId, element.name, element.earnedCoins);
   }
 
-  private deserializeProject(projectId : string, project: any): Project {
-    return new Project(projectId, project.hex, project.name)
+  private deserializeProject(project: any): Project {
+    return new Project(project.id, project.hex, project.name)
   }
 
 
@@ -81,52 +81,75 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
   async addUser(user: User): Promise<string> {
-    const res = await this.userDB.add(user.makeSimple());
-    return res.id;
+    let document = this.userDB.doc();
+    user.id = document.id;
+    this.userDB.doc(user.id).set(user.makeSimple());
+    return user.id;
   }
 
-  createTimeEntry(userId : string, timeEntry: TimeEntry): Promise<TimeEntry> {
+  createTimeEntry(userId: string, timeEntry: TimeEntry): Promise<TimeEntry> {
     return new Promise<TimeEntry>((resolve, reject) => {
-      console.log(timeEntry.makeSimple(userId));
-      this.timeEntryDB.add(timeEntry.makeSimple(userId))
-      .then((res) => {
-        timeEntry.id = res.id;
-        resolve(timeEntry);
-      })
-      .catch(() => {
-        reject(Error("Unable to create time entry"));
-      })
+      let doc = this.timeEntryDB.doc();
+      timeEntry.id = doc.id;
+      this.timeEntryDB.doc(timeEntry.id).set(timeEntry.makeSimple(userId))
+        .then((res) => {
+          resolve(timeEntry);
+        })
+        .catch(() => {
+          reject(Error("Unable to create time entry"));
+        })
     });
   }
 
   createProject(userId: string, project: Project): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      this.projectDB.add(project.makeSimple(userId))
-      .then((res) => {
-        resolve(res.id);  
-      }).catch(() => {
-        reject(Error(`Unable to create project with name ${project.name}`));
-      });
+      let doc = this.projectDB.doc();
+      project.id = doc.id;
+      this.projectDB.doc(project.id).set(project.makeSimple(userId))
+        .then((res) => {
+          resolve(project.id);
+        }).catch(() => {
+          reject(Error(`Unable to create project with name ${project.name}`));
+        });
 
+    });
+  }
+
+  getTimeEntries(userId: string): Promise<TimeEntry[]> {
+    return new Promise<TimeEntry[]>((resolve, reject) => {
+      this.timeEntryDB.where('userId', "==", userId).get()
+        .then(snap => {
+          let result: TimeEntry[] = [];
+          snap.forEach(doc => {
+            if (doc) {
+              result.push(this.deserializeTimeEntry(doc.data()));
+            }
+          });
+
+          resolve(result);
+        })
+        .catch(() => {
+          reject(Error(`Unable to find time entries for user ${userId}`));
+        })
     });
   }
 
   getProjects(userId: string): Promise<Project[]> {
     return new Promise<Project[]>((resolve, reject) => {
       this.projectDB.where('userId', "==", userId).get()
-      .then(snap => {
-        let result : Project[] = [];
-        snap.forEach(doc => {
-          if (doc) {
-            result.push(this.deserializeProject(doc.id, doc.data()));
-          }
-        });
+        .then(snap => {
+          let result: Project[] = [];
+          snap.forEach(doc => {
+            if (doc) {
+              result.push(this.deserializeProject(doc.data()));
+            }
+          });
 
-        resolve(result);
-      })
-      .catch(() => {
-        reject(Error(`Unable to find projects for user ${userId}`));
-      })
+          resolve(result);
+        })
+        .catch(() => {
+          reject(Error(`Unable to find projects for user ${userId}`));
+        })
     })
   }
 
