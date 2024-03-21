@@ -5,6 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { petService } from "../services/pet.service";
 import { Project } from "../models/Project";
 import { BADQUERY } from "dns";
+import { time } from "console";
 
 const timeEntryController : Router = express.Router();
 
@@ -37,24 +38,26 @@ timeEntryController.get('/', (req : Request, res : Response) => {
 interface StartRequest {
     entryName : string,
     projectId: string,
-    startTime: number
+    startTime: number,
+    endTime: number
 }
 interface StartResponse {
     newEntryId: string
 }
 timeEntryController.post(`/start`, (req: Request, res: Response) => {
     let body : StartRequest = req.body;
-
-    let startResponse : StartResponse = {
-        newEntryId: timeEntryService.startEntry(res.locals.user, body.entryName, body.projectId, new Date(body.startTime))
+    try {
+        timeEntryService.startEntry(res.locals.user, body.entryName, body.projectId, body.startTime, body.endTime);
+        res.status(StatusCodes.CREATED)
+        .json({message: "Started time entry!"});
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({message: "Unable to start timer on user that is already running"});
     }
-    res.status(StatusCodes.CREATED)
-        .json(startResponse);
 });
 
 
 interface StopRequest {
-    entryId: string,
     endTime: number
 }
 interface StopResponse {
@@ -63,13 +66,22 @@ interface StopResponse {
 }
 timeEntryController.post('/stop', (req: Request, res: Response) => {
     let body : StopRequest = req.body;
-    
-    let stopResponse : StopResponse = {
-        createdEntry:  timeEntryService.stopEntry(res.locals.user, new Date(body.endTime)),
-        totalCoins: petService.getCoins(res.locals.user)
-    }
-    res.status(StatusCodes.CREATED)
-        .json(stopResponse)
+
+    timeEntryService.stopEntry(res.locals.user, body.endTime)
+    .then((timeEntry) => {
+        let response : StopResponse = {
+            createdEntry:  timeEntry,
+            totalCoins: res.locals.user.totalCoins
+        }
+
+ 
+        res.status(StatusCodes.CREATED)
+        .json(response);
+    })
+    .catch(() => {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({message: "Unable to stop timer"});
+    })
 });
 
 interface uploadRequest extends TimeEntry{

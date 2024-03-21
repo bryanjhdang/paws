@@ -17,7 +17,8 @@ export class TimeEntry {
             endTime: this.endTime,
             projectId: this.projectId,
             name: this.name,
-            earnedCoins: this.earnedCoins
+            earnedCoins: this.earnedCoins,
+            userId: userId
         }
     }
 }
