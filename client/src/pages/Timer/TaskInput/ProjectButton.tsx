@@ -1,8 +1,9 @@
 import { DEFAULT_THEME, Modal, Button, Menu, TextInput, ColorPicker, Text, Stack } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 import { IconFolderOpen, IconPlus, IconPointFilled } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Project } from "../../../classes/models";
+import { getProjects, postProject } from "../../../classes/HTTPhelpers";
 
 interface NewProjectModalProps {
   opened: boolean;
@@ -56,15 +57,19 @@ interface ProjectButtonProps {
 
 export function ProjectButton({ selectedProject, setSelectedProject }: ProjectButtonProps) {
   const [opened, { open, close }] = useDisclosure();
+  const [projects, setProjects] = useState<Project[]>([]);
 
-  // This should be retrieved from a GET request
-  const [projects, setProjects] = useState<Project[]>([
-    new Project("1", "#007bff", "CMPT 372"),
-    new Project("2", "#dc3545", "CMPT 410"),
-  ]);
+  useEffect(() => {
+    getProjects().then(
+      (response) => {
+        setProjects(response);
+      }
+    );
+  }, []);
 
   const handleAddProject = (project: Project) => {
     setProjects([...projects, project]);
+    postProject(project);
   };
 
   return (
@@ -89,18 +94,21 @@ export function ProjectButton({ selectedProject, setSelectedProject }: ProjectBu
           >
             <Text fz={"sm"}>No Project</Text>
           </Menu.Item>
-          
+
           <Menu.Divider />
           <Menu.Label>Projects</Menu.Label>
-          {projects.map(project => (
-            <Menu.Item
-              key={project.id}
-              onClick={() => setSelectedProject(project)}
-              leftSection={<IconPointFilled style={{ width: (14), height: (14), color: project.hex }} />}
-            >
-              <Text fz={"sm"} c={project.hex}>{project.name}</Text>
-            </Menu.Item>
-          ))}
+          {projects
+            .slice()
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map(project => (
+              <Menu.Item
+                key={project.id}
+                onClick={() => setSelectedProject(project)}
+                leftSection={<IconPointFilled style={{ width: (14), height: (14), color: project.hex }} />}
+              >
+                <Text fz={"sm"} c={project.hex}>{project.name}</Text>
+              </Menu.Item>
+            ))}
 
           <Menu.Divider />
           <Menu.Item

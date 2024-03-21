@@ -12,6 +12,8 @@ export class TimeEntryService {
     private accountService: AccountHelper) { };
 
   startEntry(user: User, description: string, projectId: string, startTime: Date): string {
+    let timeEntry = new TimeEntry()
+    
     return "id for the created time entry goes here"
   }
 
@@ -23,12 +25,13 @@ export class TimeEntryService {
     return [];
   }
 
-  getProjects(user: User) {
-    return [];
+  getProjects(user: User) : Promise<Project[]> {
+    return firestoreHelper.getProjects(user.id);
   }
 
-  createProject(user : User, name : string, hexColour : string) : Project {
-    return new Project;
+  createProject(user : User, name : string, hex : string) : Promise<string> {
+    let newProject = new Project("", hex, name);
+    return firestoreHelper.createProject(user.id, newProject);
   }
 }
 
