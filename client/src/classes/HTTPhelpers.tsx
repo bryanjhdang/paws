@@ -1,5 +1,5 @@
-import axios, { AxiosPromise, AxiosResponse } from "axios";
-import { Pet, Project, TimeEntry } from "./models";
+import axios from "axios";
+import { Project, TimeEntry } from "./models";
 
 // Account
 export function getAccount(): void {
