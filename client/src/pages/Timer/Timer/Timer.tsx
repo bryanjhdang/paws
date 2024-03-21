@@ -12,7 +12,7 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { IconPlayerStop } from "@tabler/icons-react";
-import { postTimeEntryStart, postTimeEntryStop } from "../../../classes/HTTPhelpers";
+import { getAccount, getProjects, postTimeEntryStart, postTimeEntryStop } from "../../../classes/HTTPhelpers";
 import { Project, TimeEntry } from "../../../classes/models";
 
 interface TimerProps {
@@ -77,6 +77,19 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
     return value;
   }
 
+  useEffect(() => {
+    getAccount("nemLmP1npemf5VSzAKRC").then(
+      (response) => {        
+        if (response.currentTimeEntry && Date.now() < response.currentTimeEntry.endTime) {
+          const timeRemaining = Math.floor((response.currentTimeEntry.endTime - Date.now())/1000);
+          setTimerValue(timeRemaining); 
+          setTimerRunning(true);
+          setMountTimerInput(false);
+        }
+      }
+    )
+  }, [])
+
   /* ------------------------- Timer Lifecycle Methods ------------------------ */
   const intervalReference = useRef<NodeJS.Timeout | null>(null);
   useEffect(() => {
@@ -140,9 +153,8 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
   function handleTimerStopButton(): void {
     console.log("Timer Stopped");
 
-    // TODO: uncomment the line below me when we're ready to stop it
+    // make a post request to stop the timer
     postTimeEntryStop(Date.now());
-    // console.log(Date.now());
 
     // just some extra safety checks to ensure that the timer is stopped
     clearInterval(intervalReference.current!);
@@ -162,7 +174,6 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
       task,
       -1
     );
-
     postTimeEntryStart(newTimeEntry);
 
     console.log(

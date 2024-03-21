@@ -4,13 +4,13 @@ import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
 import { TaskInput } from "./TaskInput/TaskInput";
 import { Timer } from "./Timer/Timer";
 import { Project, TimeEntry } from "../../classes/models";
-import { postTimeEntryStart } from "../../classes/HTTPhelpers";
+import { getAccount } from "../../classes/HTTPhelpers";
 
 function TimerPage() {
   const [task, setTask] = useState<string>("");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [active, setActive] = useState<string>("Timer");
-  
+
   return (
     <>
       <Flex direction={"row"}>
