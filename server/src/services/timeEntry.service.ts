@@ -48,7 +48,7 @@ export class TimeEntryService {
   }
 
   createProject(user : User, name : string, hex : string) : Promise<string> {
-    let newProject = new Project("", hex, name);
+    let newProject = new Project(hex, name);
     return firestoreHelper.createProject(user.id, newProject);
   }
 }

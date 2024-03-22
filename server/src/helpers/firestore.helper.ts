@@ -109,14 +109,19 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
   private deserializeRunningTime(element: any): RunningTime {
+    if (element.endTime) {
+      return new RunningCountdown(element.startTime, element.plannedEndTime, element.projectId, element.name);
+    }
+
+    if (element) {
+      return new RunningStopwatch(element.startTime, element.projectId, element.name);
+    }
+
     return new NoRunning();
   }
 
   private deserializeTimeEntry(element: any): TimeEntry {
-    let timeEntry = new TimeEntry(element.startTime, element.endTime, element.projectId, element.name);
-    timeEntry.id = element.id;
-    timeEntry.earnedCoins = element.earnedCoins;
-    return timeEntry;
+    return new TimeEntry(element.startTime, element.endTime, element.projectId, element.name, element.id, element.earnedCoins);
   }
 
   private deserializeProject(project: any): Project {
@@ -149,16 +154,14 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
   async addUser(user: User): Promise<string> {
-    let document = this.userDB.doc();
-    user.id = document.id;
+    user.id = this.userDB.doc().id;
     this.userDB.doc(user.id).set(this.serializeUser(user));
     return user.id;
   }
 
   createTimeEntry(userId: string, timeEntry: TimeEntry): Promise<TimeEntry> {
     return new Promise<TimeEntry>((resolve, reject) => {
-      let doc = this.timeEntryDB.doc();
-      timeEntry.id = doc.id;
+      timeEntry.id = this.timeEntryDB.doc().id;
       this.timeEntryDB.doc(timeEntry.id).set(this.serializeTimeEntry(userId, timeEntry))
         .then(() => {
           resolve(timeEntry);
@@ -171,8 +174,7 @@ export class FirestoreHelper implements DatabaseHelper {
 
   createProject(userId: string, project: Project): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      let doc = this.projectDB.doc();
-      project.id = doc.id;
+      project.id = this.projectDB.doc().id;
       this.projectDB.doc(project.id).set(this.serializeProject(userId, project))
         .then(() => {
           resolve(project.id);
