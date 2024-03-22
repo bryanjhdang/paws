@@ -5,8 +5,6 @@ import { TimeEntry } from "./TimeEntry";
 
 export interface RunningTime {
     createTimeEntry(endTime : number) : TimeEntry | boolean;
-
-    makeSimple() : any;
 }
 
 export class RunningStopwatch implements RunningTime {
@@ -19,14 +17,6 @@ export class RunningStopwatch implements RunningTime {
     createTimeEntry(endTime : number) : TimeEntry  {
         return new TimeEntry(this.startTime, endTime, this.projectId, this.name);
 
-    }
-
-    makeSimple() : any {
-        return {
-            startTime: this.startTime,
-            projectId: this.projectId,
-            name: this.name
-        }
     }
 }
 
@@ -41,24 +31,11 @@ export class RunningCountdown implements RunningTime {
     createTimeEntry(endTime : number) : TimeEntry  {
         return new TimeEntry(this.startTime, endTime, this.projectId, this.name);
     }
-
-    makeSimple() : any {
-        return {
-            startTime: this.startTime,
-            plannedEndTime: this.plannedEndTime,
-            projectId: this.projectId,
-            name: this.name
-        }
-    }
 }
 
 export class NoRunning implements RunningTime {
     createTimeEntry(endTime: number): boolean | TimeEntry {
         return false;
-    }
-
-    makeSimple() {
-        return deleteField();
     }
 }
 
@@ -71,16 +48,6 @@ export class User {
         public totalCoins: number = 0,
     ) { };
 
-    makeSimple() {
-        return {
-            id: this.id,
-            displayName: this.displayName,
-            pet: this.pet.makeSimple(),
-            runningTime: this.runningTime.makeSimple(),
-            totalCoins: this.totalCoins
-        } 
-    };
-
     stop(endTime : number) : TimeEntry | boolean {
         let result = this.runningTime.createTimeEntry(endTime);
         if (result instanceof TimeEntry) {
@@ -89,5 +56,4 @@ export class User {
         this.runningTime = new NoRunning();
         return result;
     }
-
 }   
