@@ -4,7 +4,7 @@ import { AccountHelper } from "../helpers/interface/account.helper";
 import { OAuthHelper, oAuthHelper } from "../helpers/oAuth.helper";
 import { TimeEntry } from "../models/TimeEntry";
 import { AccountService, accountService } from "./account.service";
-import { User } from "../models/User";
+import { RunningCountdown, User } from "../models/User";
 import { Project } from "../models/Project";
 import { resolve } from "path";
 import { rejects } from "assert";
@@ -14,32 +14,23 @@ export class TimeEntryService {
     private accountService: AccountHelper) { };
 
   startEntry(user: User, description: string, projectId: string, startTime: number, endTime : number) {
-    if (user.currentTimeEntry.earnedCoins != -1) {
-      throw Error("Unable to start an entry when user already has entry running");
+    let result = user.stop(startTime);
+    if (result instanceof TimeEntry) {
+      firestoreHelper.createTimeEntry(user.id, result);
     }
-    user.currentTimeEntry = new TimeEntry('', startTime, endTime, projectId, description, 0);
-    console.log("Updating user" + user);
+
+    user.runningTime = new RunningCountdown(startTime, endTime, projectId, description);
     firestoreHelper.updateUser(user);
   }
 
   stopEntry(user : User, endTime: number): Promise<TimeEntry> {
     return new Promise<TimeEntry>((resolve, reject) => {
-      if (user.currentTimeEntry.earnedCoins != -1) {
-        let newTimeEntry = new TimeEntry('', 
-            user.currentTimeEntry.startTime, 
-            endTime, 
-            user.currentTimeEntry.projectId,
-            user.currentTimeEntry.name, 0);
-        newTimeEntry.earnedCoins = (newTimeEntry.endTime - newTimeEntry.startTime) % 1000;
-
-        user.currentTimeEntry = new TimeEntry();
-        user.currentTimeEntry.earnedCoins = -1; // todo: think about how to do this better in the future
-        user.totalCoins += newTimeEntry.earnedCoins;
-
+      let result = user.stop(endTime);
+      if (result instanceof TimeEntry) {
         firestoreHelper.updateUser(user);
-        firestoreHelper.createTimeEntry(user.id, newTimeEntry).then((timeEntry) => {
+        firestoreHelper.createTimeEntry(user.id, result).then((timeEntry) => {
           resolve(timeEntry);
-        });
+      });
       } else {
         console.log("User currently has no running time entry");
         reject(new Error("User currently has no running time entry"));
