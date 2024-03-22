@@ -16,7 +16,6 @@ export class RunningStopwatch implements RunningTime {
 
     createTimeEntry(endTime : number) : TimeEntry  {
         return new TimeEntry(this.startTime, endTime, this.projectId, this.name);
-
     }
 }
 
@@ -40,12 +39,12 @@ export class NoRunning implements RunningTime {
 }
 
 export class User {
-    public id: string = '';
     constructor(
         public displayName: string = '',
         public pet: Pet = new Pet(),
         public runningTime: RunningTime = new NoRunning(),
         public totalCoins: number = 0,
+        public id: string = ''
     ) { };
 
     stop(endTime : number) : TimeEntry | boolean {

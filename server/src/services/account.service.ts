@@ -19,7 +19,7 @@ export class AccountService {
   }
 
   createUser(username: string, name: string): Promise<string> {
-    let user = new User('', name, new Pet(), undefined, 0);
+    let user = new User(name, new Pet());
     return firestoreHelper.addUser(user);
   }
 }
