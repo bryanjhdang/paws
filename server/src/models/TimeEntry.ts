@@ -10,16 +10,4 @@ export class TimeEntry {
         public projectId: string = '',
         public name: string = '',
     ) { };
-
-    makeSimple(userId : string) {
-        return {
-            id: this.id,
-            startTime: this.startTime,
-            endTime: this.endTime,
-            projectId: this.projectId,
-            name: this.name,
-            earnedCoins: this.earnedCoins,
-            userId: userId
-        }
-    }
 }
