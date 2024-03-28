@@ -100,16 +100,19 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
   private deserializeUser(userId: string, data: admin.firestore.DocumentData): User {
+    console.log(data);
     return new User(
       data!.displayName,
       new Pet(data!.pet.id, data!.pet.name, data!.pet.imageUrl),
-      data?.currentTimeEntry ? this.deserializeRunningTime(data.currentTimeEntry) : new NoRunning(),
-      data!.totalCoins
+      data?.runningTime ? this.deserializeRunningTime(data.runningTime) : new NoRunning(),
+      data!.totalCoins,
+      userId
     );
   }
 
   private deserializeRunningTime(element: any): RunningTime {
-    if (element.endTime) {
+    console.log(element);
+    if (element.plannedEndTime) {
       return new RunningCountdown(element.startTime, element.plannedEndTime, element.projectId, element.name);
     }
 
@@ -144,6 +147,7 @@ export class FirestoreHelper implements DatabaseHelper {
         }
       })
         .catch(err => {
+          console.log(err);
           reject(Error(`Unable to find user with id ${userId}`));
         })
     })

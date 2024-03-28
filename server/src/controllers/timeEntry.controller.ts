@@ -58,8 +58,9 @@ timeEntryController.post(`/start`, (req: Request, res: Response) => {
         res.status(StatusCodes.CREATED)
         .json({message: "Started time entry!"});
     } catch (error) {
+        console.log(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({message: "Unable to start timer on user that is already running"});
+        .json({message: "unable to stop already running timer"});
     }
 });
 
@@ -85,7 +86,8 @@ timeEntryController.post('/stop', (req: Request, res: Response) => {
         res.status(StatusCodes.CREATED)
         .json(response);
     })
-    .catch(() => {
+    .catch((error) => {
+        console.log(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({message: "Unable to stop timer"});
     })

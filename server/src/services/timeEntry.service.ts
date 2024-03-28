@@ -20,11 +20,13 @@ export class TimeEntryService {
     }
 
     user.runningTime = new RunningCountdown(startTime, endTime, projectId, description);
+    console.log(user);
     firestoreHelper.updateUser(user);
   }
 
   stopEntry(user : User, endTime: number): Promise<TimeEntry> {
     return new Promise<TimeEntry>((resolve, reject) => {
+      console.log(user);
       let result = user.stop(endTime);
       if (result instanceof TimeEntry) {
         firestoreHelper.updateUser(user);
