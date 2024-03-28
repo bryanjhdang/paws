@@ -1,9 +1,9 @@
 .root {
   display: flex;
   background-image: linear-gradient(
-    -60deg,
-    var(--mantine-color-blue-4) 0%,
-    var(--mantine-color-blue-7) 100%
+    0deg,
+    rgba(255, 157, 71, 1) 0%,
+    rgba(255, 202, 55, 1) 100%
   );
   padding: calc(var(--mantine-spacing-xl) * 1.5);
   border-radius: var(--mantine-radius-md);
@@ -43,7 +43,8 @@
   & + & {
     padding-left: var(--mantine-spacing-xl);
     margin-left: var(--mantine-spacing-xl);
-    border-left: rem(1px) solid var(--mantine-color-blue-3);
+    /* border-left: rem(1px) solid var(--mantine-color-blue-3); */
+    border-left: rem(1px) solid rgb(255, 119, 0);
 
     @media (max-width: var(--mantine-breakpoint-sm)) {
       padding-left: 0;
