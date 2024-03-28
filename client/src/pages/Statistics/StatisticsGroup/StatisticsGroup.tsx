@@ -26,6 +26,7 @@ export function StatisticsGroup({ timeEntries }: { timeEntries: any[] }) {
   /* ---------------------------------- State --------------------------------- */
   const [totalTimeStudied, setTotalTimeStudied] = useState("");
   const [mostStudiedProject, setMostStudiedProject] = useState("");
+  const [mostStudiedProjectTime, setMostStudiedProjectTime] = useState(0);
   const [totalCoinsEarned, setTotalCoinsEarned] = useState(0);
 
   /* ---------------------------- Lifecycle Methods --------------------------- */
@@ -34,7 +35,7 @@ export function StatisticsGroup({ timeEntries }: { timeEntries: any[] }) {
   }, [timeEntries]);
 
   /* ---------------------------- Helper Functions ---------------------------- */
-  function convertSecondsToHoursMinutes(seconds: number): string {
+  function convertMillisecondsToHoursMinutes(seconds: number): string {
     let hours = Math.floor(seconds / 3600);
     let minutes = Math.floor((seconds % 3600) / 60);
 
@@ -55,7 +56,6 @@ export function StatisticsGroup({ timeEntries }: { timeEntries: any[] }) {
       let coinsEarned = entry.earnedCoins;
 
       totalTimeStudied += timeStudied;
-      console.log(totalTimeStudied);
       totalCoinsEarned += coinsEarned;
 
       if (projectStudiedMap.has(projectName)) {
@@ -76,8 +76,9 @@ export function StatisticsGroup({ timeEntries }: { timeEntries: any[] }) {
       }
     });
 
-    setTotalTimeStudied(convertSecondsToHoursMinutes(totalTimeStudied));
+    setTotalTimeStudied(convertMillisecondsToHoursMinutes(totalTimeStudied));
     setMostStudiedProject(mostStudiedProject);
+    setMostStudiedProjectTime(maxTimeStudied);
     setTotalCoinsEarned(totalCoinsEarned);
   }
 
@@ -91,7 +92,7 @@ export function StatisticsGroup({ timeEntries }: { timeEntries: any[] }) {
     {
       title: "Most Studied Project",
       stats: mostStudiedProject == "" ? "Nothing..." : mostStudiedProject,
-      description: `You've been spending a lot of time on ${mostStudiedProject}!\nIs it your favorite?`,
+      description: `You've spent ${convertMillisecondsToHoursMinutes(mostStudiedProjectTime)} on ${mostStudiedProject}!\nIs it your favorite?`,
     },
     {
       title: "Total Coins Earned",
@@ -111,7 +112,9 @@ export function StatisticsGroup({ timeEntries }: { timeEntries: any[] }) {
   /* ------------------------------- Components ------------------------------- */
   return (
     <>
+    <Flex maw={"75em"}>
       <div className={classes.root}>{stats}</div>
+    </Flex>
     </>
   );
 }
