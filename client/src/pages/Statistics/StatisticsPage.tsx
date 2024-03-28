@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { Flex, Divider } from "@mantine/core";
+import { Flex, Divider, Space } from "@mantine/core";
 
 import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
 import { TimeEntry } from "../../classes/models";
 import { getTimeEntry } from "../../classes/HTTPhelpers";
 
-import { StatisticsGroup } from "./StatisticsGroup/StatisticsGroup";
 import { Header } from "./Header/Header";
+import { StatisticsGroup } from "./StatisticsGroup/StatisticsGroup";
+import { CardGroup } from "./CardGroup/CardGroup";
+import { StatisticsGraph } from "./StatisticsGraph.tsx/StatisticsGraph";
 
 function StatisticsPage() {
   const [active, setActive] = useState("Statistics");
@@ -19,15 +21,31 @@ function StatisticsPage() {
   }, []);
 
   return (
-    <Flex direction={"row"}>
+    <Flex direction={"row"} justify={"flex-start"}>
       <NavbarSimple active={active} setActive={setActive} />
 
-      <Flex direction={"column"} flex={1} p={"md"}>
+      <Flex
+        direction={"column"}
+        justify={"flex-start"}
+        align={"center"}
+        w={"100%"}
+        flex={1}
+        p={"md"}
+        miw={"48em"}
+      >
         <Header />
 
         <Divider my={"lg"} />
 
         <StatisticsGroup timeEntries={timeEntries} />
+
+        <Space h={"xl"} />
+
+        <CardGroup timeEntries={timeEntries} />
+
+        <Space h={"xl"} />
+
+        <StatisticsGraph />
       </Flex>
     </Flex>
   );
