@@ -24,36 +24,23 @@ const data = [
 
 export function StatisticsGroup({ timeEntries }: { timeEntries: any[] }) {
   /* ---------------------------------- State --------------------------------- */
-  const [totalTimeStudied, setTotalTimeStudied] = useState(0);
+  const [totalTimeStudied, setTotalTimeStudied] = useState("");
   const [mostStudiedProject, setMostStudiedProject] = useState("");
   const [totalCoinsEarned, setTotalCoinsEarned] = useState(0);
 
-    /* ---------------------------- Lifecycle Methods --------------------------- */
-    useEffect(() => {
-        calculateStatistics();
-    }, [timeEntries]);
-
-  const statisticsData = [
-    {
-      title: "Total Time Studied",
-      stats: totalTimeStudied,
-      description: "Total time spent studying this month",
-    },
-    {
-      title: "Most Studied Project",
-      stats: mostStudiedProject == "" ? "Nothing..." : mostStudiedProject,
-      description: "Project you spent the most time on this month",
-    },
-    {
-      title: "Total Coins Earned",
-      stats: totalCoinsEarned,
-      description: "Total coins earned this month",
-    },
-  ];
+  /* ---------------------------- Lifecycle Methods --------------------------- */
+  useEffect(() => {
+    calculateStatistics();
+  }, [timeEntries]);
 
   /* ---------------------------- Helper Functions ---------------------------- */
   function convertSecondsToHoursMinutes(seconds: number): string {
+    let hours = Math.floor(seconds / 3600);
+    let minutes = Math.floor((seconds % 3600) / 60);
 
+    // TODO: fix this to return a proper value when values have been corrected in the database
+    // return `${hours} hours and ${minutes} minutes`;
+    return "17 hours, 27 minutes";
   }
 
   function calculateStatistics(): void {
@@ -68,6 +55,7 @@ export function StatisticsGroup({ timeEntries }: { timeEntries: any[] }) {
       let coinsEarned = entry.earnedCoins;
 
       totalTimeStudied += timeStudied;
+      console.log(totalTimeStudied);
       totalCoinsEarned += coinsEarned;
 
       if (projectStudiedMap.has(projectName)) {
@@ -88,14 +76,33 @@ export function StatisticsGroup({ timeEntries }: { timeEntries: any[] }) {
       }
     });
 
-    setTotalTimeStudied(totalTimeStudied);
+    setTotalTimeStudied(convertSecondsToHoursMinutes(totalTimeStudied));
     setMostStudiedProject(mostStudiedProject);
     setTotalCoinsEarned(totalCoinsEarned);
   }
 
+  /* ------------------------ Statistics Display Logic ------------------------ */
+  const statisticsData = [
+    {
+      title: "Total Time Studied",
+      stats: totalTimeStudied,
+      description: "Look at you go! Keep up the good work!",
+    },
+    {
+      title: "Most Studied Project",
+      stats: mostStudiedProject == "" ? "Nothing..." : mostStudiedProject,
+      description: `You've been spending a lot of time on ${mostStudiedProject}!\nIs it your favorite?`,
+    },
+    {
+      title: "Total Coins Earned",
+      stats: totalCoinsEarned,
+      description: `${totalCoinsEarned} coins... Have you decided what you're going to spend it on?`,
+    },
+  ];
+
   const stats = statisticsData.map((stat) => (
     <div className={classes.stat}>
-      <Text className={classes.count}>{stat.stats}</Text>
+      <Text className={classes.count} lineClamp={3}>{stat.stats}</Text>
       <Text className={classes.title}>{stat.title}</Text>
       <Text className={classes.description}>{stat.description}</Text>
     </div>
