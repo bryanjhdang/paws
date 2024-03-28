@@ -111,7 +111,6 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
   private deserializeRunningTime(element: any): RunningTime {
-    console.log(element);
     if (element.plannedEndTime) {
       return new RunningCountdown(element.startTime, element.plannedEndTime, element.projectId, element.name);
     }
@@ -146,9 +145,9 @@ export class FirestoreHelper implements DatabaseHelper {
           reject(Error(`Unable to find data for user with id ${userId}`));
         }
       })
-        .catch(err => {
+        .catch((err : Error) => {
           console.log(err);
-          reject(Error(`Unable to find user with id ${userId}`));
+          reject(err);
         })
     })
   }
@@ -170,8 +169,9 @@ export class FirestoreHelper implements DatabaseHelper {
         .then(() => {
           resolve(timeEntry);
         })
-        .catch(() => {
-          reject(Error("Unable to create time entry"));
+        .catch((err : Error) => {
+          console.log(err);
+          reject(err);
         })
     });
   }
@@ -182,10 +182,11 @@ export class FirestoreHelper implements DatabaseHelper {
       this.projectDB.doc(project.id).set(this.serializeProject(userId, project))
         .then(() => {
           resolve(project.id);
-        }).catch(() => {
-          reject(Error(`Unable to create project with name ${project.name}`));
-        });
-
+        })
+        .catch((err : Error) => {
+          console.log(err);
+          reject(err);
+        })
     });
   }
 
@@ -202,8 +203,9 @@ export class FirestoreHelper implements DatabaseHelper {
 
           resolve(result);
         })
-        .catch(() => {
-          reject(Error(`Unable to find time entries for user ${userId}`));
+        .catch((err : Error) => {
+          console.log(err);
+          reject(err);
         })
     });
   }
@@ -221,8 +223,9 @@ export class FirestoreHelper implements DatabaseHelper {
 
           resolve(result);
         })
-        .catch(() => {
-          reject(Error(`Unable to find projects for user ${userId}`));
+        .catch((err : Error) => {
+          console.log(err);
+          reject(err);
         })
     })
   }

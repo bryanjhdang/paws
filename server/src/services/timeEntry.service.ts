@@ -3,11 +3,8 @@ import { DatabaseHelper } from "../helpers/interface/database.helper";
 import { AccountHelper } from "../helpers/interface/account.helper";
 import { OAuthHelper, oAuthHelper } from "../helpers/oAuth.helper";
 import { TimeEntry } from "../models/TimeEntry";
-import { AccountService, accountService } from "./account.service";
 import { RunningCountdown, User } from "../models/User";
 import { Project } from "../models/Project";
-import { resolve } from "path";
-import { rejects } from "assert";
 
 export class TimeEntryService {
   constructor(private db: DatabaseHelper,
@@ -20,7 +17,6 @@ export class TimeEntryService {
     }
 
     user.runningTime = new RunningCountdown(startTime, endTime, projectId, description);
-    console.log(user);
     firestoreHelper.updateUser(user);
   }
 
@@ -29,15 +25,17 @@ export class TimeEntryService {
       console.log(user);
       let result = user.stop(endTime);
       if (result instanceof TimeEntry) {
-        firestoreHelper.updateUser(user);
-        firestoreHelper.createTimeEntry(user.id, result).then((timeEntry) => {
-          resolve(timeEntry);
-      });
+        try {
+          firestoreHelper.updateUser(user);
+          firestoreHelper.createTimeEntry(user.id, result).then((timeEntry) => {
+            resolve(timeEntry);});
+        } catch(err) {
+          reject(err);
+        }
       } else {
         console.log("User currently has no running time entry");
         reject(new Error("User currently has no running time entry"));
       }
-  
     });
   }
 
