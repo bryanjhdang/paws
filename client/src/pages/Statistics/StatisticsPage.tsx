@@ -31,11 +31,11 @@ function StatisticsPage() {
         w={"100%"}
         flex={1}
         p={"md"}
-        miw={"48em"}
+        miw={"48em"} // can be set to 86em to prevent horizontal squishing 
       >
         <Header />
 
-        <Divider my={"lg"} />
+        <Space h={"xl"} />
 
         <StatisticsGroup timeEntries={timeEntries} />
 

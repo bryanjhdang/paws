@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Flex, Group, Title } from "@mantine/core";
 import { DatePickerInput, MonthPicker } from "@mantine/dates";
 import "@mantine/dates/styles.css";
@@ -6,27 +6,37 @@ import "@mantine/dates/styles.css";
 import { DistributionCard } from "./DistributionCard";
 
 export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
-    /* ---------------------------------- State --------------------------------- */
-    const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
+  /* ---------------------------------- State --------------------------------- */
+  // by default the date range will be set to the 1st to the last day of the current month
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
+    null,
+    null,
+  ]);
+  useEffect(() => {
+    const today = new Date();
+    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+    const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    setDateRange([firstDay, lastDay]);
+  }, []);
 
-    /* ---------------------------- Helper Functions ---------------------------- */
+  /* ---------------------------- Helper Functions ---------------------------- */
 
-    /* ------------------------------- Components ------------------------------- */
+  /* ------------------------------- Components ------------------------------- */
 
-    function dateRangePicker() {
-        return (
-            <>
-                <DatePickerInput
-                    type="range"
-                    label="View distribution for chosen date range:"
-                    placeholder="Choose date range"
-                    value={dateRange}
-                    onChange={setDateRange}
-                    maw={"20em"}
-                />
-            </>
-        );
-    }
+  function dateRangePicker() {
+    return (
+      <>
+        <DatePickerInput
+          type="range"
+          label="View distribution for chosen date range:"
+          placeholder="Choose date range"
+          value={dateRange}
+          onChange={setDateRange}
+          maw={"20em"}
+        />
+      </>
+    );
+  }
 
   return (
     <>
