@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Flex, Divider, Space } from "@mantine/core";
+import { Flex, Space } from "@mantine/core";
 
 import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
 import { TimeEntry } from "../../classes/models";
@@ -8,7 +8,7 @@ import { getTimeEntry } from "../../classes/HTTPhelpers";
 import { Header } from "./Header/Header";
 import { StatisticsGroup } from "./StatisticsGroup/StatisticsGroup";
 import { CardGroup } from "./CardGroup/CardGroup";
-import { StatisticsGraph } from "./StatisticsGraph.tsx/StatisticsGraph";
+import { StatisticsGraph } from "./StatisticsGraph/StatisticsGraph";
 
 function StatisticsPage() {
   const [active, setActive] = useState("Statistics");
@@ -45,7 +45,7 @@ function StatisticsPage() {
 
         <Space h={"xl"} />
 
-        <StatisticsGraph />
+        {/* <StatisticsGraph /> */}
       </Flex>
     </Flex>
   );

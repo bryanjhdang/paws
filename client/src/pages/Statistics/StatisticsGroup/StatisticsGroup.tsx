@@ -2,26 +2,6 @@ import { useState, useEffect } from "react";
 import { Text, Flex } from "@mantine/core";
 import classes from "./styles/StatsGroup.module.css";
 
-const data = [
-  {
-    title: "Page views",
-    stats: "456,133",
-    description:
-      "24% more than in the same month last year, 33% more that two years ago",
-  },
-  {
-    title: "New users",
-    stats: "2,175",
-    description:
-      "13% less compared to last month, new user engagement up by 6%",
-  },
-  {
-    title: "Completed orders",
-    stats: "1,994",
-    description: "1994 orders were completed this month, 97% satisfaction rate",
-  },
-];
-
 export function StatisticsGroup({ timeEntries }: { timeEntries: any[] }) {
   /* ---------------------------------- State --------------------------------- */
   const [totalTimeStudied, setTotalTimeStudied] = useState("");
@@ -35,13 +15,12 @@ export function StatisticsGroup({ timeEntries }: { timeEntries: any[] }) {
   }, [timeEntries]);
 
   /* ---------------------------- Helper Functions ---------------------------- */
-  function convertMillisecondsToHoursMinutes(seconds: number): string {
-    let hours = Math.floor(seconds / 3600);
-    let minutes = Math.floor((seconds % 3600) / 60);
+  function convertMillisecondsToHoursMinutes(milliseconds: number): string {
+    const hours = Math.floor(milliseconds / 3600000);
+    const minutes = Math.floor((milliseconds % 3600000) / 60000);
 
     // TODO: fix this to return a proper value when values have been corrected in the database
-    // return `${hours} hours and ${minutes} minutes`;
-    return "17 hours, 27 minutes";
+    return `${hours} hours and ${minutes} minutes`;
   }
 
   function calculateStatistics(): void {
@@ -74,7 +53,10 @@ export function StatisticsGroup({ timeEntries }: { timeEntries: any[] }) {
         maxTimeStudied = timeStudied;
         mostStudiedProject = projectName;
       }
+      //console.log(projectName, timeStudied);
     });
+
+    //console.log(maxTimeStudied, mostStudiedProject);
 
     setTotalTimeStudied(convertMillisecondsToHoursMinutes(totalTimeStudied));
     setMostStudiedProject(mostStudiedProject);
