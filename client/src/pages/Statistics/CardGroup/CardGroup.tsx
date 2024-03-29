@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Flex, Group, Title } from "@mantine/core";
-import { DatePickerInput, MonthPicker } from "@mantine/dates";
+import { DatePickerInput } from "@mantine/dates";
 import "@mantine/dates/styles.css";
 
 import { DistributionCard } from "./DistributionCard";
+import { filter } from "echarts/types/src/export/api/util.js";
 
 export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
   /* ---------------------------------- State --------------------------------- */
@@ -12,18 +13,127 @@ export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
     null,
     null,
   ]);
+
+  const [dateFilteredTimeEntries, setDateFilteredTimeEntries] = useState<any[]>(
+    []
+  );
+
+  const [projectDistributions, setProjectDistributions] = useState<
+    Map<string, number>
+  >(new Map());
+  const [timerAverage, setTimerAverage] = useState<Map<string, number>>(new Map());
+
+  /* ---------------------------- Lifecycle Methods --------------------------- */
+  // set the default date when components are rendered
   useEffect(() => {
     const today = new Date();
     const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
     const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
     setDateRange([firstDay, lastDay]);
+
+    filterByDateRange(timeEntries);
   }, []);
 
+  // since the timeEntries are retrieved from the database, each time the timeEntries change, update the project distributions
+  // because it might take some time for timeEntries to have proper data in it
+  useEffect(() => {
+    filterUpdated();
+  }, [timeEntries, dateRange]);
+
   /* ---------------------------- Helper Functions ---------------------------- */
+  function filterByDateRange(timeEntries: any[]): void {
+    let filteredTimeEntries: any = [];
+
+    timeEntries.forEach((entry) => {
+      let entryDate = new Date(entry.startTime);
+      if (
+        dateRange[0] &&
+        dateRange[1] &&
+        entryDate >= dateRange[0] &&
+        entryDate <= dateRange[1]
+      ) {
+        filteredTimeEntries.push(entry);
+      }
+    });
+
+    // if no time entries are found, return the original time entries
+    setDateFilteredTimeEntries(
+      filteredTimeEntries.length ? filteredTimeEntries : timeEntries
+    );
+
+    console.log(filteredTimeEntries);
+  }
+
+  function filterProjectDistributions(): void {
+    // take the filtered time entries and calculate the time spent on each project
+    // store the values in a hashmap in a key-value pair
+    // the key is the project name and the value is the time spent on that project
+    let projects: Map<string, number> = new Map();
+    dateFilteredTimeEntries.forEach((entry) => {
+      let projectName = entry.name;
+      let timeStudied = entry.endTime - entry.startTime;
+
+      if (projects.has(projectName)) {
+        projects.set(
+          projectName,
+          (projects.get(projectName) ?? 0) + timeStudied
+        );
+      } else {
+        projects.set(projectName, timeStudied);
+      }
+    });
+
+    // since a pie chart is limited, only show the top 3 projects
+    // the rest of the projects will be grouped into an "Other" category
+
+    // first sort the projects by time spent
+    let sortedProjects = new Map(
+      [...projects.entries()].sort((a, b) => b[1] - a[1])
+    );
+
+    let topProjects = new Map([...sortedProjects.entries()].slice(0, 3));
+    let otherProjects = new Map([...sortedProjects.entries()].slice(3));
+
+    let otherProjectsTime = 0;
+    otherProjects.forEach((time) => {
+      otherProjectsTime += time;
+    });
+
+    topProjects.set("Other", otherProjectsTime);
+
+    setProjectDistributions(topProjects);
+  }
+
+  function filtertimerAverage(): void {
+    let totalTimeStudied: number = 0;
+    dateFilteredTimeEntries.forEach((entry) => {
+        let timeStudied = entry.endTime - entry.startTime;
+        totalTimeStudied += timeStudied;
+    });
+    let averageTimeStudied = totalTimeStudied / dateFilteredTimeEntries.length;
+
+    let timerAverage: Map<string, number> = new Map();
+    timerAverage.set("Studying", averageTimeStudied);
+    timerAverage.set("Not studying", 24 * 60 * 60 - averageTimeStudied);
+
+    setTimerAverage(timerAverage);
+  }
+
+  function filterUpdated(): void {
+    filterByDateRange(timeEntries);
+    filterProjectDistributions();
+    filtertimerAverage();
+  }
+
+  /* ----------------------------- Event handlers ----------------------------- */
+  function onDateRangeChange(range: [Date | null, Date | null]): void {
+    setDateRange(range);
+    filterUpdated();
+  }
 
   /* ------------------------------- Components ------------------------------- */
 
-  function dateRangePicker() {
+  function dateRangePicker(): JSX.Element {
     return (
       <>
         <DatePickerInput
@@ -31,7 +141,9 @@ export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
           label="View distribution for chosen date range:"
           placeholder="Choose date range"
           value={dateRange}
-          onChange={setDateRange}
+          onChange={onDateRangeChange}
+          firstDayOfWeek={0}
+          maxDate={new Date()}
           maw={"20em"}
         />
       </>
@@ -48,30 +160,28 @@ export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
         <Group justify="center" grow pt={10}>
           <DistributionCard
             title={"Project Distribution"}
-            subtitle={"Time spent on different projects"}
             description={
-              "This card shows the distribution of time spent on different activities with a pie chart"
+              "This is how you've been spending your time on different projects."
             }
-            timeEntries={timeEntries}
+            timeEntries={projectDistributions}
           />
 
           <DistributionCard
-            title={"Daily Average"}
-            subtitle={"Time spent studying per day on average"}
+            title={"Timer Average"}
             description={
-              "This card shows the distribution of time a day on average with a pie chart"
+              "This is the average amount of time you set your timer for throughout the day."
             }
-            timeEntries={timeEntries}
+            timeEntries={timerAverage}
           />
 
-          <DistributionCard
+          {/* <DistributionCard
             title={"Distribution"}
             subtitle={"Time spent on different activities"}
             description={
               "This card shows the distribution of time spent on different activities."
             }
-            timeEntries={timeEntries}
-          />
+            timeEntries={projectDistributions}
+          /> */}
         </Group>
       </Flex>
     </>

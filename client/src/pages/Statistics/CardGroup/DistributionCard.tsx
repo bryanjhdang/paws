@@ -1,8 +1,28 @@
-import { Card } from "@mantine/core";
+import { useState, useEffect } from "react";
 
+import { Card } from "@mantine/core";
 import ReactECharts from "echarts-for-react";
 
-export function DistributionCard(props: any) {
+export function DistributionCard(props: any): JSX.Element {
+  /* ---------------------------------- State --------------------------------- */
+  const [chartData, setChartData] = useState<any[]>([]);
+
+  /* ---------------------------- Lifecycle Methods --------------------------- */
+  useEffect(() => {
+    mapData(props.timeEntries);
+  }, [props.timeEntries]);
+
+  /* ---------------------------- Helper functions ---------------------------- */
+  function mapData(data: Map<string, number>) {
+    let result: any[] = [];
+    data.forEach((value, key) => {
+      result.push({ value: value, name: key });
+    });
+    setChartData(result);
+  }
+
+  /* ------------------------------- Components ------------------------------- */
+
   const chart = {
     tooltip: {
       trigger: "item",
@@ -13,7 +33,6 @@ export function DistributionCard(props: any) {
     },
     series: [
       {
-        name: "Access From",
         type: "pie",
         radius: ["40%", "70%"],
         avoidLabelOverlap: false,
@@ -35,13 +54,10 @@ export function DistributionCard(props: any) {
         labelLine: {
           show: false,
         },
-        data: [
-          { value: 1048, name: "Search Engine" },
-          { value: 735, name: "Direct" },
-          { value: 580, name: "Email" },
-          { value: 484, name: "Union Ads" },
-          { value: 300, name: "Video Ads" },
-        ],
+        tooltip: {
+            show: false,
+        },
+        data: chartData,
       },
     ],
   };
@@ -54,6 +70,8 @@ export function DistributionCard(props: any) {
         bg={"rgba(241, 209, 121, 1)"}
         c={"black"}
         radius={"md"}
+        mih={"30em"}
+        mah={"32em"}
       >
         <h2>{props.title}</h2>
         <ReactECharts option={chart} />
