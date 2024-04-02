@@ -155,7 +155,7 @@ export class FirestoreHelper implements DatabaseHelper {
       "MATH 251",
     ];
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 100; i++) {
       // choose random project name
       let randomProjectName =
         projectNames[Math.floor(Math.random() * projectNames.length)];
