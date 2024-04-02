@@ -70,7 +70,7 @@ export function DistributionCard(props: any): JSX.Element {
         bg={"rgba(241, 209, 121, 1)"}
         c={"black"}
         radius={"md"}
-        mih={"30em"}
+        mih={"32em"}
         mah={"32em"}
       >
         <h2>{props.title}</h2>

@@ -92,14 +92,14 @@ export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
     );
 
     let topProjects = new Map([...sortedProjects.entries()].slice(0, 3));
-    let otherProjects = new Map([...sortedProjects.entries()].slice(3));
+    /* let otherProjects = new Map([...sortedProjects.entries()].slice(3));
 
     let otherProjectsTime = 0;
     otherProjects.forEach((time) => {
       otherProjectsTime += time;
-    });
+    }); */
 
-    topProjects.set("Other", otherProjectsTime);
+    //topProjects.set("Other", otherProjectsTime);
 
     setProjectDistributions(topProjects);
   }
@@ -161,7 +161,7 @@ export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
           <DistributionCard
             title={"Project Distribution"}
             description={
-              "This is how you've been spending your time on different projects."
+              "This chart shows you your top 3 projects."
             }
             timeEntries={projectDistributions}
           />
@@ -169,7 +169,7 @@ export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
           <DistributionCard
             title={"Timer Average"}
             description={
-              "This is the average amount of time you set your timer for throughout the day."
+              "This chart shows you how much you study in a day."
             }
             timeEntries={timerAverage}
           />
