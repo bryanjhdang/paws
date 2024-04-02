@@ -173,6 +173,8 @@ export class FirestoreHelper implements DatabaseHelper {
       // generate random earned coins between 0 to 100
       let earnedCoins = Math.floor(Math.random() * 100);
 
+      // generate a random 
+
       let doc = this.timeEntryDB.doc();
 
       let timeEntry = {
@@ -180,7 +182,7 @@ export class FirestoreHelper implements DatabaseHelper {
         endTime: endTime,
         id: doc.id,
         projectId: randomProjectName,
-        name: "randomly generated time entry",
+        name: randomProjectName,
         startTime: startTime,
         userId: "nemLmP1npemf5VSzAKRC",
       };
