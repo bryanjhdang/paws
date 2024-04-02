@@ -32,7 +32,7 @@ interface CreateRequest {
 interface CreateResponse {
     id: string;
 }
-accountController.post('/create', (req: Request, res: Response) => {
+accountController.post('/start', (req: Request, res: Response) => {
     let body: CreateRequest = req.body;
 
     accountService.createUser(body.email, body.name)

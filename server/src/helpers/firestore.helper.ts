@@ -100,7 +100,6 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
   private deserializeUser(userId: string, data: admin.firestore.DocumentData): User {
-    console.log(data);
     return new User(
       data!.displayName,
       new Pet(data!.pet.id, data!.pet.name, data!.pet.imageUrl),

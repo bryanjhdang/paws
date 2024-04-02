@@ -12,7 +12,7 @@ export function getAccount(accountId: string): Promise<User> {
 			any.data.currentTimerStart,
 			any.data.projects,
 			any.data.totalCoins,
-			any.data.currentTimeEntry
+			any.data.runningTime
 		);
 	}
 
