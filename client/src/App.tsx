@@ -13,6 +13,7 @@ import { PageLoader } from "./components/PageLoader/PageLoader";
 import { AuthenticationGuard } from "./utils/Auth0/AuthenticationGuard";
 import { CallbackPage } from "./pages/Callback/CallbackPage";
 import { NotFoundPage } from "./pages/NotFound/NotFoundPage";
+import GenerateStatisticsPage from "./pages/GenerateStatistics/GenerateStatisticsPage";
 
 export const App: React.FC = () => {
   const { isLoading } = useAuth0();
@@ -44,6 +45,10 @@ export const App: React.FC = () => {
       <Route
         path="/friends"
         element={<AuthenticationGuard component={FriendsPage} />}
+      />
+      <Route
+        path="/generate"
+        element={<AuthenticationGuard component={GenerateStatisticsPage} />}
       />
       <Route
         path="/profile"
