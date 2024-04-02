@@ -1,5 +1,5 @@
 import { Text, Group } from '@mantine/core';
-import { IconClock, IconPaw, IconChartBar, IconUsers, IconSettings, IconUser } from '@tabler/icons-react';
+import { IconClock, IconPaw, IconChartBar, IconUsers, IconSettings, IconUser, IconWindmill } from '@tabler/icons-react';
 import classes from './NavbarSimple.module.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,7 +12,8 @@ const data = [
   { link: '/timer', label: 'Timer', icon: IconClock },
   { link: '/pet', label: 'Pet', icon: IconPaw },
   { link: '/statistics', label: 'Statistics', icon: IconChartBar },
-  { link: '/friends', label: 'Friends', icon: IconUsers }
+  { link: '/friends', label: 'Friends', icon: IconUsers },
+  { link: '/generate' , label: 'Generate', icon: IconWindmill }
 ];
 
 const footerData = [
