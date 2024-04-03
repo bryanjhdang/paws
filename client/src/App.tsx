@@ -18,7 +18,7 @@ import axios from 'axios';
 
 export const App: React.FC = () => {
   const { isLoading, getAccessTokenSilently } = useAuth0();
-  const [accessToken, setAccessToken] = useState(""); // todo: init to null instead?
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAccessToken = async () => {
@@ -35,7 +35,7 @@ export const App: React.FC = () => {
 
   // set default headers for axios requests
   useEffect(() => {
-    if (accessToken !== "") {
+    if (accessToken) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     }
   }, [accessToken]);
