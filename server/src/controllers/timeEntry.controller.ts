@@ -9,7 +9,7 @@ import { petService } from "../services/pet.service";
 import { Project } from "../models/Project";
 import { BADQUERY } from "dns";
 import { time } from "console";
-
+import { auth } from "express-oauth2-jwt-bearer";
 import { validateAccessToken } from "../middlewares/auth0.middleware";
 
 const timeEntryController: Router = express.Router();
@@ -17,8 +17,13 @@ const timeEntryController: Router = express.Router();
 interface GetTimeEntryResponse {
   timeEntries: TimeEntry[];
 }
-timeEntryController.get("/", validateAccessToken, (req: Request, res: Response) => {
+timeEntryController.get("/", (req: Request, res: Response) => {
   try {
+
+    const auth = req.auth;
+    console.log(auth?.header);
+    console.log(auth?.payload.sub);
+
     var query = {
       name: req.query.name ? req.query.name.toString() : "",
       startTime: req.query.start

@@ -8,10 +8,11 @@ import { timeEntryController } from "./controllers/timeEntry.controller";
 import { accountController } from "./controllers/account.controller";
 import { authenticate } from "./middlewares/auth.middleware";
 
-// import {
-//   checkRequiredPermissions,
-//   validateAccessToken,
-// } from "./middlewares/auth0.middleware";
+import {
+  checkRequiredPermissions,
+  validateAccessToken,
+} from "./middlewares/auth0.middleware";
+import { auth } from "express-oauth2-jwt-bearer";
 
 dotenv.config();
 
@@ -29,9 +30,14 @@ app.get(`/`, (req : Request, res : Response) => {
 });
 
 app.use(authenticate);
+// app.use(auth({
+//   issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`,
+//   audience: process.env.AUTH0_AUDIENCE,
+// }));
 
 app.use('/account', accountController);
 
+app.use('/timeEntry', validateAccessToken);
 app.use('/timeEntry', timeEntryController);
 
 app.use('/pet', petController);
