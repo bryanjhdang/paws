@@ -3,39 +3,19 @@ import { Text, Flex } from "@mantine/core";
 import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
 import { TimeEntry } from "../../classes/models";
 import { getTimeEntry } from "../../classes/HTTPhelpers";
-import { useAuth0 } from "@auth0/auth0-react";
 
 function StatisticsPage() {
   const [active, setActive ] = useState('Statistics')
   const [timeEntries, setTimeEntries] = useState<TimeEntry[]>([]);
 
-  const { getAccessTokenSilently } = useAuth0();
-
   useEffect(() => {
-    let isMounted = true;
-
-    const getEntries = async () => {
-      const accessToken = await getAccessTokenSilently();
-    
-
-      getTimeEntry(accessToken).then(
-        (response) => {
-          setTimeEntries(response);
-        }
-      )
-
-      if (!isMounted) {
-        return;
+    getTimeEntry().then(
+      (response) => {
+        setTimeEntries(response);
       }
+    )
+  }, []);
 
-    };
-
-    getEntries();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [getAccessTokenSilently]);
 
   return (
     <Flex>
