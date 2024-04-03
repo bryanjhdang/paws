@@ -68,7 +68,7 @@ export function getCoins(): Promise<number> {
 }
 
 // TimeEntry
-export function getTimeEntry(accessToken: string): Promise<TimeEntry[]> {
+export function getTimeEntry(): Promise<TimeEntry[]> {
 	const createTimeEntries = (any : any): TimeEntry[] => {
 		return any.data.timeEntries.map((element: any) => {
 			return new TimeEntry(
@@ -86,10 +86,6 @@ export function getTimeEntry(accessToken: string): Promise<TimeEntry[]> {
 		axios({
 			method: 'get',
 			url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry`,
-			headers: {
-				"content-type": "application/json",
-				Authorization: `Bearer ${accessToken}`,
-			}
 		})
 		.then((response) => {
 			resolve(createTimeEntries(response));
