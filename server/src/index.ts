@@ -20,7 +20,6 @@ const app: Express = express();
 const port = process.env.PORT || 8080;
 const address = process.env.ADDRESS || "localhost"
 
-// const CLIENT_ORIGIN_URL = process.env.CLIENT_ORIGIN_URL;
 // todo: update cors init needed?
 app.use(cors());
 app.use(express.json());
