@@ -3,7 +3,7 @@ import { AccountHelper } from "../helpers/interface/account.helper";
 import { oAuthHelper } from "../helpers/oAuth.helper";
 
 
-
+// todo: edit this to provide global auth
 export function authenticate(req : Request, res : Response, next : NextFunction) {
     const accountHelper : AccountHelper  = oAuthHelper;
     accountHelper.getUser("nemLmP1npemf5VSzAKRC").then(user => {
