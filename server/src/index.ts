@@ -11,8 +11,8 @@ import { authenticate } from "./middlewares/auth.middleware";
 import {
   checkRequiredPermissions,
   validateAccessToken,
-} from "./middlewares/auth0.middleware";
-import { auth } from "express-oauth2-jwt-bearer";
+} from "./middlewares/auth.middleware";
+import { errorHandler } from "./middlewares/error.middleware";
 
 dotenv.config();
 
@@ -36,6 +36,8 @@ app.use('/account', accountController);
 app.use('/timeEntry', timeEntryController);
 
 app.use('/pet', petController);
+
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://${address}:${port}`);
