@@ -13,13 +13,37 @@ import { PageLoader } from "./components/PageLoader/PageLoader";
 import { AuthenticationGuard } from "./utils/Auth0/AuthenticationGuard";
 import { CallbackPage } from "./pages/Callback/CallbackPage";
 import { NotFoundPage } from "./pages/NotFound/NotFoundPage";
+import { useEffect, useState } from "react";
+import axios from 'axios';
 
 export const App: React.FC = () => {
-  const { isLoading } = useAuth0();
+  const { isLoading, getAccessTokenSilently } = useAuth0();
+  const [accessToken, setAccessToken] = useState(""); // todo: init to null instead?
+
+  useEffect(() => {
+    const fetchAccessToken = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        setAccessToken(token);
+      } catch (error) {
+        console.error('Error while fetching access token:', error);
+      }
+    };
+
+    fetchAccessToken();
+  }, [getAccessTokenSilently]);
+
+  // set default headers for axios requests
+  useEffect(() => {
+    if (accessToken !== "") {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    }
+  }, [accessToken]);
+
 
   if (isLoading) {
     return (
-      // TODO: style to fix scaling issue
+      // TODO: dark mode issue?
       <div>
         <PageLoader />
       </div>
