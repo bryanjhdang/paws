@@ -12,15 +12,22 @@ dotenv.config();
 
 export function authenticate(req: Request, res: Response, next: NextFunction) {
   const accountHelper: AccountHelper = oAuthHelper;
-
+  
   const auth = req.auth;
-  // console.log(auth?.header);
-  console.log(auth?.payload.sub);
 
+  // todo: this could be a lot cleaner...
   if (auth?.payload.sub) {
-    accountHelper.getUser(auth.payload.sub).then((user) => {
-      res.locals.user = user;
-      next();
+    const userId = auth.payload.sub;
+    accountHelper.getUser(userId).then((user) => {
+        res.locals.user = user;
+        next();
+    }).catch((error) => {
+      console.error("could not find user, creating new: ", error);
+
+      oAuthHelper.addNewUser(userId).then((user) => {
+        res.locals.user = user;
+        next();
+      });
     });
   } else {
     return res

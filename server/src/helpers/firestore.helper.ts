@@ -87,8 +87,8 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
   async addUser(user: User): Promise<string> {
-    let document = this.userDB.doc();
-    user.id = document.id;
+    // let document = this.userDB.doc();
+    // user.id = document.id;
     this.userDB.doc(user.id).set(user.makeSimple());
     return user.id;
   }
