@@ -8,12 +8,19 @@ import { timeEntryController } from "./controllers/timeEntry.controller";
 import { accountController } from "./controllers/account.controller";
 import { authenticate } from "./middlewares/auth.middleware";
 
+// import {
+//   checkRequiredPermissions,
+//   validateAccessToken,
+// } from "./middlewares/auth0.middleware";
+
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 8080;
 const address = process.env.ADDRESS || "localhost"
 
+// const CLIENT_ORIGIN_URL = process.env.CLIENT_ORIGIN_URL;
+// todo: update cors init needed?
 app.use(cors());
 app.use(express.json());
 
