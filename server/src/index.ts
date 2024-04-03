@@ -29,15 +29,11 @@ app.get(`/`, (req : Request, res : Response) => {
   res.send("It's working!");
 });
 
+app.use(validateAccessToken);
 app.use(authenticate);
-// app.use(auth({
-//   issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`,
-//   audience: process.env.AUTH0_AUDIENCE,
-// }));
 
 app.use('/account', accountController);
 
-app.use('/timeEntry', validateAccessToken);
 app.use('/timeEntry', timeEntryController);
 
 app.use('/pet', petController);
