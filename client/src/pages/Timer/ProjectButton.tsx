@@ -4,6 +4,7 @@ import { IconFolderOpen, IconPlus, IconPointFilled } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { Project } from "../../classes/models";
 import { getProjects, postProject } from "../../classes/HTTPhelpers";
+import classes from "./ProjectButton.module.css";
 
 interface NewProjectModalProps {
   opened: boolean;
@@ -79,7 +80,7 @@ export function ProjectButton({ selectedProject, setSelectedProject }: ProjectBu
         <Menu.Target>
           <Button
             variant="light"
-            radius={"xl"}
+            radius={"lg"}
             color={selectedProject ? selectedProject.hex : "black"}
             leftSection={<IconFolderOpen />}
           >

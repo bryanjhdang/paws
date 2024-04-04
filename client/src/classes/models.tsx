@@ -43,3 +43,9 @@ export class User {
     public currentTimeEntry?: TimeEntry,
   ) { }
 }
+
+export class ToDo {
+  constructor(
+    public tasks: string[]
+  ) { }
+}
