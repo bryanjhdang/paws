@@ -2,10 +2,8 @@ import express, { Request, Response, Router } from "express";
 import { TimeEntryService, timeEntryService } from "../services/timeEntry.service";
 import { TimeEntry } from "../models/TimeEntry";
 import { StatusCodes } from "http-status-codes";
-import { petService } from "../services/pet.service";
 import { Project } from "../models/Project";
-import { BADQUERY } from "dns";
-import { time } from "console";
+
 
 const timeEntryController : Router = express.Router();
 
@@ -13,7 +11,6 @@ interface GetTimeEntryResponse {
     timeEntries : TimeEntry[]
 }
 timeEntryController.get('/', (req : Request, res : Response) => {
-
     try {
         var query = {
             name : req.query.name ? req.query.name.toString() : "",
@@ -21,9 +18,9 @@ timeEntryController.get('/', (req : Request, res : Response) => {
             endTime : req.query.end ? new Date(parseInt(req.query.end.toString())) : new Date(Number.MAX_VALUE),
             projectId : req.query.projectId ? req.query.projectId.toString() : "",
         }
-    } catch (error) {
+    } catch (err) {
         return res.status(StatusCodes.UNPROCESSABLE_ENTITY)
-            .json({message : "Invalid parameters for query string!"});
+            .json({message : "Invalid parameters for query string!", error : err});
     }
 
     timeEntryService.query(res.locals.user, query.startTime, query.endTime, query.projectId, query.name)
@@ -35,9 +32,9 @@ timeEntryController.get('/', (req : Request, res : Response) => {
         res.status(StatusCodes.OK)
             .json(response)
     })
-    .catch(() => {
+    .catch((err : Error) => {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({message : `Could not get time entries for user ${res.locals.user.id}`});
+        .json({message : `Could not get time entries for user ${res.locals.user.id}`, error : err});
     });
 });
 
@@ -57,9 +54,10 @@ timeEntryController.post(`/start`, (req: Request, res: Response) => {
         timeEntryService.startEntry(res.locals.user, body.entryName, body.projectId, body.startTime, body.endTime);
         res.status(StatusCodes.CREATED)
         .json({message: "Started time entry!"});
-    } catch (error) {
+    } catch (err) {
+        console.log(err);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({message: "Unable to start timer on user that is already running"});
+        .json({message: "unable to stop already running timer", error : err});
     }
 });
 
@@ -85,9 +83,10 @@ timeEntryController.post('/stop', (req: Request, res: Response) => {
         res.status(StatusCodes.CREATED)
         .json(response);
     })
-    .catch(() => {
+    .catch((err) => {
+        console.log(err);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({message: "Unable to stop timer"});
+        .json({message: "Unable to stop timer", error : err});
     })
 });
 
@@ -120,9 +119,9 @@ timeEntryController.post('/project', (req : Request, res: Response) => {
 
         res.status(StatusCodes.CREATED)
         .json(response);
-    }).catch(() => {
+    }).catch((err : Error) => {
         res.status(StatusCodes.NOT_FOUND)
-            .json({messsage: `Could not create projects for user ${res.locals.user.id}`});
+            .json({messsage: `Could not create projects for user ${res.locals.user.id}`, error : err});
     });
    
    
@@ -141,11 +140,10 @@ timeEntryController.get('/project', (req : Request, res: Response) => {
         res.status(StatusCodes.OK)
             .json(getProjectResponse);
     })
-    .catch(() => {
+    .catch((err : Error) => {
         res.status(StatusCodes.NOT_FOUND)
-        .json({messsage: `Could not find projects for user ${res.locals.user.id}`});
-    })
-    ;
+            .json({messsage: `Could not create projects for user ${res.locals.user.id}`, error : err});
+    });
 
 })
 

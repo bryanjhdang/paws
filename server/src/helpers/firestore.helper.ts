@@ -1,14 +1,11 @@
 import { DatabaseHelper } from "./interface/database.helper";
 import dotenv from "dotenv";
 import * as admin from "firebase-admin"
-import { User } from "../models/User";
+import { NoRunning, RunningCountdown, RunningStopwatch, RunningTime, User } from "../models/User";
 import rootPath from "get-root-path";
 import { TimeEntry } from "../models/TimeEntry";
 import { Pet } from "../models/Pet";
 import { Project } from "../models/Project";
-import { resolve } from "path";
-import { rejects } from "assert";
-import { time } from "console";
 dotenv.config();
 
 
@@ -26,10 +23,10 @@ export class FirestoreHelper implements DatabaseHelper {
         admin.initializeApp({
           credential: admin.credential.cert(serviceAccount)
         });
-    } else {
+      } else {
         admin.initializeApp();
-      console.log("\x1b[34m", "Connecting to Firestore over Google Cloud, make sure you authorized the instance to connect");
-    }
+        console.log("\x1b[34m", "Connecting to Firestore over Google Cloud, make sure you authorized the instance to connect");
+      }
 
 
       this.db = admin.firestore();
@@ -43,18 +40,89 @@ export class FirestoreHelper implements DatabaseHelper {
     }
   }
 
+  private serializeUser(user: User) {
+    return {
+      id: user.id,
+      displayName: user.displayName,
+      pet: this.serializePet(user.id, user.pet),
+      runningTime: this.serializeRunningTime(user.runningTime),
+      totalCoins: user.totalCoins
+    }
+  }
+
+  private serializeRunningTime(runningTime: RunningTime) {
+    if (runningTime instanceof RunningCountdown) {
+      return {
+        startTime: runningTime.startTime,
+        plannedEndTime: runningTime.plannedEndTime,
+        projectId: runningTime.projectId,
+        name: runningTime.name
+      }
+    } else if (runningTime instanceof RunningStopwatch) {
+      return {
+        startTime: runningTime.startTime,
+        projectId: runningTime.projectId,
+        name: runningTime.name
+      }
+    }
+
+    return admin.firestore.FieldValue.delete();
+  }
+
+  private serializeTimeEntry(userId: string, timeEntry: TimeEntry) {
+    return {
+      id: timeEntry.id,
+      startTime: timeEntry.startTime,
+      endTime: timeEntry.endTime,
+      projectId: timeEntry.projectId,
+      name: timeEntry.name,
+      earnedCoins: timeEntry.earnedCoins,
+      userId: userId
+    }
+  }
+
+  private serializeProject(userId: string, project: Project) {
+    return {
+      userId: userId,
+      id: project.id,
+      hex: project.hex,
+      name: project.name
+    }
+  }
+
+  private serializePet(userId : string, pet : Pet) {
+    return {
+      userId: userId,
+      id: pet.id, 
+      name: pet.name,
+      imageUrl : pet.imageUrl
+  }
+  }
+
   private deserializeUser(userId: string, data: admin.firestore.DocumentData): User {
     return new User(
-      userId,
       data!.displayName,
       new Pet(data!.pet.id, data!.pet.name, data!.pet.imageUrl),
-      data?.currentTimeEntry ? this.deserializeTimeEntry(data.currentTimeEntry) : undefined,
-      data!.totalCoins
+      data?.runningTime ? this.deserializeRunningTime(data.runningTime) : new NoRunning(),
+      data!.totalCoins,
+      userId
     );
   }
 
+  private deserializeRunningTime(element: any): RunningTime {
+    if (element.plannedEndTime) {
+      return new RunningCountdown(element.startTime, element.plannedEndTime, element.projectId, element.name);
+    }
+
+    if (element) {
+      return new RunningStopwatch(element.startTime, element.projectId, element.name);
+    }
+
+    return new NoRunning();
+  }
+
   private deserializeTimeEntry(element: any): TimeEntry {
-    return new TimeEntry(element.id, element.startTime, element.endTime, element.projectId, element.name, element.earnedCoins);
+    return new TimeEntry(element.startTime, element.endTime, element.projectId, element.name, element.id, element.earnedCoins);
   }
 
   private deserializeProject(project: any): Project {
@@ -63,7 +131,7 @@ export class FirestoreHelper implements DatabaseHelper {
 
 
   updateUser(user: User) {
-    this.userDB.doc(user.id).update(user.makeSimple());
+    this.userDB.doc(user.id).update(this.serializeUser(user));
   }
 
   getUser(userId: string): Promise<User> {
@@ -76,8 +144,9 @@ export class FirestoreHelper implements DatabaseHelper {
           reject(Error(`Unable to find data for user with id ${userId}`));
         }
       })
-        .catch(err => {
-          reject(Error(`Unable to find user with id ${userId}`));
+        .catch((err : Error) => {
+          console.log(err);
+          reject(err);
         })
     })
   }
@@ -87,37 +156,36 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
   async addUser(user: User): Promise<string> {
-    let document = this.userDB.doc();
-    user.id = document.id;
-    this.userDB.doc(user.id).set(user.makeSimple());
+    user.id = this.userDB.doc().id;
+    this.userDB.doc(user.id).set(this.serializeUser(user));
     return user.id;
   }
 
   createTimeEntry(userId: string, timeEntry: TimeEntry): Promise<TimeEntry> {
     return new Promise<TimeEntry>((resolve, reject) => {
-      let doc = this.timeEntryDB.doc();
-      timeEntry.id = doc.id;
-      this.timeEntryDB.doc(timeEntry.id).set(timeEntry.makeSimple(userId))
-        .then((res) => {
+      timeEntry.id = this.timeEntryDB.doc().id;
+      this.timeEntryDB.doc(timeEntry.id).set(this.serializeTimeEntry(userId, timeEntry))
+        .then(() => {
           resolve(timeEntry);
         })
-        .catch(() => {
-          reject(Error("Unable to create time entry"));
+        .catch((err : Error) => {
+          console.log(err);
+          reject(err);
         })
     });
   }
 
   createProject(userId: string, project: Project): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      let doc = this.projectDB.doc();
-      project.id = doc.id;
-      this.projectDB.doc(project.id).set(project.makeSimple(userId))
-        .then((res) => {
+      project.id = this.projectDB.doc().id;
+      this.projectDB.doc(project.id).set(this.serializeProject(userId, project))
+        .then(() => {
           resolve(project.id);
-        }).catch(() => {
-          reject(Error(`Unable to create project with name ${project.name}`));
-        });
-
+        })
+        .catch((err : Error) => {
+          console.log(err);
+          reject(err);
+        })
     });
   }
 
@@ -134,8 +202,9 @@ export class FirestoreHelper implements DatabaseHelper {
 
           resolve(result);
         })
-        .catch(() => {
-          reject(Error(`Unable to find time entries for user ${userId}`));
+        .catch((err : Error) => {
+          console.log(err);
+          reject(err);
         })
     });
   }
@@ -153,8 +222,9 @@ export class FirestoreHelper implements DatabaseHelper {
 
           resolve(result);
         })
-        .catch(() => {
-          reject(Error(`Unable to find projects for user ${userId}`));
+        .catch((err : Error) => {
+          console.log(err);
+          reject(err);
         })
     })
   }
