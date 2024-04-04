@@ -6,6 +6,7 @@ import cors from "cors";
 import { petController } from "./controllers/pet.controller";
 import { timeEntryController } from "./controllers/timeEntry.controller";
 import { accountController } from "./controllers/account.controller";
+import { todoController } from "./controllers/todo.controller";
 import { authenticate } from "./middlewares/auth.middleware";
 
 dotenv.config();
@@ -28,6 +29,8 @@ app.use('/account', accountController);
 app.use('/timeEntry', timeEntryController);
 
 app.use('/pet', petController);
+
+app.use('/todo', todoController)
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://${address}:${port}`);
