@@ -1,6 +1,7 @@
 import { Divider, Flex, TextInput } from "@mantine/core";
 import { Project } from "../../classes/models";
 import { ProjectButton } from "./ProjectButton";
+import classes from './TaskInput.module.css';
 
 interface TaskInputProps {
   task: string;
@@ -12,7 +13,7 @@ interface TaskInputProps {
 export function TaskInput({ task, setTask, selectedProject, setSelectedProject }: TaskInputProps): JSX.Element {
   return (
     <>
-      <Flex px={20} align={"center"}>
+      <Flex className={classes.textinput}>
         <TextInput
           size="xl"
           variant="unstyled"
@@ -28,7 +29,6 @@ export function TaskInput({ task, setTask, selectedProject, setSelectedProject }
           />
         </Flex>
       </Flex>
-      <Divider />
     </>
   );
 }
