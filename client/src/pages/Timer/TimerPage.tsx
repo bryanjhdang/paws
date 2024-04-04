@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Flex } from "@mantine/core";
+import { Flex, ScrollArea } from "@mantine/core";
 import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
-import { TaskInput } from "./TaskInput/TaskInput";
-import { Timer } from "./Timer/Timer";
+import { TaskInput } from "./TaskInput";
+import { Timer } from "./Timer";
 import { Project } from "../../classes/models";
 
 function TimerPage() {
@@ -15,16 +15,18 @@ function TimerPage() {
       <Flex direction={"row"}>
         <NavbarSimple active={active} setActive={setActive} />
         <Flex direction={"column"} flex={1}>
-          <TaskInput
-            task={task}
-            setTask={setTask}
-            selectedProject={selectedProject}
-            setSelectedProject={setSelectedProject}
-          />
-          <Timer
-            task={task}
-            selectedProject={selectedProject}
-          />
+          {/* <ScrollArea h={'100vh'}  type="always"> */}
+            <TaskInput
+              task={task}
+              setTask={setTask}
+              selectedProject={selectedProject}
+              setSelectedProject={setSelectedProject}
+            />
+            <Timer
+              task={task}
+              selectedProject={selectedProject}
+            />
+          {/* </ScrollArea> */}
         </Flex>
       </Flex>
     </>
