@@ -1,11 +1,14 @@
 .navbar {
-  height: 100vh;
-  min-width: rem(180px);
-  width: rem(180px);
-  padding-right: var(--mantine-spacing-sm);
+  /* max-height: auto; */
+  height: 30rem;
+  width: 15rem;
+  /* width: rem(180px); */
+  border-radius: var(--mantine-radius-md);
+  padding-left:  var(--mantine-spacing-xs);
+  padding-right: var(--mantine-spacing-xs);
   display: flex;
   flex-direction: column;
-  background-color: #F2D179;
+  background-color: #5B3347;
 }
 
 .navbarMain {
@@ -13,7 +16,7 @@
 }
 
 .header {
-  color: var(--mantine-color-dark-7);
+  color: var(--mantine-color-white);
   padding-top: var(--mantine-spacing-md);
   padding-left: var(--mantine-spacing-lg);
   margin-bottom: calc(var(--mantine-spacing-md) * 1.5);
@@ -30,16 +33,15 @@
   align-items: center;
   text-decoration: none;
   font-size: var(--mantine-font-size-sm);
-  color: var(--mantine-color-dark-7);
+  color: var(--mantine-color-white);
   padding-left: var(--mantine-spacing-lg);
   padding-top: var(--mantine-spacing-xs);
-  border-top-right-radius: var(--mantine-radius-xl);
-  border-bottom-right-radius: var(--mantine-radius-xl);
+  border-radius: var(--mantine-radius-xl);
   padding-bottom: var(--mantine-spacing-xs);
   font-weight: 400;
 
   @mixin hover {
-    background-color: light-dark(var(--mantine-color-gray-light));
+    background-color: light-dark(var(--mantine-color-gray-1));
     color: var(--mantine-color-dark-7);
 
     .linkIcon {
@@ -50,14 +52,14 @@
   &[data-active] {
     &,
     &:hover {
-      background-color: var(--mantine-color-dark-light);
+      background-color: var(--mantine-color-);
       font-weight: 500;
     }
   }
 }
 
 .linkIcon {
-  color: var(--mantine-color-dark-7);
+  color: #F3F0E6;
   margin-right: var(--mantine-spacing-sm);
   width: rem(20px);
   height: rem(20px);

@@ -1,5 +1,5 @@
 import { Divider, Flex, TextInput } from "@mantine/core";
-import { Project } from "../../../classes/models";
+import { Project } from "../../classes/models";
 import { ProjectButton } from "./ProjectButton";
 
 interface TaskInputProps {
