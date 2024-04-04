@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Text, Flex } from "@mantine/core";
-import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
+import { NavbarSimple } from "../../components/NavbarSimple";
 import { TimeEntry } from "../../classes/models";
 import { getTimeEntry } from "../../classes/HTTPhelpers";
 

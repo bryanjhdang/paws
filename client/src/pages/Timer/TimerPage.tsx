@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Flex, ScrollArea } from "@mantine/core";
-import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
+import { NavbarSimple } from "../../components/NavbarSimple";
 import { TaskInput } from "./TaskInput";
 import { Timer } from "./Timer";
 import { Project } from "../../classes/models";

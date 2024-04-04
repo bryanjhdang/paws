@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Text, Flex } from "@mantine/core";
-import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
+import { NavbarSimple } from "../../components/NavbarSimple";
 
 function FriendsPage() {
   const [active, setActive] = useState('Friends');
