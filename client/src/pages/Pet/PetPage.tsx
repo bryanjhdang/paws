@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Text, Flex, Space } from "@mantine/core";
-import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
+import { NavbarSimple } from "../../components/NavbarSimple";
 import { Pet } from "../../classes/models";
 import { getCoins, getPet } from "../../classes/HTTPhelpers";
 

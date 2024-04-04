@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Flex } from "@mantine/core";
 import React, { useState } from "react";
-import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
+import { NavbarSimple } from "../../components/NavbarSimple";
 
 // This callback used as an initial redirect by Auth0, to render the navbar (and any other desired elements)
 // and avoid flickering or other UI errors
