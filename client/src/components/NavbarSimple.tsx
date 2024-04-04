@@ -12,11 +12,7 @@ const data = [
   { link: '/timer', label: 'Timer', icon: IconClock },
   { link: '/pet', label: 'Pet', icon: IconPaw },
   { link: '/statistics', label: 'Statistics', icon: IconChartBar },
-  { link: '/friends', label: 'Friends', icon: IconUsers }
-];
-
-const footerData = [
-  { link: '/profile', label: 'Profile', icon: IconUser },
+  { link: '/friends', label: 'Friends', icon: IconUsers },
   { link: '/settings', label: 'Settings', icon: IconSettings }
 ];
 
@@ -40,34 +36,11 @@ export function NavbarSimple({ active, setActive }: NavbarProps) {
     </a>
   ));
 
-  const footerLinks = footerData.map((item) => (
-    <a
-      className={classes.link}
-      data-active={item.label === active || undefined}
-      href={item.link}
-      key={item.label}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(item.label);
-        navigate(item.link);
-      }}
-    >
-      <item.icon className={classes.linkIcon} stroke={1.5} />
-      <span>{item.label}</span>
-    </a>
-  ));
-
   return (
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
-        <Group className={classes.header} >
-          <Text>Tempify</Text>
-        </Group>
+        <Text className={classes.header}>Tempify</Text>
         {links}
-      </div>
-
-      <div className={classes.footer}>
-        {footerLinks}
       </div>
     </nav>
   );
