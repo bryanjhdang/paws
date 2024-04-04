@@ -31,6 +31,16 @@ export class TimeEntry {
   ) { }
 }
 
+//TODO: this is a bit hacky and I don't like it right now
+export class RunningTime {
+  constructor(
+    public startTime: number = 0,
+    public plannedEndTime: number = 0,
+    public projectId: string = '',
+    public name: string = '',
+) {};
+}
+
 export class User {
   constructor(
     public id: string,
@@ -40,12 +50,6 @@ export class User {
     public currentTimerStart: number,
     public projects: Project[],
     public totalCoins: number,
-    public currentTimeEntry?: TimeEntry,
-  ) { }
-}
-
-export class ToDo {
-  constructor(
-    public tasks: string[]
+    public runningTime: RunningTime,
   ) { }
 }
