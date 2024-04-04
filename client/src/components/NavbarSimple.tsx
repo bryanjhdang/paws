@@ -39,9 +39,7 @@ export function NavbarSimple({ active, setActive }: NavbarProps) {
   return (
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
-        <Group className={classes.header} >
-          <Text>Tempify</Text>
-        </Group>
+        <Text className={classes.header}>Tempify</Text>
         {links}
       </div>
     </nav>

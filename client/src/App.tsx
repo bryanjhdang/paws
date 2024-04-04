@@ -1,7 +1,7 @@
 import "./App.css";
 import "@mantine/core/styles.css";
 import { Routes, Route } from "react-router-dom";
-import LandingPage from "./pages/Landing/LandingPage";
+import LandingPage from "./non-app-pages/Landing/LandingPage";
 import TimerPage from "./pages/Timer/TimerPage";
 import PetPage from "./pages/Pet/PetPage";
 import StatisticsPage from "./pages/Statistics/StatisticsPage";
@@ -10,8 +10,8 @@ import SettingsPage from "./pages/Settings/SettingsPage";
 import { useAuth0 } from "@auth0/auth0-react";
 import { PageLoader } from "./components/PageLoader/PageLoader";
 import { AuthenticationGuard } from "./utils/Auth0/AuthenticationGuard";
-import { CallbackPage } from "./pages/Callback/CallbackPage";
-import { NotFoundPage } from "./pages/NotFound/NotFoundPage";
+import { CallbackPage } from "./non-app-pages/Callback/CallbackPage";
+import { NotFoundPage } from "./non-app-pages/NotFound/NotFoundPage";
 
 export const App: React.FC = () => {
   const { isLoading } = useAuth0();

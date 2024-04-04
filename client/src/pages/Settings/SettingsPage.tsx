@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Avatar, Divider, Flex, Group, Stack, Text } from "@mantine/core";
-import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
+import { NavbarSimple } from "../../components/NavbarSimple";
 import { SimpleHeader } from "../../components/Headers";
 import { ThemeSettings, PetSettings, NotificationSettings, AccountSettings } from "./SettingsOptions"
 import { useAuth0 } from "@auth0/auth0-react";
