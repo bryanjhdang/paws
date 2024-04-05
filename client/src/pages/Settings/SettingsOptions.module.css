@@ -1,0 +1,17 @@
+.section {
+  background-color: #5B3347;
+  padding: 20px 30px;
+  margin-bottom: 10px;
+  border-radius: var(--mantine-radius-lg);
+}
+
+.title {
+  font-size: var(--mantine-font-size-xl);
+  font-weight: 500;
+}
+
+.button {
+  display: inline-block;
+  min-width: auto;
+  max-width: 125px;
+}

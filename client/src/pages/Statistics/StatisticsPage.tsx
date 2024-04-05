@@ -17,7 +17,7 @@ function StatisticsPage() {
   }, []);
 
   return (
-    <Flex direction={'row'} gap={30}>
+    <Flex direction={'row'} gap={50}>
       <NavbarSimple active={active} setActive={setActive} />
       <Flex direction={'column'}>
         <Text>The statistics stuff is under construction. Come back after the checkpoint. Here's a JSON representation of the data.</Text>

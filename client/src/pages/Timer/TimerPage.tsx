@@ -12,7 +12,7 @@ function TimerPage() {
 
   return (
     <>
-      <Flex direction={"row"} gap={30}>
+      <Flex direction={"row"} gap={50}>
         <NavbarSimple active={active} setActive={setActive} />
         <Flex direction={"column"} flex={1}>
           {/* <ScrollArea h={'100vh'}  type="always"> */}
