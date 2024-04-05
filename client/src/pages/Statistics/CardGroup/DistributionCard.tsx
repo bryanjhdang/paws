@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 
-import { Card } from "@mantine/core";
+import { Card, Text, Title } from "@mantine/core";
 import ReactECharts from "echarts-for-react";
+import { color } from "echarts";
 
 export function DistributionCard(props: any): JSX.Element {
   /* ---------------------------------- State --------------------------------- */
@@ -24,12 +25,16 @@ export function DistributionCard(props: any): JSX.Element {
   /* ------------------------------- Components ------------------------------- */
 
   const chart = {
+    darkMode: true,
     tooltip: {
       trigger: "item",
     },
     legend: {
       top: "5%",
       left: "center",
+      textStyle: {
+        color: "#F3F0E6",
+      }
     },
     series: [
       {
@@ -67,15 +72,15 @@ export function DistributionCard(props: any): JSX.Element {
       <Card
         shadow="xs"
         padding="md"
-        bg={"rgba(241, 209, 121, 1)"}
+        bg={"#5B3347"}
         c={"black"}
         radius={"md"}
         mih={"32em"}
         mah={"32em"}
       >
-        <h2>{props.title}</h2>
+        <Text c={"#F3F0E6"} size="lg" fw={700}>{props.title}</Text>
         <ReactECharts option={chart} />
-        <p>{props.description}</p>
+        <Text c={"#F3F0E6"} size="lg">{props.description}</Text>
       </Card>
     </>
   );

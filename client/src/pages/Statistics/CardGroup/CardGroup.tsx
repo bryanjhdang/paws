@@ -28,7 +28,7 @@ export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
   useEffect(() => {
     const today = new Date();
     const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-    const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    const lastDay = new Date();
     setDateRange([firstDay, lastDay]);
 
     filterByDateRange(timeEntries);
