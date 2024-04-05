@@ -6,6 +6,9 @@
   flex-direction: column;
   background-color: #5B3347;
   align-self: flex-start;
+  position: sticky;
+  top: 30px;
+
 }
 
 .navbarMain {

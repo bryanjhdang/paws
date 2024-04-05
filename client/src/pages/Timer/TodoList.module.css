@@ -1,0 +1,6 @@
+.section {
+  background-color: #5B3347;
+  padding: 30px;
+  border-radius: var(--mantine-radius-lg);
+  margin-top: 10px;
+}
