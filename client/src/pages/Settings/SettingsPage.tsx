@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Avatar, Divider, Flex, Group, Stack, Text } from "@mantine/core";
 import { NavbarSimple } from "../../components/NavbarSimple";
-import { SimpleHeader } from "../../components/Headers";
+import { TextHeader } from "../../components/Headers";
 import { ThemeSettings, PetSettings, NotificationSettings, AccountSettings } from "./SettingsOptions"
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -29,7 +29,7 @@ function SettingsPage() {
     <Flex direction={'row'} gap={30}>
       <NavbarSimple active={active} setActive={setActive} />
       <Stack flex={1}>
-        <SimpleHeader text="Settings" />
+        <TextHeader text="Settings" />
         <Stack mx="lg">
           <ProfileDisplay />
           {/* <ThemeSettings /> */}
