@@ -6,7 +6,7 @@ function FriendsPage() {
   const [active, setActive] = useState('Friends');
 
   return (
-    <Flex>
+    <Flex direction={'row'} gap={30}>
       <NavbarSimple active={active} setActive={setActive} />
       <Flex>
         <Text>The pet stuff is under construction. Come back after the checkpoint.</Text>

@@ -26,7 +26,7 @@ function SettingsPage() {
   const [active, setActive] = useState('Settings');
 
   return (
-    <Flex>
+    <Flex direction={'row'} gap={30}>
       <NavbarSimple active={active} setActive={setActive} />
       <Stack flex={1}>
         <SimpleHeader text="Settings" />
