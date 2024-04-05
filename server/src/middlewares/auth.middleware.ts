@@ -10,6 +10,7 @@ import {
 
 dotenv.config();
 
+// todo: better name
 export function authenticate(req: Request, res: Response, next: NextFunction) {
   const accountHelper: AccountHelper = oAuthHelper;
   
