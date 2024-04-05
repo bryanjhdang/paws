@@ -1,6 +1,6 @@
 .section {
   background-color: #5B3347;
-  padding: 20px 30px;
+  padding: var(--mantine-spacing-lg) var(--mantine-spacing-xl);
   margin-bottom: 10px;
   border-radius: var(--mantine-radius-lg);
 }
@@ -11,7 +11,10 @@
 }
 
 .button {
-  display: inline-block;
-  min-width: auto;
-  max-width: 125px;
+  align-self: flex-start;
+  transition: transform 0.1s;
+}
+
+.button:hover {
+  transform: scale(1.1);
 }

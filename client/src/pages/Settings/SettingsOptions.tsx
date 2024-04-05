@@ -1,6 +1,5 @@
-import { Card, Text, Button, Switch, Group, Stack } from "@mantine/core";
+import { Text, Button, Switch, Group, Stack } from "@mantine/core";
 import { useAuth0 } from "@auth0/auth0-react";
-import React from "react";
 import classes from "./SettingsOptions.module.css";
 
 export function NotificationSettings() {
@@ -8,11 +7,11 @@ export function NotificationSettings() {
     <Stack className={classes.section}>
       <Text className={classes.title}>Sound and Notifications</Text>
       <Group>
-        <Switch color="yellow" />
+        <Switch />
         <Text>Play sound when timer ends</Text>
       </Group>
       <Group>
-        <Switch color="yellow" />
+        <Switch />
         <Text>Show notifications on window tab</Text>
       </Group>
     </Stack>
@@ -44,7 +43,7 @@ export function AccountSettings() {
   return (
     <Stack className={classes.section}>
       <Text className={classes.title}>Account Actions</Text>
-      <Button onClick={handleLogout} className={classes.button} color="orange">
+      <Button onClick={handleLogout} className={classes.button}>
         Log Out
       </Button>
     </Stack>

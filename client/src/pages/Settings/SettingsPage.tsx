@@ -26,11 +26,10 @@ function SettingsPage() {
   const [active, setActive] = useState('Settings');
 
   return (
-    <Flex direction={'row'} flex={1} gap={50}>
+    <Flex direction={'row'} gap={50}>
       <NavbarSimple active={active} setActive={setActive} />
       <Stack flex={1}>
         <TextHeader text="Settings" />
-        {/* <ProfileDisplay /> */}
         <NotificationSettings />
         <PetSettings />
         <AccountSettings />
