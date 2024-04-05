@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Flex, Space } from "@mantine/core";
 
-import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
+import { NavbarSimple } from "../../components/NavbarSimple";
 import { TimeEntry } from "../../classes/models";
 import { getTimeEntry } from "../../classes/HTTPhelpers";
 
@@ -11,7 +11,7 @@ import { CardGroup } from "./CardGroup/CardGroup";
 import { StatisticsGraph } from "./StatisticsGraph/StatisticsGraph";
 
 function StatisticsPage() {
-  const [active, setActive] = useState("Statistics");
+  const [active, setActive ] = useState('Stats')
   const [timeEntries, setTimeEntries] = useState<TimeEntry[]>([]);
 
   useEffect(() => {

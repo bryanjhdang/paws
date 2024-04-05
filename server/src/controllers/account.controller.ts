@@ -19,9 +19,9 @@ accountController.get('/', (req : Request, res : Response) => {
         res.status(StatusCodes.OK)
         .json(user);
     })
-    .catch(() => {
+    .catch((err : Error) => {
         res.status(StatusCodes.NOT_FOUND)
-            .json({messsage: `Missing could not find user ${id}`});
+            .json(err);
     });
 })
 
@@ -32,7 +32,7 @@ interface CreateRequest {
 interface CreateResponse {
     id: string;
 }
-accountController.post('/create', (req: Request, res: Response) => {
+accountController.post('/start', (req: Request, res: Response) => {
     let body: CreateRequest = req.body;
 
     accountService.createUser(body.email, body.name)
@@ -43,9 +43,9 @@ accountController.post('/create', (req: Request, res: Response) => {
         res.status(StatusCodes.CREATED)
         .json(response);
     })
-    .catch(() => {
+    .catch((err : Error) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({messsage: `Could not create user`});
+        .json(err);
     });
 
 

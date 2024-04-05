@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Flex } from "@mantine/core";
-import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
-import { TaskInput } from "./TaskInput/TaskInput";
-import { Timer } from "./Timer/Timer";
+import { Flex, ScrollArea } from "@mantine/core";
+import { NavbarSimple } from "../../components/NavbarSimple";
+import { TaskInput } from "./TaskInput";
+import { Timer } from "./Timer";
 import { Project } from "../../classes/models";
 
 function TimerPage() {
@@ -12,7 +12,7 @@ function TimerPage() {
 
   return (
     <>
-      <Flex direction={"row"}>
+      <Flex direction={"row"} gap={50}>
         <NavbarSimple active={active} setActive={setActive} />
         <Flex direction={"column"} flex={1}>
           <TaskInput
