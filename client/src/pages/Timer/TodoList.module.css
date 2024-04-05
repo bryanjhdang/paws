@@ -3,4 +3,29 @@
   padding: 30px;
   border-radius: var(--mantine-radius-lg);
   margin-top: 10px;
+  /* TODO: Need to figure out position issue with this later */
+  /* position: sticky; */
+  width: 300px;
+}
+
+.icon {
+  color: #F3F0E6;
+  transition: transform 0.1s;
+}
+
+.icon:hover {
+  color: #F3F0E6;
+  transform: scale(1.2);
+  background-color: rgba(255,255,255,0.1);
+  border-radius: var(--mantine-radius-xl);
+}
+
+.headerText {
+  font-size: var(--mantine-font-size-xl);
+  font-weight: 500;
+  width: 100%;
+}
+
+.itemText {
+  width: 100%;
 }
