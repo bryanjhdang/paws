@@ -86,6 +86,7 @@ export class FirestoreHelper implements DatabaseHelper {
     this.userDB.doc(user.id).delete();
   }
 
+  // todo: take idstring, use defaults
   async addUser(user: User): Promise<string> {
     // let document = this.userDB.doc();
     // user.id = document.id;
