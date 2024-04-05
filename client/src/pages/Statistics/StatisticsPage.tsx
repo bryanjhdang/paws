@@ -5,7 +5,7 @@ import { TimeEntry } from "../../classes/models";
 import { getTimeEntry } from "../../classes/HTTPhelpers";
 
 function StatisticsPage() {
-  const [active, setActive ] = useState('Statistics')
+  const [active, setActive ] = useState('Stats')
   const [timeEntries, setTimeEntries] = useState<TimeEntry[]>([]);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ function StatisticsPage() {
   }, []);
 
   return (
-    <Flex>
+    <Flex direction={'row'} gap={50}>
       <NavbarSimple active={active} setActive={setActive} />
       <Flex direction={'column'}>
         <Text>The statistics stuff is under construction. Come back after the checkpoint. Here's a JSON representation of the data.</Text>
