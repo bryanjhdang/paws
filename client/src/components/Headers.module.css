@@ -1,3 +1,12 @@
-.headingText {
-  
+.textHeader {
+  font-size: calc(var(--mantine-font-size-xl) * 1.5);
+  font-weight: 500;
+}
+
+.simpleHeader {
+  font-size: calc(var(--mantine-font-size-xl) * 1.5);
+  font-weight: 500;
+  background-color: #5B3347;
+  padding: 10px 20px;
+  border-radius: var(--mantine-radius-lg);
 }
