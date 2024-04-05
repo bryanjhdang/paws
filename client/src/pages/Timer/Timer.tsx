@@ -12,8 +12,8 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { IconPlayerStop } from "@tabler/icons-react";
-import { getAccount, postTimeEntryStart, postTimeEntryStop } from "../../../classes/HTTPhelpers";
-import { Project, TimeEntry } from "../../../classes/models";
+import { getAccount, postTimeEntryStart, postTimeEntryStop } from "../../classes/HTTPhelpers";
+import { Project, TimeEntry } from "../../classes/models";
 
 interface TimerProps {
   task: string,
@@ -80,14 +80,14 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
   useEffect(() => {
     getAccount("nemLmP1npemf5VSzAKRC").then(
       (response) => {        
-        if (response.currentTimeEntry) {
-          if (Date.now() < response.currentTimeEntry.endTime) {
-            const timeRemaining = Math.floor((response.currentTimeEntry.endTime - Date.now())/1000);
+        if (response.runningTime.plannedEndTime) {
+          if (Date.now() < response.runningTime.plannedEndTime) {
+            const timeRemaining = Math.floor((response.runningTime.plannedEndTime - Date.now())/1000);
             setTimerValue(timeRemaining); 
             setTimerRunning(true);
             setMountTimerInput(false);
           } else {
-            postTimeEntryStop(response.currentTimeEntry.endTime);
+            postTimeEntryStop(response.runningTime.plannedEndTime);
           }
         }
       }

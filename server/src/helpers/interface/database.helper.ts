@@ -1,5 +1,6 @@
 import { Project } from "../../models/Project";
 import { TimeEntry } from "../../models/TimeEntry";
+import { Todo } from "../../models/Todo";
 import { User } from "../../models/User";
 
 export interface DatabaseHelper {
@@ -30,4 +31,12 @@ export interface DatabaseHelper {
     getProjects(userId: string) : Promise<Project[]>;
 
     // deleteProject(projectId: string) : void;
+
+    createTodo(userId: string, todo: Todo) : Promise<Todo>;
+
+    getTodos(userId: string) : Promise<Todo[]>;
+
+    deleteTodo(todoId: string) : void;
+
+    editTodo(userId : string, todo: Todo) : Promise<Todo>;
 }
