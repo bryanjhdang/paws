@@ -30,7 +30,7 @@ function SettingsPage() {
       <NavbarSimple active={active} setActive={setActive} />
       <Stack flex={1}>
         <TextHeader text="Settings" />
-        <ProfileDisplay />
+        {/* <ProfileDisplay /> */}
         <NotificationSettings />
         <PetSettings />
         <AccountSettings />
