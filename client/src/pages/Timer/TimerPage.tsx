@@ -15,18 +15,16 @@ function TimerPage() {
       <Flex direction={"row"} gap={50}>
         <NavbarSimple active={active} setActive={setActive} />
         <Flex direction={"column"} flex={1}>
-          {/* <ScrollArea h={'100vh'}  type="always"> */}
-            <TaskInput
-              task={task}
-              setTask={setTask}
-              selectedProject={selectedProject}
-              setSelectedProject={setSelectedProject}
-            />
-            <Timer
-              task={task}
-              selectedProject={selectedProject}
-            />
-          {/* </ScrollArea> */}
+          <TaskInput
+            task={task}
+            setTask={setTask}
+            selectedProject={selectedProject}
+            setSelectedProject={setSelectedProject}
+          />
+          <Timer
+            task={task}
+            selectedProject={selectedProject}
+          />
         </Flex>
       </Flex>
     </>
