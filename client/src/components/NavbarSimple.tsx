@@ -38,7 +38,7 @@ export function NavbarSimple({ active, setActive }: NavbarProps) {
   return (
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
-        <Text className={classes.header}>Tempify</Text>
+        <Text className={classes.header}>Paws</Text>
         {links}
       </div>
     </nav>
