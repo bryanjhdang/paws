@@ -5,7 +5,6 @@ import LandingPage from "./non-app-pages/Landing/LandingPage";
 import TimerPage from "./pages/Timer/TimerPage";
 import PetPage from "./pages/Pet/PetPage";
 import StatisticsPage from "./pages/Statistics/StatisticsPage";
-import FriendsPage from "./pages/Friends/FriendsPage";
 import SettingsPage from "./pages/Settings/SettingsPage";
 import { useAuth0 } from "@auth0/auth0-react";
 import { PageLoader } from "./components/PageLoader";
@@ -39,10 +38,6 @@ export const App: React.FC = () => {
       <Route
         path="/statistics"
         element={<AuthenticationGuard component={StatisticsPage} />}
-      />
-      <Route
-        path="/friends"
-        element={<AuthenticationGuard component={FriendsPage} />}
       />
       <Route
         path="/settings"
