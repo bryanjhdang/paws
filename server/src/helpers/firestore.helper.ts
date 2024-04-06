@@ -17,7 +17,7 @@ export class FirestoreHelper implements DatabaseHelper {
 
   constructor() {
     try {
-      if (process.env.FIRESTORE_KEY != "CLOUD") {
+      if (process.env.FIRESTORE_KEY) {
         var serviceAccount = rootPath + process.env.FIRESTORE_KEY || "oopsie whoopsie" as admin.ServiceAccount;
 
         admin.initializeApp({
