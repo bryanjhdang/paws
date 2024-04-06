@@ -199,7 +199,7 @@ export async function deleteTodo(todo: Todo) {
 
 export async function getTodo(): Promise<Todo[]> {
 	const createTodo = (any: any): Todo[] => {
-		return any.data.todo.map((element: any) => {
+		return any.data.todos.map((element: any) => {
 			return new Todo(element.task, element.done, element.id);
 		});
 	}
