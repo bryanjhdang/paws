@@ -27,13 +27,13 @@ todoController.get('/', (req: Request, res: Response) => {
 })
 
 interface CreateTodoRequest {
-    name: string
+    task: string
 }
 interface CreateTodoResponse extends Todo { }
 todoController.post('/', (req: Request, res: Response) => {
     let body: CreateTodoRequest = req.body;
 
-    todoService.createTodo(res.locals.user, body.name)
+    todoService.createTodo(res.locals.user, body.task)
         .then(todo => {
             let response: CreateTodoResponse = todo;
 

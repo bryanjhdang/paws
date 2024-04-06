@@ -1,0 +1,59 @@
+.section {
+  background-color: #5B3347;
+  padding: 30px;
+  border-radius: var(--mantine-radius-lg);
+  margin-top: 10px;
+  /* TODO: Need to figure out position issue with this later */
+  /* position: sticky; */
+  width: 300px;
+}
+
+.icon {
+  color: #F3F0E6;
+  transition: transform 0.1s;
+}
+
+.icon:hover {
+  color: #F3F0E6;
+  transform: scale(1.2);
+  background-color: rgba(255,255,255,0.1);
+  border-radius: var(--mantine-radius-xl);
+}
+
+.headerText {
+  font-size: var(--mantine-font-size-xl);
+  font-weight: 500;
+}
+
+.itemText {
+  width: 100%;
+}
+
+.itemCompleted {
+  text-decoration: line-through;
+  color: var(--mantine-color-dark-1);
+}
+
+.addinput {
+  background-color: #F3F0E6;
+  width: 100%;
+  padding: 0 10px;
+  margin-right: 10px;
+  border-radius: var(--mantine-radius-md);
+}
+
+.addbutton {
+  background-color: #B08E56;
+  border-radius: var(--mantine-radius-md);
+  transition: transform 0.1s;
+  min-width: fit-content;
+}
+
+.addbutton:hover {
+  background-color: #B08E56;
+  transform: scale(1.1);
+}
+
+.todolist {
+  /* margin-top: 10px; */
+}
