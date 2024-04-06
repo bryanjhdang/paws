@@ -155,7 +155,7 @@ export class FirestoreHelper implements DatabaseHelper {
       "MATH 251",
     ];
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 460; i++) {
       // choose random project name
       let randomProjectName =
         projectNames[Math.floor(Math.random() * projectNames.length)];
@@ -170,12 +170,20 @@ export class FirestoreHelper implements DatabaseHelper {
       // the endTime is generated with startTime + random number between 0 to 120 minutes
       let endTime = startTime + Math.floor(Math.random() * 120 * 60 * 1000); */
 
-      // startTime is generated with Date.now(), but it will be in between january 1 2023 to April 2, 2024
+      /* // startTime is generated with Date.now(), but it will be in between january 1 2023 to April 2, 2024
       let startTime = Math.floor(
         Math.random() *
           (new Date("2024-04-02").getTime() -
             new Date("2023-01-01").getTime()) +
           new Date("2023-01-01").getTime()
+      );
+      // the endTime is generated with startTime + random number between 0 to 120 minutes
+      let endTime = startTime + Math.floor(Math.random() * 120 * 60 * 1000); */
+
+      // startTime is generated with Date.now(), but the dates will be in between january 1 2023 to april 4 2024
+      // there will only be 1 entry per day, so use the iterator i to generate the date, the beginning being january 1 2023
+      let startTime = Math.floor(
+        new Date("2023-01-01").getTime() + i * 24 * 60 * 60 * 1000
       );
       // the endTime is generated with startTime + random number between 0 to 120 minutes
       let endTime = startTime + Math.floor(Math.random() * 120 * 60 * 1000);
