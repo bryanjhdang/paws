@@ -171,11 +171,11 @@ export async function postTodo(todo: Todo) {
 		method: 'post',
 		url: `${import.meta.env.VITE_API_SERVER_URL}/todo`,
 		data: {
-			task: todo,
+			task: todo.task,
 		}
 	})
 	.then((response) => {
-		todo.id = response.data.id;
+		console.log("post response: " + response);
 	}, (error) => {
 		console.log(error);
 	});

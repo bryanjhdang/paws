@@ -22,35 +22,32 @@ function TodoItem({ item }: TodoProps) {
 }
 
 interface TodoEntryProps {
-  onAddTodo: (todo: Todo) => void;
+  handleAddTodo: (todo: Todo) => void;
 }
 
-function TodoEntry({ onAddTodo }: TodoEntryProps) {
+function TodoEntry({ handleAddTodo }: TodoEntryProps) {
   const [task, setTask] = useState("");
 
   const addTask = () => {
     if (task.trim() != "") {
-      const newTodo = new Todo(task);
-      onAddTodo(newTodo);
+      const newTodo = new Todo(task, false, Date.now().toString());
+      handleAddTodo(newTodo);
     }
   }
 
   return (
-
-    <>
-      <Flex align="center" gap={8}>
-        <TextInput 
-          className={classes.addinput} 
-          value={task} 
-          onChange={(event) => setTask(event.currentTarget.value)}
-          variant="unstyled" 
-          placeholder="New Task" 
-        />
-        <Button className={classes.addbutton} onClick={addTask}>
-          Add
-        </Button>
-      </Flex>
-    </>
+    <Flex align="center" gap={8}>
+      <TextInput
+        className={classes.addinput}
+        value={task}
+        onChange={(event) => setTask(event.currentTarget.value)}
+        variant="unstyled"
+        placeholder="New Task"
+      />
+      <Button className={classes.addbutton} onClick={addTask}>
+        Add
+      </Button>
+    </Flex>
   )
 }
 
@@ -68,7 +65,6 @@ function TodoList() {
   useEffect(() => {
     getTodo().then(
       (response) => {
-        console.log("response" + response);
         setTodos(response);
       }
     )
@@ -82,7 +78,7 @@ function TodoList() {
   return (
     <Stack className={classes.section}>
       <TodoHeader />
-      <TodoEntry onAddTodo={handleAddTodo} />
+      <TodoEntry handleAddTodo={handleAddTodo} />
       {todos.map((todo) => (
         <TodoItem key={todo.id} item={todo.task} />
       ))}
