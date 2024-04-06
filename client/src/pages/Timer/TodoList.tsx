@@ -3,18 +3,45 @@ import { IconTrash } from '@tabler/icons-react';
 import classes from "./TodoList.module.css"
 import { Todo } from "../../classes/models";
 import { useEffect, useState } from "react";
-import { getTodo, postTodo } from "../../classes/HTTPhelpers";
+import { deleteTodo, getTodo, patchTodo, postTodo } from "../../classes/HTTPhelpers";
 
 interface TodoProps {
-  item: string;
+  item: Todo;
+  handleDeleteTodo: (id: string) => void;
 }
 
-function TodoItem({ item }: TodoProps) {
+function TodoItem({ item, handleDeleteTodo }: TodoProps) {
+  const [checked, setChecked] = useState(item.done);
+
+  useEffect(() => {
+    setChecked(item.done);
+  }, [item.done]);
+
+  const handlePatchTodo = async(checked: boolean) => {
+    setChecked(checked);
+    item.done = checked;
+
+    try {
+      await patchTodo(item);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <Flex align="flex-start" gap={10}>
-      <Checkbox />
-      <Text className={classes.itemText}>{item}</Text>
-      <ActionIcon className={classes.icon} variant="transparent">
+      <Checkbox
+        checked={checked}
+        onChange={(event) => handlePatchTodo(event.currentTarget.checked)}
+      />
+      <Text className={`${classes.itemText} ${checked ? classes.itemCompleted : ''}`}>
+        {item.task}
+      </Text>
+      <ActionIcon 
+        className={classes.icon} 
+        variant="transparent"
+        onClick={() => handleDeleteTodo(item.id)}
+      >
         <IconTrash />
       </ActionIcon>
     </Flex>
@@ -32,11 +59,12 @@ function TodoEntry({ handleAddTodo }: TodoEntryProps) {
     if (task.trim() != "") {
       const newTodo = new Todo(task, false, Date.now().toString());
       handleAddTodo(newTodo);
+      setTask("");
     }
   }
 
   return (
-    <Flex align="center" gap={8}>
+    <Flex align="center">
       <TextInput
         className={classes.addinput}
         value={task}
@@ -75,13 +103,25 @@ function TodoList() {
     postTodo(todo);
   }
 
+  const handleDeleteTodo = (id: string) => {
+    deleteTodo(id).then(() => {
+      const updatedTodos = todos.filter((todo) => todo.id !== id);
+      setTodos(updatedTodos);
+    })
+  }
+
   return (
     <Stack className={classes.section}>
       <TodoHeader />
       <TodoEntry handleAddTodo={handleAddTodo} />
-      {todos.map((todo) => (
-        <TodoItem key={todo.id} item={todo.task} />
-      ))}
+      <Stack className={classes.todolist}>
+        {todos.map((todo) => (
+          <TodoItem 
+            key={todo.id} 
+            item={todo} 
+            handleDeleteTodo={handleDeleteTodo} />
+        ))}
+      </Stack>
     </Stack>
   )
 }

@@ -175,27 +175,30 @@ export async function postTodo(todo: Todo) {
 		}
 	})
 	.then((response) => {
-		console.log("post response: " + response);
+		todo.id = response.data.id;
 	}, (error) => {
 		console.log(error);
 	});
 }
 
-export async function deleteTodo(todo: Todo) {
-	axios({
-		method: 'delete',
-		url: `${import.meta.env.VITE_API_SERVER_URL}/todo/?id=${todo.id}`,
-	})
-	.then((response) => {
-		console.log(response);
-	}, (error) => {
-		console.log(error);
-	})
+export async function deleteTodo(id: string) {
+	try {
+		await axios.delete(`${import.meta.env.VITE_API_SERVER_URL}/todo/${id}`); 
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
 }
 
-// export async function patchTodo() {
-	
-// }
+export async function patchTodo(todo: Todo): Promise<Todo> {
+  try {
+    const response = await axios.patch(`${import.meta.env.VITE_API_SERVER_URL}/todo/`, todo);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error; 
+  }
+}
 
 export async function getTodo(): Promise<Todo[]> {
 	const createTodo = (any: any): Todo[] => {
