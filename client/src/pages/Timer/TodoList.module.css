@@ -23,9 +23,26 @@
 .headerText {
   font-size: var(--mantine-font-size-xl);
   font-weight: 500;
-  width: 100%;
 }
 
 .itemText {
   width: 100%;
+}
+
+.addinput {
+  background-color: #F3F0E6;
+  padding: 0 10px;
+  border-radius: var(--mantine-radius-md);
+}
+
+.addbutton {
+  background-color: #B08E56;
+  border-radius: var(--mantine-radius-md);
+  transition: transform 0.1s;
+  min-width: fit-content;
+}
+
+.addbutton:hover {
+  background-color: #B08E56;
+  transform: scale(1.1);
 }
