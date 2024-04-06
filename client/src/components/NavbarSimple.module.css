@@ -1,11 +1,14 @@
 .navbar {
-  min-width: 250px;
+  min-width: 300px;
   border-radius: var(--mantine-radius-lg);
   padding: var(--mantine-spacing-lg);
   display: flex;
   flex-direction: column;
   background-color: #5B3347;
   align-self: flex-start;
+  position: sticky;
+  top: 30px;
+
 }
 
 .navbarMain {
@@ -41,7 +44,6 @@
 .link:hover {
   background-color: rgba(255,255,255,0.1);
   transform: translate(5px, -5px);
-
 }
 
 .linkIcon {

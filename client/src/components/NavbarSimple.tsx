@@ -12,7 +12,6 @@ const data = [
   { link: '/timer', label: 'Timer', icon: IconClock },
   { link: '/pet', label: 'Pet', icon: IconPaw },
   { link: '/statistics', label: 'Stats', icon: IconChartBar },
-  { link: '/friends', label: 'Friends', icon: IconUsers },
   { link: '/settings', label: 'Settings', icon: IconSettings }
 ];
 
