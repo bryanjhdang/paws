@@ -60,7 +60,7 @@ export function DistributionCard(props: any): JSX.Element {
           show: false,
         },
         tooltip: {
-            show: false,
+            show: true,
         },
         data: chartData,
       },

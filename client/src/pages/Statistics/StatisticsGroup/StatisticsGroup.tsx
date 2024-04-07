@@ -84,7 +84,7 @@ export function StatisticsGroup({ timeEntries }: { timeEntries: any[] }) {
   ];
 
   const stats = statisticsData.map((stat) => (
-    <div className={classes.stat}>
+    <div key={stat.title} className={classes.stat}>
       <Text className={classes.count} lineClamp={3}>{stat.stats}</Text>
       <Text className={classes.title}>{stat.title}</Text>
       <Text className={classes.description}>{stat.description}</Text>
