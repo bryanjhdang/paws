@@ -4,6 +4,7 @@ import classes from "./TodoList.module.css"
 import { Todo } from "../../classes/models";
 import { useEffect, useState } from "react";
 import { deleteTodo, getTodo, patchTodo, postTodo } from "../../classes/HTTPhelpers";
+import { useForm } from "@mantine/form";
 
 interface TodoProps {
   item: Todo;
@@ -17,7 +18,7 @@ function TodoItem({ item, handleDeleteTodo }: TodoProps) {
     setChecked(item.done);
   }, [item.done]);
 
-  const handlePatchTodo = async(checked: boolean) => {
+  const handlePatchTodo = async (checked: boolean) => {
     setChecked(checked);
     item.done = checked;
 
@@ -37,8 +38,8 @@ function TodoItem({ item, handleDeleteTodo }: TodoProps) {
       <Text className={`${classes.itemText} ${checked ? classes.itemCompleted : ''}`}>
         {item.task}
       </Text>
-      <ActionIcon 
-        className={classes.icon} 
+      <ActionIcon
+        className={classes.icon}
         variant="transparent"
         onClick={() => handleDeleteTodo(item.id)}
       >
@@ -53,31 +54,35 @@ interface TodoEntryProps {
 }
 
 function TodoEntry({ handleAddTodo }: TodoEntryProps) {
-  const [task, setTask] = useState("");
+  const form = useForm({
+    initialValues: {
+      task: '',
+    },
+  });
 
-  const addTask = () => {
-    if (task.trim() != "") {
+  const addTask = (values: any) => {
+    const task = values.task.trim();
+    if (task) {
       const date = Date.now();
       const newTodo = new Todo(task, date, false, date.toString());
       handleAddTodo(newTodo);
     }
-    setTask("");
-  }
+    form.reset(); 
+  };
 
   return (
-    <Flex align="center">
-      <TextInput
-        className={classes.addinput}
-        value={task}
-        onChange={(event) => setTask(event.currentTarget.value)}
-        variant="unstyled"
-        placeholder="New Task"
-      />
-      <Button className={classes.addbutton} onClick={addTask}>
-        Add
-      </Button>
-    </Flex>
-  )
+    <form onSubmit={form.onSubmit(addTask)}>
+      <Flex align="center">
+        <TextInput
+          {...form.getInputProps('task')}
+          className={classes.addinput}
+          variant="unstyled"
+          placeholder="New Task"
+        />
+        <Button type="submit" className={classes.addbutton}>Add</Button>
+      </Flex>
+    </form>
+  );
 }
 
 function TodoHeader() {
@@ -117,16 +122,16 @@ function TodoList() {
       <TodoEntry handleAddTodo={handleAddTodo} />
       {todos.length > 0 ? (
         <Stack className={classes.todolist}>
-        {todos
-          .sort((a, b) => a.dateCreated - b.dateCreated)
-          .map((todo) => (
-            <TodoItem 
-              key={todo.id} 
-              item={todo} 
-              handleDeleteTodo={handleDeleteTodo} 
-            />
-        ))}
-      </Stack>
+          {todos
+            .sort((a, b) => a.dateCreated - b.dateCreated)
+            .map((todo) => (
+              <TodoItem
+                key={todo.id}
+                item={todo}
+                handleDeleteTodo={handleDeleteTodo}
+              />
+            ))}
+        </Stack>
       ) : (
         <Text className={classes.noTodoText}>Enter some tasks!</Text>
       )}
