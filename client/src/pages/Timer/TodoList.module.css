@@ -1,20 +1,20 @@
 .section {
   background-color: #5B3347;
+  /* margin: 20px 20px; */
   padding: 30px;
   border-radius: var(--mantine-radius-lg);
-  margin-top: 10px;
-  /* TODO: Need to figure out position issue with this later */
-  /* position: sticky; */
+  height: fit-content;
   width: 300px;
+  /* box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); */
 }
 
 .icon {
-  color: #F3F0E6;
+  color: white;
   transition: transform 0.1s;
 }
 
 .icon:hover {
-  color: #F3F0E6;
+  color: white;
   transform: scale(1.2);
   background-color: rgba(255,255,255,0.1);
   border-radius: var(--mantine-radius-xl);
@@ -22,11 +22,13 @@
 
 .headerText {
   /* font-size: var(--mantine-font-size-xl); */
+  color: white;
   font-size: 25px;
   font-weight: 500;
 }
 
 .itemText {
+  color: white;
   width: 100%;
 }
 
@@ -36,7 +38,7 @@
 }
 
 .addinput {
-  background-color: #F3F0E6;
+  background-color: white;
   width: 100%;
   padding: 0 10px;
   margin-right: 10px;
@@ -44,14 +46,14 @@
 }
 
 .addbutton {
-  background-color: #B08E56;
+  background-color: #dba644;
   border-radius: var(--mantine-radius-md);
   transition: transform 0.1s;
   min-width: fit-content;
 }
 
 .addbutton:hover {
-  background-color: #B08E56;
+  background-color: white;
   transform: scale(1.1);
 }
 
@@ -61,5 +63,6 @@
 
 .noTodoText {
   margin-top: 10px;
+  color: white;
   text-align: center;
 }

@@ -2,7 +2,8 @@
   background-color: #5B3347;
   padding: var(--mantine-spacing-lg) var(--mantine-spacing-xl);
   margin-bottom: 10px;
-  border-radius: var(--mantine-radius-lg);
+  border-radius: var(--mantine-radius-md);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
 }
 
 .title {
