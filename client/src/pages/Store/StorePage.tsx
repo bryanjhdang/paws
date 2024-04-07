@@ -6,7 +6,9 @@ import { getCoins, getPet } from "../../classes/HTTPhelpers";
 import { TextHeader } from "../../components/Headers";
 
 function StorePage() {
-  const [active, setActive] = useState('Store')
+  const [active, setActive] = useState('Store');
+
+  // const [storeItems, setStoreItems] = useState<>
   const [petData, setPetData] = useState<Pet>();
   const [coins, setCoins] = useState<number>();
 
