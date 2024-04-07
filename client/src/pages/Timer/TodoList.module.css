@@ -21,7 +21,8 @@
 }
 
 .headerText {
-  font-size: var(--mantine-font-size-xl);
+  /* font-size: var(--mantine-font-size-xl); */
+  font-size: 25px;
   font-weight: 500;
 }
 
@@ -55,5 +56,10 @@
 }
 
 .todolist {
-  /* margin-top: 10px; */
+  margin-top: 10px;
+}
+
+.noTodoText {
+  margin-top: 10px;
+  text-align: center;
 }

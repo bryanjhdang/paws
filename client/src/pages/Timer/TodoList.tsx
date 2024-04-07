@@ -59,8 +59,8 @@ function TodoEntry({ handleAddTodo }: TodoEntryProps) {
     if (task.trim() != "") {
       const newTodo = new Todo(task, false, Date.now().toString());
       handleAddTodo(newTodo);
-      setTask("");
     }
+    setTask("");
   }
 
   return (
@@ -114,7 +114,8 @@ function TodoList() {
     <Stack className={classes.section}>
       <TodoHeader />
       <TodoEntry handleAddTodo={handleAddTodo} />
-      <Stack className={classes.todolist}>
+      {todos.length > 0 ? (
+        <Stack className={classes.todolist}>
         {todos.map((todo) => (
           <TodoItem 
             key={todo.id} 
@@ -122,6 +123,9 @@ function TodoList() {
             handleDeleteTodo={handleDeleteTodo} />
         ))}
       </Stack>
+      ) : (
+        <Text className={classes.noTodoText}>Enter some tasks!</Text>
+      )}
     </Stack>
   )
 }
