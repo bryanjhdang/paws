@@ -19,7 +19,6 @@ function TimerPage() {
           <TodoList />
         </Stack>
         
-
         <Flex direction={"column"} flex={1}>
           <TaskInput
             task={task}
