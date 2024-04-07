@@ -4,14 +4,17 @@ import { DatePickerInput } from "@mantine/dates";
 import "@mantine/dates/styles.css";
 
 import { DistributionCard } from "./DistributionCard";
-import { filter } from "echarts/types/src/export/api/util.js";
 
 export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
   /* ---------------------------------- State --------------------------------- */
   // by default the date range will be set to the 1st to the last day of the current month
+    const today = new Date();
+    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+    const lastDay = new Date();
+
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
-    null,
-    null,
+    firstDay,
+    lastDay,
   ]);
 
   const [dateFilteredTimeEntries, setDateFilteredTimeEntries] = useState<any[]>(
@@ -24,19 +27,10 @@ export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
   const [timerAverage, setTimerAverage] = useState<Map<string, number>>(new Map());
 
   /* ---------------------------- Lifecycle Methods --------------------------- */
-  // set the default date when components are rendered
-  useEffect(() => {
-    const today = new Date();
-    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-    const lastDay = new Date();
-    setDateRange([firstDay, lastDay]);
-
-    filterByDateRange(timeEntries);
-  }, []);
-
   // since the timeEntries are retrieved from the database, each time the timeEntries change, update the project distributions
   // because it might take some time for timeEntries to have proper data in it
   useEffect(() => {
+    console.log("timeEntries has loaded / changed. Filtering data...");
     filterUpdated();
   }, [timeEntries, dateRange]);
 
@@ -56,12 +50,12 @@ export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
       }
     });
 
+
     // if no time entries are found, return the original time entries
     setDateFilteredTimeEntries(
-      filteredTimeEntries.length ? filteredTimeEntries : timeEntries
+      filteredTimeEntries.length !== 0 ? filteredTimeEntries : timeEntries
     );
 
-    console.log(filteredTimeEntries);
   }
 
   function filterProjectDistributions(): void {
