@@ -57,7 +57,8 @@ function TodoEntry({ handleAddTodo }: TodoEntryProps) {
 
   const addTask = () => {
     if (task.trim() != "") {
-      const newTodo = new Todo(task, false, Date.now().toString());
+      const date = Date.now();
+      const newTodo = new Todo(task, date, false, date.toString());
       handleAddTodo(newTodo);
     }
     setTask("");
@@ -116,11 +117,14 @@ function TodoList() {
       <TodoEntry handleAddTodo={handleAddTodo} />
       {todos.length > 0 ? (
         <Stack className={classes.todolist}>
-        {todos.map((todo) => (
-          <TodoItem 
-            key={todo.id} 
-            item={todo} 
-            handleDeleteTodo={handleDeleteTodo} />
+        {todos
+          .sort((a, b) => a.dateCreated - b.dateCreated)
+          .map((todo) => (
+            <TodoItem 
+              key={todo.id} 
+              item={todo} 
+              handleDeleteTodo={handleDeleteTodo} 
+            />
         ))}
       </Stack>
       ) : (
