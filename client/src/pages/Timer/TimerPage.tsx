@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Flex, Stack } from "@mantine/core";
+import { Flex, Image, ScrollArea, Stack } from "@mantine/core";
 import { NavbarSimple } from "../../components/NavbarSimple";
 import { TaskInput } from "./TaskInput";
 import { Timer } from "./Timer";
 import { Project } from "../../classes/models";
 import TodoList from "./TodoList";
 import classes from "./TimerPage.module.css";
+import BongoCat from "../../assets/sleepy-cat-1.gif";
 
 function TimerPage() {
   const [task, setTask] = useState<string>("");
@@ -20,6 +21,7 @@ function TimerPage() {
           <TodoList />
         </Stack>
         
+
         <Flex direction={"column"} flex={1}>
           <TaskInput
             task={task}
@@ -27,10 +29,14 @@ function TimerPage() {
             selectedProject={selectedProject}
             setSelectedProject={setSelectedProject}
           />
+          
+          {/* <Image className={classes.sleepyBreathing} w={300} h={300} src={BongoCat} /> */}
+          
           <Timer
             task={task}
             selectedProject={selectedProject}
           />
+          
         </Flex>
 
       </Flex>
