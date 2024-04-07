@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Flex, ScrollArea, Stack } from "@mantine/core";
+import { Flex, Stack } from "@mantine/core";
 import { NavbarSimple } from "../../components/NavbarSimple";
 import { TaskInput } from "./TaskInput";
 import { Timer } from "./Timer";
@@ -32,6 +32,7 @@ function TimerPage() {
             selectedProject={selectedProject}
           />
         </Flex>
+
       </Flex>
     </>
   );
