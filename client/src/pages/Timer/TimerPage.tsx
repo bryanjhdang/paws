@@ -5,6 +5,7 @@ import { TaskInput } from "./TaskInput";
 import { Timer } from "./Timer";
 import { Project } from "../../classes/models";
 import TodoList from "./TodoList";
+import classes from "./TimerPage.module.css";
 
 function TimerPage() {
   const [task, setTask] = useState<string>("");
@@ -13,8 +14,8 @@ function TimerPage() {
 
   return (
     <>
-      <Flex direction={"row"} gap={50}>
-        <Stack>
+      <Flex direction={"row"}>
+        <Stack className={classes.leftbar}>
           <NavbarSimple active={active} setActive={setActive} />
           <TodoList />
         </Stack>

@@ -1,5 +1,6 @@
 .navbar {
   min-width: 300px;
+  /* height: 100v; */
   border-radius: var(--mantine-radius-lg);
   padding: var(--mantine-spacing-lg);
   display: flex;

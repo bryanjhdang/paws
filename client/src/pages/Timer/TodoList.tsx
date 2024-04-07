@@ -67,7 +67,7 @@ function TodoEntry({ handleAddTodo }: TodoEntryProps) {
       const newTodo = new Todo(task, date, false, date.toString());
       handleAddTodo(newTodo);
     }
-    form.reset(); 
+    form.reset();
   };
 
   return (
@@ -87,9 +87,7 @@ function TodoEntry({ handleAddTodo }: TodoEntryProps) {
 
 function TodoHeader() {
   return (
-    <Flex align="center">
-      <Text className={classes.headerText}>To Do</Text>
-    </Flex>
+    <Text className={classes.headerText}>To Do</Text>
   )
 }
 
