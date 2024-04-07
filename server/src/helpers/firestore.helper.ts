@@ -108,13 +108,14 @@ export class FirestoreHelper implements DatabaseHelper {
     return {
       userId: userId, 
       task: todo.task,
+      dateCreated: todo.dateCreated,
       done: todo.done,
       id: todo.id
     }
   }
 
   private deserializeTodo(element : any) : Todo {
-    return new Todo(element.task, element.done, element.id); 
+    return new Todo(element.task, element.dateCreated, element.done, element.id); 
   }
 
   private saveTodo(userId: string, todo: Todo) : Promise<Todo> {
