@@ -5,7 +5,7 @@ import { Pet } from "../../classes/models";
 import { getCoins, getPet } from "../../classes/HTTPhelpers";
 import { TextHeader } from "../../components/Headers";
 
-function PetPage() {
+function StorePage() {
   const [active, setActive] = useState('Pet')
   const [petData, setPetData] = useState<Pet>();
   const [coins, setCoins] = useState<number>();
@@ -27,8 +27,8 @@ function PetPage() {
     <Flex direction={'row'} gap={50}>
       <NavbarSimple active={active} setActive={setActive} />
       <Stack>
-        <TextHeader text="Pet" />
-        <Text>The pet stuff is under construction. Come back after the checkpoint.</Text>
+        <TextHeader text="Store" />
+        <Text>TODO: Display coins, items, and pet icon.</Text>
         <Text>Pet Data:</Text>
         <Text>{JSON.stringify(petData)}</Text>
         <Space h={30} />
@@ -39,4 +39,4 @@ function PetPage() {
   );
 }
 
-export default PetPage
+export default StorePage
