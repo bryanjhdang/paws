@@ -18,6 +18,20 @@
   }
 }
 
+@keyframes sleepyBreathing {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+
 .bouncingImage {
   animation: bounceAndWiggle 0.5s infinite;
+}
+
+.sleepyBreathing {
+  animation: sleepyBreathing 3s ease-in-out infinite;
 }
