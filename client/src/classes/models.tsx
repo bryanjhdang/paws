@@ -67,6 +67,7 @@ export class CatItem {
   constructor (
     public path: string,
     public name: string,
-    public cost: number
+    public cost: number,
+    public id: number
   ) { }
 }
