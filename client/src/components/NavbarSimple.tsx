@@ -1,5 +1,5 @@
 import { Text } from '@mantine/core';
-import { IconClock, IconChartBar, IconBuildingStore, IconSettings } from '@tabler/icons-react';
+import { IconClock, IconChartBar, IconBuildingStore, IconSettings, IconFolderOpen } from '@tabler/icons-react';
 import classes from './NavbarSimple.module.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,7 +11,8 @@ interface NavbarProps {
 const data = [
   { link: '/timer', label: 'Timer', icon: IconClock },
   { link: '/store', label: 'Store', icon: IconBuildingStore },
-  { link: '/statistics', label: 'Stats', icon: IconChartBar }
+  { link: '/statistics', label: 'Stats', icon: IconChartBar },
+  { link: '/projects', label: 'Projects', icon: IconFolderOpen }
 ];
 
 const footerData = [

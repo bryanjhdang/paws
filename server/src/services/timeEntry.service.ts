@@ -51,6 +51,10 @@ export class TimeEntryService {
     let newProject = new Project(hex, name);
     return firestoreHelper.createProject(user.id, newProject);
   }
+
+  deleteProject(user: User, projectId: string) {
+    this.db.deleteProject(projectId);
+  }
 }
 
 const timeEntryService = new TimeEntryService(

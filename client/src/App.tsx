@@ -12,6 +12,7 @@ import { AuthenticationGuard } from "./utils/Auth0/AuthenticationGuard";
 import { CallbackPage } from "./non-app-pages/Callback/CallbackPage";
 import { NotFoundPage } from "./non-app-pages/NotFound/NotFoundPage";
 import BasePage from "./pages/BasePage";
+import ProjectsPage from "./pages/Projects/ProjectsPage";
 
 export const App: React.FC = () => {
   const { isLoading } = useAuth0();
@@ -49,6 +50,14 @@ export const App: React.FC = () => {
         element={<AuthenticationGuard 
           component={() => (
             <BasePage pageName="Stats"><StatisticsPage /></BasePage>
+          )}
+        />}
+      />
+      <Route
+        path="/projects"
+        element={<AuthenticationGuard 
+          component={() => (
+            <BasePage pageName="Projects"><ProjectsPage /></BasePage>
           )}
         />}
       />
