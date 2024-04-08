@@ -95,7 +95,7 @@ export function getTimeEntry(): Promise<TimeEntry[]> {
 	})
 }
 
-// TEST
+// todo: TEST, remove
 export function getTimeEntryTest(accessToken: string): Promise<TimeEntry[]> {
 	const createTimeEntries = (any : any): TimeEntry[] => {
 		return any.data.timeEntries.map((element: any) => {
