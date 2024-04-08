@@ -1,11 +1,11 @@
 .section {
-  background-color: #5B3347;
+  background-color: #794B62;
   /* margin: 20px 20px; */
-  padding: 30px;
+  padding: 20px;
   border-radius: var(--mantine-radius-lg);
   height: fit-content;
   width: 300px;
-  /* box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); */
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
 }
 
 .icon {
@@ -53,7 +53,7 @@
 }
 
 .addbutton:hover {
-  background-color: white;
+  background-color: #dba644;
   transform: scale(1.1);
 }
 

@@ -12,7 +12,7 @@ function TimerPage() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   
   return (
-    <>
+    <Flex direction={"row"} gap={20}>
       <Flex direction={"column"} flex={1}>
         <TaskInput
           task={task}
@@ -26,7 +26,8 @@ function TimerPage() {
           selectedProject={selectedProject}
         />
       </Flex>
-    </>
+      <TodoList />
+    </Flex>
   );
 }
 
