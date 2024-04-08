@@ -172,6 +172,7 @@ export async function postTodo(todo: Todo) {
 		url: `${import.meta.env.VITE_API_SERVER_URL}/todo`,
 		data: {
 			task: todo.task,
+			dateCreated: todo.dateCreated
 		}
 	})
 	.then((response) => {
@@ -203,7 +204,7 @@ export async function patchTodo(todo: Todo): Promise<Todo> {
 export async function getTodo(): Promise<Todo[]> {
 	const createTodo = (any: any): Todo[] => {
 		return any.data.todos.map((element: any) => {
-			return new Todo(element.task, element.done, element.id);
+			return new Todo(element.task, element.dateCreated, element.done, element.id);
 		});
 	}
 
