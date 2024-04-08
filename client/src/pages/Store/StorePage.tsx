@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Text, Flex, Space, Stack, Divider, Group } from "@mantine/core";
+import { Text, Flex, Stack, Group } from "@mantine/core";
 import { Pet } from "../../classes/models";
 import { getCoins, getPet } from "../../classes/HTTPhelpers";
 import { TextHeader } from "../../components/Headers";
 import StoreItem from "./StoreItem";
 import classes from "./StorePage.module.css";
 import { IconCoin } from '@tabler/icons-react';
+import { RestCats, WorkCats } from "../../classes/shopItems";
 
 function StorePage() {
   // const [storeItems, setStoreItems] = useState<>
@@ -27,33 +28,39 @@ function StorePage() {
   }, []);
 
   const handleBuyItem = () => {
-    
+
   }
 
   return (
     <Stack>
       <TextHeader text="Store" />
 
-      <Group gap={5} className={classes.coinsAmount}>
+      {/* <Group gap={5} className={classes.coinsAmount}>
         <IconCoin stroke={1} />
         <Text>{coins}</Text>
-      </Group>
+      </Group> */}
 
       <Flex direction={"column"} className={classes.section}>
         <Text className={classes.sectionTitle}>Rest Cats</Text>
         <Text>When you're not working, they aren't either. Sometimes cats need a break too.</Text>
       </Flex>
 
-      {/* Display all sleep cats */}
+      <Group>
+        {RestCats.map((catItem, index) => (
+          <StoreItem key={index} catItem={catItem} />
+        ))}
+      </Group>
 
-      <StoreItem />
-
-      <Flex direction={"column"} className={classes.section}>
+      <Flex mt={50} direction={"column"} className={classes.section}>
         <Text className={classes.sectionTitle}>Work Cats</Text>
         <Text className={classes.sectionText}>These cats are hard at work. Whenever the timer is on, they work alongside you!</Text>
       </Flex>
 
-      {/* Display all work cats */}
+      <Group mb={50}>
+        {WorkCats.map((catItem, index) => (
+          <StoreItem key={index} catItem={catItem} />
+        ))}
+      </Group>
     </Stack>
   );
 }
