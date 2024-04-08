@@ -16,10 +16,10 @@ function TimerPage() {
   return (
     <>
       <Flex direction={"row"}>
-        <Stack className={classes.leftbar}>
+        {/* <Stack className={classes.leftbar}> */}
           <NavbarSimple active={active} setActive={setActive} />
-          <TodoList />
-        </Stack>
+          {/* <TodoList /> */}
+        {/* </Stack> */}
         
 
         <Flex direction={"column"} flex={1}>

@@ -1,7 +1,7 @@
 .textinput {
   /* background-color: #F3F0E6; */
   background-color: white;
-  margin: 0 20px;
+  /* margin: 0 20px; */
   padding: 0 20px;
   border-radius: var(--mantine-radius-lg);
   align-items: center;
