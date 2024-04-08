@@ -31,9 +31,21 @@ function StorePage() {
 
   }
 
+  function StoreHeader() {
+    return (
+      <Group className={classes.header}>
+        <Text className={classes.headerText}>Store</Text>
+        <Group className={classes.headerCoins} gap={10}>
+          <IconCoin stroke={1.5} />
+          <Text>{coins}</Text>
+        </Group>
+      </Group>
+    )
+  }
+
   return (
     <>
-      <SimpleHeader text="Store" />
+      <StoreHeader />
       <Stack p={40}>
         <Flex direction={"column"} className={classes.section}>
           <Text className={classes.sectionTitle}>Rest Cats</Text>
