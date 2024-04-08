@@ -8,9 +8,9 @@ export class Pet {
 
 export class Project {
   constructor(
-    public id: string,
     public hex: string,
     public name: string,
+    public id: string,
   ) { };
 }
 
@@ -31,6 +31,16 @@ export class TimeEntry {
   ) { }
 }
 
+//TODO: this is a bit hacky and I don't like it right now
+export class RunningTime {
+  constructor(
+    public startTime: number = 0,
+    public plannedEndTime: number = 0,
+    public projectId: string = '',
+    public name: string = '',
+) {};
+}
+
 export class User {
   constructor(
     public id: string,
@@ -40,6 +50,24 @@ export class User {
     public currentTimerStart: number,
     public projects: Project[],
     public totalCoins: number,
-    public currentTimeEntry?: TimeEntry,
+    public runningTime: RunningTime,
+  ) { }
+}
+
+export class Todo {
+  constructor(
+    public task: string,
+    public dateCreated: number,
+    public done: boolean = false,
+    public id: string = "",
+  ) { }
+}
+
+export class CatItem {
+  constructor (
+    public path: string,
+    public name: string,
+    public cost: number,
+    public id: number
   ) { }
 }
