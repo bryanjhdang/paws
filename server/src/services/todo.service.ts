@@ -7,8 +7,8 @@ import { User } from "../models/User";
 export class TodoService {
     constructor(private db: DatabaseHelper) {};
 
-    createTodo(user : User, task : string) : Promise<Todo> {
-        let newTodo = new Todo(task)
+    createTodo(user : User, task : string, dateCreated: number) : Promise<Todo> {
+        let newTodo = new Todo(task, dateCreated)
         return this.db.createTodo(user.id, newTodo);
     }
 

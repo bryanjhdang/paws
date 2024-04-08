@@ -68,10 +68,10 @@ button:focus-visible {
 } */
 
 body {
-  background-color: #4B2842;
-  color: #F3F0E6;
+  background-color: #FEF9F7;
+  /* color: #F3F0E6; */
 }
 
 :root {
-  padding: 30px 40px;
+  /* padding: 30px 40px; */
 }

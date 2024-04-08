@@ -1,4 +1,4 @@
-import { Text, Button, Switch, Group, Stack } from "@mantine/core";
+import { Text, Button, Switch, Group, Stack, Divider } from "@mantine/core";
 import { useAuth0 } from "@auth0/auth0-react";
 import classes from "./SettingsOptions.module.css";
 
@@ -6,13 +6,14 @@ export function NotificationSettings() {
   return (
     <Stack className={classes.section}>
       <Text className={classes.title}>Sound and Notifications</Text>
+      <Divider />
       <Group>
-        <Switch />
+        <Switch color="#794B62" />
         <Text>Play sound when timer ends</Text>
       </Group>
       <Group>
-        <Switch />
-        <Text>Show notifications on window tab</Text>
+        <Switch color="#794B62" />
+        <Text>Play sound when someone joins</Text>
       </Group>
     </Stack>
   )
@@ -22,6 +23,7 @@ export function PetSettings() {
   return (
     <Stack className={classes.section}>
       <Text className={classes.title}>Pet Actions</Text>
+      <Divider />
       <Button className={classes.button} color="red">
         Delete Pet
       </Button>
@@ -43,7 +45,13 @@ export function AccountSettings() {
   return (
     <Stack className={classes.section}>
       <Text className={classes.title}>Account Actions</Text>
-      <Button onClick={handleLogout} className={classes.button}>
+      <Divider />
+      <Button 
+        onClick={handleLogout} 
+        className={classes.button}
+        variant="outline"
+        color="red"
+      >
         Log Out
       </Button>
     </Stack>
