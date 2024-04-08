@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Avatar, Divider, Flex, Grid, GridCol, Group, Stack, Text } from "@mantine/core";
-import { TextHeader } from "../../components/Headers";
+import { SimpleHeader, TextHeader } from "../../components/Headers";
 import { NotificationSettings, AccountSettings } from "./SettingsOptions"
 import { useAuth0 } from "@auth0/auth0-react";
 import classes from "./SettingsPage.module.css";
@@ -24,8 +24,8 @@ function ProfileDisplay() {
 function SettingsPage() {
   return (
     <>
-      <Stack flex={1}>
-        <TextHeader text="Settings" />
+      <SimpleHeader text="Settings" />
+      <Stack p={40} flex={1}>
         <NotificationSettings />
         <AccountSettings />
       </Stack>

@@ -1,5 +1,5 @@
 import { Button, Stack, Table } from "@mantine/core";
-import { TextHeader } from "../../components/Headers";
+import { SimpleHeader, TextHeader } from "../../components/Headers";
 import { Project } from "../../classes/models";
 import { useEffect, useState } from "react";
 import { deleteProject, getProjects } from "../../classes/HTTPhelpers";
@@ -35,19 +35,21 @@ function ProjectsPage() {
   ));
 
   return (
-    <Stack>
-      <TextHeader text="Projects" />
-      <Table>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Project</Table.Th>
-            <Table.Th>Color</Table.Th>
-            <Table.Th>Date Created</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>{rows}</Table.Tbody>
-      </Table>
-    </Stack>
+    <>
+      <SimpleHeader text="Projects" />
+      <Stack p={40}>
+        <Table>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Project</Table.Th>
+              <Table.Th>Color</Table.Th>
+              <Table.Th>Date Created</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>{rows}</Table.Tbody>
+        </Table>
+      </Stack>
+    </>
   )
 }
 
