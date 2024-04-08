@@ -1,5 +1,5 @@
 import { Pet } from "../models/Pet";
-import { User } from "../models/User";
+import { NoRunning, User } from "../models/User";
 import { firestoreHelper } from "./firestore.helper";
 
 export class OAuthHelper {
@@ -8,8 +8,13 @@ export class OAuthHelper {
     }
 
     async addNewUser(oAuthSub: string): Promise<User> {
-        let newUser = new User('default_name', new Pet(), undefined, 0, oAuthSub);
-        const id = firestoreHelper.addUser(newUser);
+        // let newUser = new User('default_name', new Pet(), undefined, 0, oAuthSub);
+        // let user = new User("temp_name", new Pet(), new NoRunning(), 0, oAuthSub);
+        // user.id = oAuthSub;
+
+        let user = new User("test name", new Pet());
+
+        const id = firestoreHelper.addUser(user);
         return firestoreHelper.getUser(oAuthSub); // todo: return directly?
     }
 }
