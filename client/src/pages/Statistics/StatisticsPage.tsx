@@ -2,36 +2,45 @@ import { useEffect, useState } from "react";
 import { Text, Flex } from "@mantine/core";
 import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
 import { TimeEntry } from "../../classes/models";
-import { getTimeEntryTest } from "../../classes/HTTPhelpers";
-import { useAuth0 } from "@auth0/auth0-react";
+import { getTimeEntry } from "../../classes/HTTPhelpers";
+// import { getTimeEntryTest } from "../../classes/HTTPhelpers";
+// import { useAuth0 } from "@auth0/auth0-react";
 
 function StatisticsPage() {
   const [active, setActive ] = useState('Statistics')
   const [timeEntries, setTimeEntries] = useState<TimeEntry[]>([]);
-  const { getAccessTokenSilently } = useAuth0();
+  // const { getAccessTokenSilently } = useAuth0();
+
+  // useEffect(() => {
+  //   const fetchAccessToken = async () => {
+  //     try {
+  //       const token = await getAccessTokenSilently();
+  //       // setAccessToken(token);
+  //       getTimeEntryTest(token).then(
+  //         (response) => {
+  //           setTimeEntries(response);
+  //         }
+  //       )
+  //     } catch (error) {
+  //       console.error('Error while fetching access token:', error);
+  //     }
+  //   };
+
+  //   fetchAccessToken();
+
+  //   // getTimeEntryTest(token).then(
+  //   //   (response) => {
+  //   //     setTimeEntries(response);
+  //   //   }
+  //   // )
+  // }, []);
 
   useEffect(() => {
-    const fetchAccessToken = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-        // setAccessToken(token);
-        getTimeEntryTest(token).then(
-          (response) => {
-            setTimeEntries(response);
-          }
-        )
-      } catch (error) {
-        console.error('Error while fetching access token:', error);
+    getTimeEntry().then(
+      (response) => {
+        setTimeEntries(response);
       }
-    };
-
-    fetchAccessToken();
-
-    // getTimeEntryTest(token).then(
-    //   (response) => {
-    //     setTimeEntries(response);
-    //   }
-    // )
+    )
   }, []);
 
 
