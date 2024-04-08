@@ -37,7 +37,6 @@ function ProjectsPage() {
   return (
     <Stack>
       <TextHeader text="Projects" />
-      {/* Display projects */}
       <Table>
         <Table.Thead>
           <Table.Tr>
