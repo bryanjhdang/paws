@@ -4,6 +4,7 @@ import { Pet } from "../models/Pet";
 import { User } from "../models/User";
 
 export class PetService {
+
     constructor(private db: DatabaseHelper) { };
 
     getCoins(user : User) : number {
@@ -16,6 +17,26 @@ export class PetService {
 
     getPet(user: User) : Pet {
         return new Pet();
+    }
+
+    async equipPet(user: User, workId: number, restId: number) {
+        if (!user.pet.ownedCats.includes(workId) || !user.pet.ownedCats.includes(restId)) {
+            throw new Error("User does not own the given pet");
+        } 
+
+        user.pet.workId = workId;
+        user.pet.restId = restId;
+        firestoreHelper.updateUser(user);
+    }
+
+    async buyPet(user : User, id: number, cost: number) {
+        if (user.totalCoins < cost) {
+            throw new Error("User does not have enough coins for this purchase");
+        }
+
+        user.totalCoins -= cost;
+        user.pet.ownedCats.push(id);
+        firestoreHelper.updateUser(user);
     }
 }
 
