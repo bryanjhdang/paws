@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Text, Flex, Stack, Group, Divider } from "@mantine/core";
 import { Pet } from "../../classes/models";
 import { getCoins, getPet } from "../../classes/HTTPhelpers";
-import { SimpleHeader, TextHeader } from "../../components/Headers";
+import { FunctionalHeader, SimpleHeader, TextHeader } from "../../components/Headers";
 import StoreItem from "./StoreItem";
 import classes from "./StorePage.module.css";
 import { IconCoin } from '@tabler/icons-react';
@@ -31,21 +31,18 @@ function StorePage() {
 
   }
 
-  function StoreHeader() {
+  const coinDisplay = () => {
     return (
-      <Group className={classes.header}>
-        <Text className={classes.headerText}>Store</Text>
-        <Group className={classes.headerCoins} gap={10}>
-          <IconCoin stroke={1.5} />
-          <Text>{coins}</Text>
-        </Group>
+      <Group className={classes.coinDisplay} gap={10}>
+        <IconCoin stroke={1.5} />
+        <Text>{coins}</Text>
       </Group>
     )
   }
 
   return (
     <>
-      <StoreHeader />
+      <FunctionalHeader text="Store" element={coinDisplay()} />
       <Stack p={40}>
         <Flex direction={"column"} className={classes.section}>
           <Text className={classes.sectionTitle}>Rest Cats</Text>
