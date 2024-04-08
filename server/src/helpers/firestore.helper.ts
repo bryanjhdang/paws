@@ -89,9 +89,9 @@ export class FirestoreHelper implements DatabaseHelper {
   private serializeProject(userId: string, project: Project) {
     return {
       userId: userId,
-      id: project.id,
       hex: project.hex,
-      name: project.name
+      name: project.name,
+      id: project.id
     }
   }
 
@@ -158,7 +158,7 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
   private deserializeProject(project: any): Project {
-    return new Project(project.id, project.hex, project.name)
+    return new Project(project.hex, project.name, project.id)
   }
 
 

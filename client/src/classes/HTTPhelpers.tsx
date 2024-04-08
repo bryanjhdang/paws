@@ -130,12 +130,13 @@ export function postTimeEntryStop(endTimeNumber : number): void {
 
 // Projects
 export async function postProject(project: Project) {
+	console.log(project);
 	axios({
 		method: 'post',
 		url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/project`,
 		data: {
-			hex: project.hex,
-			name: project.name
+			name: project.name,
+			hex: project.hex
 		}
 	})
 	.then((response) => {
@@ -148,7 +149,7 @@ export async function postProject(project: Project) {
 export async function getProjects(): Promise<Project[]> {
 	const createProjects = (any: any): Project[] => {
 		return any.data.projects.map((element: any) => {
-			return new Project(element.id, element.hex, element.name);
+			return new Project(element.hex, element.name, element.id);
 		});
 	}
 
@@ -163,6 +164,15 @@ export async function getProjects(): Promise<Project[]> {
 			reject(error)
 		});
 	})
+}
+
+export async function deleteProject(id: string) {
+	try {
+		await axios.delete(`${import.meta.env.VITE_API_SERVER_URL}/timeEntry/project/${id}`); 
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
 }
 
 // ToDo

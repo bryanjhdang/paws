@@ -18,7 +18,7 @@ function NewProjectModal({ opened, close, onAddProject }: NewProjectModalProps):
   const [projectColor, setProjectColor] = useState(DEFAULT_THEME.colors.red[4]);
 
   const handleCreateProject = () => {
-    const newProject = new Project(Date.now().toString(), projectColor, projectName);
+    const newProject = new Project(projectColor, projectName, Date.now().toString());
     onAddProject(newProject);
     close();
     setProjectName("");
