@@ -1,5 +1,5 @@
 .navbar {
-  min-width: 300px;
+  min-width: 250px;
   height: 100vh;
   /* border-radius: var(--mantine-radius-lg); */
   overflow-y: auto;
@@ -25,6 +25,12 @@
   margin-left: var(--mantine-spacing-xs);
 }
 
+.footer {
+  /* padding-top: var(--mantine-spacing-md);
+  margin-top: var(--mantine-spacing-md); */
+  /* padding-bottom: var(--mantine-spacing-md); */
+}
+
 .link {
   display: flex;
   align-items: center;
@@ -46,7 +52,8 @@
 
 .link:hover {
   background-color: rgba(255,255,255,0.1);
-  transform: translate(5px, -5px);
+  /* transform: translate(5px, -5px); */
+  transform: scale(1.05);
 }
 
 .linkIcon {
