@@ -1,0 +1,13 @@
+.textHeader {
+  font-size: 30px;
+  font-weight: 500;
+  /* color: #794B62; */
+}
+
+.simpleHeader {
+  font-size: 30px;
+  font-weight: 500;
+  background-color: #5B3347;
+  padding: 10px 20px;
+  border-radius: var(--mantine-radius-lg);
+}

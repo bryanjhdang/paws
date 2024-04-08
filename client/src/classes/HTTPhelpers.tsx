@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Pet, Project, TimeEntry, User } from "./models";
+import { Pet, Project, TimeEntry, Todo, User } from "./models";
         
 // Account
 export function getAccount(accountId: string): Promise<User> {
@@ -12,7 +12,7 @@ export function getAccount(accountId: string): Promise<User> {
 			any.data.currentTimerStart,
 			any.data.projects,
 			any.data.totalCoins,
-			any.data.currentTimeEntry
+			any.data.runningTime
 		);
 	}
 
@@ -59,8 +59,7 @@ export function getCoins(): Promise<number> {
 			url: `${import.meta.env.VITE_API_SERVER_URL}/pet/coins`
 		})
 		.then((response) => {
-			console.log(response);
-			resolve(response.data);
+			resolve(response.data.coins);
 		}, (error) => {
 			reject(error);
 		});
@@ -162,12 +161,13 @@ export function postTimeEntryStop(endTimeNumber : number): void {
 
 // Projects
 export async function postProject(project: Project) {
+	console.log(project);
 	axios({
 		method: 'post',
 		url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/project`,
 		data: {
-			hex: project.hex,
-			name: project.name
+			name: project.name,
+			hex: project.hex
 		}
 	})
 	.then((response) => {
@@ -180,7 +180,7 @@ export async function postProject(project: Project) {
 export async function getProjects(): Promise<Project[]> {
 	const createProjects = (any: any): Project[] => {
 		return any.data.projects.map((element: any) => {
-			return new Project(element.id, element.hex, element.name);
+			return new Project(element.hex, element.name, element.id);
 		});
 	}
 
@@ -193,6 +193,71 @@ export async function getProjects(): Promise<Project[]> {
 			resolve(createProjects(response));
 		}, (error) => {
 			reject(error)
+		});
+	})
+}
+
+export async function deleteProject(id: string) {
+	try {
+		await axios.delete(`${import.meta.env.VITE_API_SERVER_URL}/timeEntry/project/${id}`); 
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+}
+
+// ToDo
+export async function postTodo(todo: Todo) {
+	axios({
+		method: 'post',
+		url: `${import.meta.env.VITE_API_SERVER_URL}/todo`,
+		data: {
+			task: todo.task,
+			dateCreated: todo.dateCreated
+		}
+	})
+	.then((response) => {
+		todo.id = response.data.id;
+	}, (error) => {
+		console.log(error);
+	});
+}
+
+export async function deleteTodo(id: string) {
+	try {
+		await axios.delete(`${import.meta.env.VITE_API_SERVER_URL}/todo/${id}`); 
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+}
+
+export async function patchTodo(todo: Todo): Promise<Todo> {
+  try {
+    const response = await axios.patch(`${import.meta.env.VITE_API_SERVER_URL}/todo/`, todo);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error; 
+  }
+}
+
+export async function getTodo(): Promise<Todo[]> {
+	const createTodo = (any: any): Todo[] => {
+		return any.data.todos.map((element: any) => {
+			return new Todo(element.task, element.dateCreated, element.done, element.id);
+		});
+	}
+
+	return new Promise<Todo[]>((resolve, reject) => {
+		axios({
+			method: 'get',
+			url: `${import.meta.env.VITE_API_SERVER_URL}/todo`,
+		})
+		.then((response) => {
+			resolve(createTodo(response));
+		}, (error) => {
+			reject(error);
 		});
 	})
 }

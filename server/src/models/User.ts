@@ -3,22 +3,56 @@ import { Pet } from "./Pet";
 import { Project } from "./Project";
 import { TimeEntry } from "./TimeEntry";
 
+export interface RunningTime {
+    createTimeEntry(endTime : number) : TimeEntry | boolean;
+}
+
+export class RunningStopwatch implements RunningTime {
+    constructor(
+        public startTime: number = 0,
+        public projectId: string = '',
+        public name: string = '',
+    ) {};
+
+    createTimeEntry(endTime : number) : TimeEntry  {
+        return new TimeEntry(this.startTime, endTime, this.projectId, this.name);
+    }
+}
+
+export class RunningCountdown implements RunningTime {
+    constructor(
+        public startTime: number = 0,
+        public plannedEndTime: number = 0,
+        public projectId: string = '',
+        public name: string = '',
+    ) {};
+
+    createTimeEntry(endTime : number) : TimeEntry  {
+        return new TimeEntry(this.startTime, endTime, this.projectId, this.name);
+    }
+}
+
+export class NoRunning implements RunningTime {
+    createTimeEntry(endTime: number): boolean | TimeEntry {
+        return false;
+    }
+}
+
 export class User {
     constructor(
-        public id: string = '' ,
         public displayName: string = '',
         public pet: Pet = new Pet(),
-        public currentTimeEntry: TimeEntry = new TimeEntry("", 0, 0, "", "", -1),
+        public runningTime: RunningTime = new NoRunning(),
         public totalCoins: number = 0,
+        public id: string = ''
     ) { };
 
-    makeSimple() {
-        return {
-            id: this.id,
-            displayName: this.displayName,
-            pet: this.pet.makeSimple(),
-            currentTimeEntry: this.currentTimeEntry ? this.currentTimeEntry.makeSimple(this.id) : undefined,
-            totalCoins: this.totalCoins
+    stop(endTime : number) : TimeEntry | boolean {
+        let result = this.runningTime.createTimeEntry(endTime);
+        if (result instanceof TimeEntry) {
+            this.totalCoins += result.earnedCoins;
         } 
-    };
-}
+        this.runningTime = new NoRunning();
+        return result;
+    }
+}   
