@@ -63,11 +63,10 @@ export class Todo {
   ) { }
 }
 
-export class ShopItem {
+export class CatItem {
   constructor (
     public path: string,
     public name: string,
-    public cost: number,
-    public purchased: boolean
+    public cost: number
   ) { }
 }
