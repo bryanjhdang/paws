@@ -62,3 +62,12 @@ export class Todo {
     public id: string = "",
   ) { }
 }
+
+export class ShopItem {
+  constructor (
+    public path: string,
+    public name: string,
+    public cost: number,
+    public purchased: boolean
+  ) { }
+}
