@@ -59,7 +59,6 @@ export function getCoins(): Promise<number> {
 			url: `${import.meta.env.VITE_API_SERVER_URL}/pet/coins`
 		})
 		.then((response) => {
-			console.log(response);
 			resolve(response.data);
 		}, (error) => {
 			reject(error);

@@ -2,7 +2,7 @@ import { Button, Stack, Table } from "@mantine/core";
 import { TextHeader } from "../../components/Headers";
 import { Project } from "../../classes/models";
 import { useEffect, useState } from "react";
-import { getProjects } from "../../classes/HTTPhelpers";
+import { deleteProject, getProjects } from "../../classes/HTTPhelpers";
 
 function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -11,10 +11,16 @@ function ProjectsPage() {
     getProjects().then(
       (response) => {
         setProjects(response);
-        console.log(response);
       }
     );
   }, []);
+
+  const handleDeleteProject = (id: string) => {
+    deleteProject(id).then(() => {
+      const updatedProjects = projects.filter((project) => project.id !== id);
+      setProjects(updatedProjects);
+    })
+  }
 
   const rows = projects.map((element) => (
     <Table.Tr key={element.id}>
@@ -22,12 +28,11 @@ function ProjectsPage() {
       <Table.Td>{element.hex}</Table.Td>
       <Table.Td>TODO</Table.Td>
       <Table.Td>
-        <Button>Edit</Button>
-        <Button>Delete</Button>
+        <Button>TODO Edit</Button>
+        <Button onClick={() => handleDeleteProject(element.id)}>Delete</Button>
       </Table.Td>
     </Table.Tr>
   ));
-
 
   return (
     <Stack>
