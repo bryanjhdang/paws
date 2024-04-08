@@ -261,6 +261,13 @@ export class FirestoreHelper implements DatabaseHelper {
     })
   }
 
+  deleteProject(projectId: string) : void {
+    this.projectDB.doc(projectId).delete()
+      .catch((err : Error) => {
+      console.log(err);
+    })  
+  }
+
   createTodo(userId: string, todo: Todo) : Promise<Todo> {
     todo.id = this.todoDB.doc().id;
     return this.saveTodo(userId, todo);

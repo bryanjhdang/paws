@@ -30,7 +30,7 @@ export interface DatabaseHelper {
 
     getProjects(userId: string) : Promise<Project[]>;
 
-    // deleteProject(projectId: string) : void;
+    deleteProject(projectId: string) : void;
 
     createTodo(userId: string, todo: Todo) : Promise<Todo>;
 
