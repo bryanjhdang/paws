@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Text, Flex, Stack, Group } from "@mantine/core";
+import { Text, Flex, Stack, Group, Divider } from "@mantine/core";
 import { Pet } from "../../classes/models";
 import { getCoins, getPet } from "../../classes/HTTPhelpers";
 import { TextHeader } from "../../components/Headers";
@@ -45,11 +45,13 @@ function StorePage() {
         <Text>When you're not working, they aren't either. Sometimes cats need a break too.</Text>
       </Flex>
 
-      <Group>
+      <Group mb={50}>
         {RestCats.map((catItem, index) => (
           <StoreItem key={index} catItem={catItem} />
         ))}
       </Group>
+
+      <Divider />
 
       <Flex mt={50} direction={"column"} className={classes.section}>
         <Text className={classes.sectionTitle}>Work Cats</Text>
