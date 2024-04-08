@@ -15,10 +15,20 @@ import { CallbackPage } from "./pages/Callback/CallbackPage";
 import { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 import { useEffect, useState } from "react";
 import axios from 'axios';
+import { getTimeEntryTest } from "./classes/HTTPhelpers";
 
 export const App: React.FC = () => {
   const { isLoading, getAccessTokenSilently } = useAuth0();
   const [accessToken, setAccessToken] = useState<string | null>(null);
+
+  // creating an Axios instance
+  // const axiosInstance = axios.create({
+  //   baseURL: 'https://api.timbucktoo.com',
+  // });
+
+  // Setting the default headers
+  
+  // axiosInstance.defaults.headers.post['Content-Type'] = 'application/json';
 
   useEffect(() => {
     const fetchAccessToken = async () => {
@@ -31,14 +41,35 @@ export const App: React.FC = () => {
     };
 
     fetchAccessToken();
-  }, [getAccessTokenSilently]);
+    console.log("got access token: ", accessToken);
+
+    if (accessToken) {
+      console.log("Attaching token: ", accessToken);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+      // axiosInstance.defaults.headers.common['Authorization'] = `Bearer YOUR_ACCESS_TOKEN`;
+
+      // getTimeEntryTest(accessToken).then(
+      // (response) => {
+      //   console.log(response);
+      // })
+    } else {
+      console.error("NO ACCESS TOKEN\n"); 
+    }
+
+
+    // axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+  }, [getAccessTokenSilently, accessToken]);
 
   // set default headers for axios requests
-  useEffect(() => {
-    if (accessToken) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    }
-  }, [accessToken]);
+  // useEffect(() => {
+  //   if (accessToken) {
+  //     console.log("Attaching token: ", accessToken);
+  //     axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+  //   } else {
+  //     console.error("NO ACCESS TOKEN\n");
+      
+  //   }
+  // }, [accessToken]);
 
 
   if (isLoading) {

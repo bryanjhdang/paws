@@ -69,6 +69,7 @@ export function getCoins(): Promise<number> {
 
 // TimeEntry
 export function getTimeEntry(): Promise<TimeEntry[]> {
+
 	const createTimeEntries = (any : any): TimeEntry[] => {
 		return any.data.timeEntries.map((element: any) => {
 			return new TimeEntry(
@@ -90,6 +91,37 @@ export function getTimeEntry(): Promise<TimeEntry[]> {
 		.then((response) => {
 			resolve(createTimeEntries(response));
 		}, (error) => {
+			reject(error);
+		})
+	})
+}
+
+// TEST
+export function getTimeEntryTest(accessToken: string): Promise<TimeEntry[]> {
+	const createTimeEntries = (any : any): TimeEntry[] => {
+		return any.data.timeEntries.map((element: any) => {
+			return new TimeEntry(
+				element.id,
+				element.startTime,
+				element.endTime,
+				element.project,
+				element.name,
+				element.earnedCoins
+			);
+		});
+	}
+
+	return new Promise<TimeEntry[]>((resolve, reject) => {	
+		axios({
+			method: 'get',
+			url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry`,
+			headers: { Authorization: `Bearer ${accessToken}` }
+		})
+		.then((response) => {
+			resolve(createTimeEntries(response));
+			// console.log(response);
+		}, (error) => {
+			// console.log(error);
 			reject(error);
 		})
 	})
