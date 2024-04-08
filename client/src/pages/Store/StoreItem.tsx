@@ -1,19 +1,27 @@
-import { Text } from "@mantine/core"
+import { Button, Flex, Group, Image, Stack, Text } from "@mantine/core";
+import classes from "./StoreItem.module.css";
+import ExampleImage from "../../assets/nowork-cats/sleepy-cat-1.gif"
+import Example2 from "../../assets/nowork-cats/sleepy-cat-2.gif"
+import { IconCoin } from '@tabler/icons-react';
 
-interface StoreItemProps {
-  name: string,
-  price: string,
-  unlocked: boolean
-  // Add image later
-}
+function StoreItem() {
+  const handlePurchaseItem = () => {
+    console.log("test!")
+  }
 
-function StoreItem({ name, price, unlocked } : StoreItemProps) {
   return (
-    <>
-      <Text>{name}</Text>
-      <Text>{price}</Text>
-      <Text>{unlocked}</Text>
-    </>
+    <Stack className={classes.itemBackground} align="center" gap={10}>
+      <Image className={classes.itemImage} src={Example2} />
+      <Text className={classes.itemHeaderText}>Sleepy Cat</Text>
+      <Button 
+        className={classes.itemPurchaseButton} 
+        onClick={handlePurchaseItem}
+        color="#6ca74a"
+      >
+        <IconCoin stroke={1.5} />
+        <Text className={classes.itemPriceText}>100</Text>
+      </Button>
+    </Stack>
   )
 }
 
