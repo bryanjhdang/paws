@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Text, Flex, Stack, Group, Divider } from "@mantine/core";
 import { Pet } from "../../classes/models";
 import { getCoins, getPet } from "../../classes/HTTPhelpers";
-import { TextHeader } from "../../components/Headers";
+import { SimpleHeader, TextHeader } from "../../components/Headers";
 import StoreItem from "./StoreItem";
 import classes from "./StorePage.module.css";
 import { IconCoin } from '@tabler/icons-react';
@@ -32,38 +32,34 @@ function StorePage() {
   }
 
   return (
-    <Stack>
-      <TextHeader text="Store" />
+    <>
+      <SimpleHeader text="Store" />
+      <Stack p={40}>
+        <Flex direction={"column"} className={classes.section}>
+          <Text className={classes.sectionTitle}>Rest Cats</Text>
+          <Text>When you're not working, they aren't either. Sometimes cats need a break too.</Text>
+        </Flex>
 
-      {/* <Group gap={5} className={classes.coinsAmount}>
-        <IconCoin stroke={1} />
-        <Text>{coins}</Text>
-      </Group> */}
+        <Group mb={50}>
+          {RestCats.map((catItem, index) => (
+            <StoreItem key={index} catItem={catItem} />
+          ))}
+        </Group>
 
-      <Flex direction={"column"} className={classes.section}>
-        <Text className={classes.sectionTitle}>Rest Cats</Text>
-        <Text>When you're not working, they aren't either. Sometimes cats need a break too.</Text>
-      </Flex>
+        <Divider />
 
-      <Group mb={50}>
-        {RestCats.map((catItem, index) => (
-          <StoreItem key={index} catItem={catItem} />
-        ))}
-      </Group>
+        <Flex mt={50} direction={"column"} className={classes.section}>
+          <Text className={classes.sectionTitle}>Work Cats</Text>
+          <Text className={classes.sectionText}>These cats are hard at work. Whenever the timer is on, they work alongside you!</Text>
+        </Flex>
 
-      <Divider />
-
-      <Flex mt={50} direction={"column"} className={classes.section}>
-        <Text className={classes.sectionTitle}>Work Cats</Text>
-        <Text className={classes.sectionText}>These cats are hard at work. Whenever the timer is on, they work alongside you!</Text>
-      </Flex>
-
-      <Group mb={50}>
-        {WorkCats.map((catItem, index) => (
-          <StoreItem key={index} catItem={catItem} />
-        ))}
-      </Group>
-    </Stack>
+        <Group mb={50}>
+          {WorkCats.map((catItem, index) => (
+            <StoreItem key={index} catItem={catItem} />
+          ))}
+        </Group>
+      </Stack>
+    </>
   );
 }
 
