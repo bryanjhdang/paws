@@ -1,5 +1,6 @@
 // src/index.js
 import express, { Express, Request, Response } from "express";
+import { createServer } from 'node:http';
 import dotenv from "dotenv";
 import cors from "cors";
 import { Server, Socket } from "socket.io"
@@ -14,9 +15,8 @@ dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 8080;
-const wsPort = process.env.WS_PORT || 8081;
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
+const server = createServer(app);
+const io = new Server(server);
 
 app.use(cors());
 app.use(express.json());
@@ -35,10 +35,6 @@ app.use('/pet', petController);
 
 wsInit(io);
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
-});
-
-server.listen(wsPort, () => {
-  console.log(`[socket]: Socket listening on http://localhost:${wsPort}`);
 });

@@ -3,13 +3,13 @@ import { io, Socket } from "socket.io-client"
 
 
 export class WsService {
-    private ws: Socket = io();
+    private ws: Socket = io(`http://localhost:${process.env.PORT || 8080}`);
 
     constructor() {
     }
 
     updateUser(user: User) {
-        this.ws.emit("updateUser", user);
+        this.ws.emit('updateUser', user);
     }
 }
 
