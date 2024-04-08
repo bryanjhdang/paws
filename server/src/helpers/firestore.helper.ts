@@ -104,10 +104,6 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
   private deserializePet(userId : string, data: admin.firestore.DocumentData) : Pet {
-    //temp as we transition database
-    if (!data.workId) {
-      return new Pet();
-    }
     return new Pet(data.workId, data.restId, data.ownedCats);
   }
 
