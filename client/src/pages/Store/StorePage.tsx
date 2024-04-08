@@ -26,7 +26,7 @@ function StorePage() {
   }, []);
 
   return (
-    <Flex direction={'row'} gap={50}>
+    <Flex direction={'row'}>
       <NavbarSimple active={active} setActive={setActive} />
       <Stack>
         <TextHeader text="Store" />
