@@ -62,3 +62,12 @@ export class Todo {
     public id: string = "",
   ) { }
 }
+
+export class CatItem {
+  constructor (
+    public path: string,
+    public name: string,
+    public cost: number,
+    public id: number
+  ) { }
+}
