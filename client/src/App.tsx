@@ -11,6 +11,7 @@ import { PageLoader } from "./components/PageLoader";
 import { AuthenticationGuard } from "./utils/Auth0/AuthenticationGuard";
 import { CallbackPage } from "./non-app-pages/Callback/CallbackPage";
 import { NotFoundPage } from "./non-app-pages/NotFound/NotFoundPage";
+import BasePage from "./pages/BasePage";
 
 export const App: React.FC = () => {
   const { isLoading } = useAuth0();
@@ -29,19 +30,35 @@ export const App: React.FC = () => {
       <Route path="/" element={<LandingPage />} />
       <Route
         path="/timer"
-        element={<AuthenticationGuard component={TimerPage} />}
+        element={<AuthenticationGuard 
+          component={() => (
+            <BasePage pageName="Timer"><TimerPage /></BasePage>
+          )}
+        />}
       />
       <Route
         path="/store"
-        element={<AuthenticationGuard component={StorePage} />}
+        element={<AuthenticationGuard
+          component={() => (
+            <BasePage pageName="Store"><StorePage /></BasePage>
+          )}
+        />}
       />
       <Route
         path="/statistics"
-        element={<AuthenticationGuard component={StatisticsPage} />}
+        element={<AuthenticationGuard 
+          component={() => (
+            <BasePage pageName="Stats"><StatisticsPage /></BasePage>
+          )}
+        />}
       />
       <Route
         path="/settings"
-        element={<AuthenticationGuard component={SettingsPage} />}
+        element={<AuthenticationGuard 
+          component={() => (
+            <BasePage pageName="Settings"><SettingsPage /></BasePage>
+          )}
+        />}
       />
       <Route path="/callback" element={<CallbackPage />} />
       <Route path="*" element={<NotFoundPage />} />
