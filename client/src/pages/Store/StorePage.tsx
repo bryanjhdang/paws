@@ -37,7 +37,7 @@ function StorePage() {
 
       <Flex direction={"column"} className={classes.section}>
         <Text className={classes.sectionTitle}>Rest Cats</Text>
-        <Text>These are the cats you'll see when you're not using the timer! They're taking a break, too.</Text>
+        <Text>When you're not working, they aren't either. Sometimes cats need a break too.</Text>
       </Flex>
 
       {/* Display all sleep cats */}
