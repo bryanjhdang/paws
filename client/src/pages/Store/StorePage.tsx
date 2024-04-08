@@ -26,6 +26,10 @@ function StorePage() {
     )
   }, []);
 
+  const handleBuyItem = () => {
+    
+  }
+
   return (
     <Stack>
       <TextHeader text="Store" />

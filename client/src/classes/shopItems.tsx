@@ -1,4 +1,4 @@
-
+import { ShopItem } from "./models";
 
 // Rest Cats
 

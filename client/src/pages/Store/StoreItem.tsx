@@ -1,7 +1,7 @@
 import { Button, Flex, Group, Image, Stack, Text } from "@mantine/core";
 import classes from "./StoreItem.module.css";
 import ExampleImage from "../../assets/nowork-cats/sleepy-cat-1.gif"
-import Example2 from "../../assets/nowork-cats/sleepy-cat-2.gif"
+import Example2 from "../../assets/work-cats/work-cat-3.gif"
 import { IconCoin } from '@tabler/icons-react';
 
 function StoreItem() {
@@ -12,7 +12,7 @@ function StoreItem() {
   return (
     <Stack className={classes.itemBackground} align="center" gap={10}>
       <Image className={classes.itemImage} src={Example2} />
-      <Text className={classes.itemHeaderText}>Sleepy Cat</Text>
+      <Text className={classes.itemHeaderText}>Snickers</Text>
       <Button 
         className={classes.itemPurchaseButton} 
         onClick={handlePurchaseItem}
