@@ -1,6 +1,6 @@
 import { Flex, TextInput } from "@mantine/core";
-import { Project } from "../../classes/models";
-import { ProjectButton } from "./ProjectButton";
+import { Project } from "../../../classes/models";
+import { ProjectButton } from "../ProjectButton";
 import classes from './TaskInput.module.css';
 
 interface TaskInputProps {
