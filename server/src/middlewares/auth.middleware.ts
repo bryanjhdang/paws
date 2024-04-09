@@ -19,6 +19,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
   // todo: this could be a lot cleaner...
   if (auth?.payload.sub) {
     const userId = auth.payload.sub;
+    
     accountHelper.getUser(userId).then((user) => {
         res.locals.user = user;
         next();
