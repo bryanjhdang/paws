@@ -84,7 +84,6 @@ function StorePage() {
       <Stack p={40}>
         <Flex direction={"column"} className={classes.section}>
           <Text className={classes.sectionTitle}>Rest Cats</Text>
-          <Text>When you're not working, they aren't either. Sometimes cats need a break too.</Text>
         </Flex>
 
         <Group mb={50}>
@@ -97,7 +96,6 @@ function StorePage() {
 
         <Flex mt={50} direction={"column"} className={classes.section}>
           <Text className={classes.sectionTitle}>Work Cats</Text>
-          <Text className={classes.sectionText}>These cats are hard at work. Whenever the timer is on, they work alongside you!</Text>
         </Flex>
 
         <Group mb={50}>
