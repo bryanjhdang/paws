@@ -76,8 +76,8 @@ export function DistributionCard(props: any): JSX.Element {
         bg={"#5B3347"}
         c={"black"}
         radius={"md"}
-        mih={"32em"}
-        mah={"32em"}
+        mih={"28em"}
+        mah={"28em"}
       >
         <Text c={"#F3F0E6"} size="lg" fw={700}>{props.title}</Text>
         <ReactECharts option={chart} />
