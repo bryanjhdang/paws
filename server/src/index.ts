@@ -21,9 +21,17 @@ import { wsInit } from "./ws";
 
 dotenv.config();
 
+
+
 const app: Express = express();
 const port = process.env.PORT || 8080;
 const address = process.env.ADDRESS || "localhost"
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173"
+  }
+});
 
 app.use(cors());
 app.use(express.json());
