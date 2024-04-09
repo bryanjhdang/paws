@@ -51,6 +51,7 @@ interface StartResponse {
 timeEntryController.post(`/start`, (req: Request, res: Response) => {
     let body : StartRequest = req.body;
     try {
+        console.log(res.locals.user.runningTime);
         timeEntryService.startEntry(res.locals.user, body.entryName, body.projectId, body.startTime, body.endTime);
         res.status(StatusCodes.CREATED)
         .json({message: "Started time entry!"});
@@ -103,6 +104,7 @@ timeEntryController.post('/upload', (req: Request, res: Response) => {
 interface createProjectRequest {
     name : string,
     hex : string, 
+    dateCreated : number,
 }
 interface createProjectResponse  {
     projectId: string;
@@ -110,7 +112,7 @@ interface createProjectResponse  {
 timeEntryController.post('/project', (req : Request, res: Response) => {
     let body : createProjectRequest = req.body;
 
-    let idPromise = timeEntryService.createProject(res.locals.user, body.name, body.hex);
+    let idPromise = timeEntryService.createProject(res.locals.user, body.name, body.hex, body.dateCreated);
     idPromise
     .then((id) => {
         let response : createProjectResponse = {
@@ -145,6 +147,17 @@ timeEntryController.get('/project', (req : Request, res: Response) => {
             .json({messsage: `Could not create projects for user ${res.locals.user.id}`, error : err});
     });
 
+})
+
+timeEntryController.delete('/project/:id', (req: Request, res: Response) => {
+    try {
+        timeEntryService.deleteProject(res.locals.user, req.params.id);
+        res.status(StatusCodes.NO_CONTENT)
+            .send()
+    } catch (err) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+            .json({ message: `Could not delete the todo with id ${req.params.id}`, error: err });
+    }
 })
 
 export { timeEntryController };
