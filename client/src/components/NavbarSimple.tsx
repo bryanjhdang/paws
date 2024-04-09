@@ -1,7 +1,8 @@
-import { Text } from '@mantine/core';
-import { IconClock, IconChartBar, IconBuildingStore, IconSettings, IconFolderOpen } from '@tabler/icons-react';
+import { Button, Menu, Text, rem } from '@mantine/core';
+import { IconClock, IconChartBar, IconBuildingStore, IconMenu2, IconFolderOpen, IconLogout } from '@tabler/icons-react';
 import classes from './NavbarSimple.module.css';
 import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface NavbarProps {
   active: string;
@@ -16,7 +17,7 @@ const data = [
 ];
 
 const footerData = [
-  { link: '/settings', label: 'Settings', icon: IconSettings }
+  { link: '/settings', label: 'More', icon: IconMenu2 }
 ];
 
 export function NavbarSimple({ active, setActive }: NavbarProps) {
@@ -56,6 +57,16 @@ export function NavbarSimple({ active, setActive }: NavbarProps) {
     </a>
   ));
 
+  const { logout } = useAuth0();
+
+  const handleLogout = () => {
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  };
+
   return (
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
@@ -63,9 +74,27 @@ export function NavbarSimple({ active, setActive }: NavbarProps) {
         {links}
       </div>
 
-      <div className={classes.footer}>
-        {footerLinks}
-      </div>
+      <Menu width={200} shadow="md">
+        <Menu.Target>
+          <div className={classes.footer}>
+            <a 
+              className={classes.link}
+              style={{ cursor: 'pointer' }}
+            >
+              <IconMenu2 className={classes.linkIcon} stroke={1.5} />
+              <span>More</span>
+            </a>
+          </div>
+        </Menu.Target>
+        <Menu.Dropdown>
+          <Menu.Item
+            onClick={() => handleLogout()}
+            leftSection={<IconLogout stroke={1.5} />}
+          >
+            <Text>Log out</Text>
+          </Menu.Item>
+        </Menu.Dropdown>
+      </Menu>
     </nav>
   );
 }
