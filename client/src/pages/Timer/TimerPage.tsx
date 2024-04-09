@@ -12,7 +12,7 @@ function TimerPage() {
   const [task, setTask] = useState<string>("");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  let timerStatus = new TimerStatus(false, "00:00");
+  let timerStatus = new TimerStatus(false, 0);
 
   useEffect(() => {
     console.log("Timer status changed: ", timerStatus);
