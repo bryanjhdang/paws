@@ -1,0 +1,29 @@
+.textHeader {
+  font-size: 20px;
+  font-weight: 400;
+  /* color: #794B62; */
+}
+
+.simpleHeader {
+  font-size: 20px;
+  font-weight: 500;
+  background-color: white;
+  padding: 10px 40px;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+  height: 60px;
+  align-content: center;
+}
+
+.functionalHeader {
+  background-color: white;
+  padding: 10px 40px;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
+  height: 60px;
+  align-content: center;
+}
+
+.functionalHeaderText {
+  font-size: 20px;
+  font-weight: 500;
+}

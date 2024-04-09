@@ -6,6 +6,7 @@ import rootPath from "get-root-path";
 import { TimeEntry } from "../models/TimeEntry";
 import { Pet } from "../models/Pet";
 import { Project } from "../models/Project";
+import { Todo } from "../models/Todo";
 dotenv.config();
 
 
@@ -14,6 +15,7 @@ export class FirestoreHelper implements DatabaseHelper {
   private userDB: admin.firestore.CollectionReference;
   private timeEntryDB: admin.firestore.CollectionReference;
   private projectDB: admin.firestore.CollectionReference;
+  private todoDB: admin.firestore.CollectionReference;
 
   constructor() {
     try {
@@ -33,6 +35,8 @@ export class FirestoreHelper implements DatabaseHelper {
       this.userDB = this.db.collection("users");
       this.timeEntryDB = this.db.collection("timeEntries");
       this.projectDB = this.db.collection("projects");
+      this.todoDB = this.db.collection("todos");
+
 
     } catch (error) {
       console.log("\x1b[31m", "ERROR: Unable to connect to Firestore Instance, did you include your Firestore key in the keys folder?");
@@ -66,7 +70,7 @@ export class FirestoreHelper implements DatabaseHelper {
       }
     }
 
-    return admin.firestore.FieldValue.delete();
+    return {}
   }
 
   private serializeTimeEntry(userId: string, timeEntry: TimeEntry) {
@@ -84,25 +88,57 @@ export class FirestoreHelper implements DatabaseHelper {
   private serializeProject(userId: string, project: Project) {
     return {
       userId: userId,
-      id: project.id,
       hex: project.hex,
-      name: project.name
+      name: project.name,
+      dateCreated: project.dateCreated,
+      id: project.id
     }
   }
 
   private serializePet(userId : string, pet : Pet) {
     return {
       userId: userId,
-      id: pet.id, 
-      name: pet.name,
-      imageUrl : pet.imageUrl
+      restId: pet.restId, 
+      workId: pet.workId,
+      ownedCats : pet.ownedCats,
+    }
   }
+
+  private deserializePet(userId : string, data: admin.firestore.DocumentData) : Pet {
+    return new Pet(data.restId, data.workId, data.ownedCats);
+  }
+
+  private serializeTodo(userId: string, todo: Todo) {
+    return {
+      userId: userId, 
+      task: todo.task,
+      dateCreated: todo.dateCreated,
+      done: todo.done,
+      id: todo.id
+    }
+  }
+
+  private deserializeTodo(element : any) : Todo {
+    return new Todo(element.task, element.dateCreated, element.done, element.id); 
+  }
+
+  private saveTodo(userId: string, todo: Todo) : Promise<Todo> {
+    return new Promise<Todo>((resolve, reject) => {
+      this.todoDB.doc(todo.id).set(this.serializeTodo(userId, todo))
+        .then(() => {
+          resolve(todo);
+        })
+        .catch((err : Error) => {
+          console.log(err);
+          reject(err);
+        })
+    });
   }
 
   private deserializeUser(userId: string, data: admin.firestore.DocumentData): User {
     return new User(
       data!.displayName,
-      new Pet(data!.pet.id, data!.pet.name, data!.pet.imageUrl),
+      this.deserializePet(userId, data.pet),
       data?.runningTime ? this.deserializeRunningTime(data.runningTime) : new NoRunning(),
       data!.totalCoins,
       userId
@@ -114,7 +150,7 @@ export class FirestoreHelper implements DatabaseHelper {
       return new RunningCountdown(element.startTime, element.plannedEndTime, element.projectId, element.name);
     }
 
-    if (element) {
+    if (element.startTime) {
       return new RunningStopwatch(element.startTime, element.projectId, element.name);
     }
 
@@ -126,7 +162,7 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
   private deserializeProject(project: any): Project {
-    return new Project(project.id, project.hex, project.name)
+    return new Project(project.hex, project.name, project.dateCreated, project.id)
   }
 
 
@@ -155,8 +191,8 @@ export class FirestoreHelper implements DatabaseHelper {
     this.userDB.doc(user.id).delete();
   }
 
+  // todo: take idstring, use defaults?
   async addUser(user: User): Promise<string> {
-    user.id = this.userDB.doc().id;
     this.userDB.doc(user.id).set(this.serializeUser(user));
     return user.id;
   }
@@ -227,6 +263,49 @@ export class FirestoreHelper implements DatabaseHelper {
           reject(err);
         })
     })
+  }
+
+  deleteProject(projectId: string) : void {
+    this.projectDB.doc(projectId).delete()
+      .catch((err : Error) => {
+      console.log(err);
+    })  
+  }
+
+  createTodo(userId: string, todo: Todo) : Promise<Todo> {
+    todo.id = this.todoDB.doc().id;
+    return this.saveTodo(userId, todo);
+  }
+
+  getTodos(userId: string) : Promise<Todo[]> {
+    return new Promise<Todo[]>((resolve, reject) => {
+      this.todoDB.where('userId', "==", userId).get()
+        .then(snap => {
+          let result: Todo[] = [];
+          snap.forEach(doc => {
+            if (doc) {
+              result.push(this.deserializeTodo(doc.data()));
+            }
+          });
+
+          resolve(result);
+        })
+        .catch((err : Error) => {
+          console.log(err);
+          reject(err);
+        })
+    })
+  }
+
+  deleteTodo(todoId: string) : void {
+    this.todoDB.doc(todoId).delete()
+      .catch((err : Error) => {
+      console.log(err);
+    })  
+  }
+
+  editTodo(userId : string, todo: Todo) : Promise<Todo> {
+    return this.saveTodo(userId, todo);
   }
 
 }

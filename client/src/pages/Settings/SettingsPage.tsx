@@ -1,24 +1,34 @@
-import { useState } from "react";
-import { Flex, Stack } from "@mantine/core";
-import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
+// import { useState } from "react";
+import { Stack } from "@mantine/core";
 import { SimpleHeader } from "../../components/Headers";
-import { ThemeSettings, PetSettings, NotificationSettings } from "./SettingsOptions"
+import { AccountSettings } from "./SettingsOptions"
+// import { useAuth0 } from "@auth0/auth0-react";
+// import classes from "./SettingsPage.module.css";
+
+// function ProfileDisplay() {
+//   const { user } = useAuth0();
+//   if (!user) return null;
+
+//   return (
+//     <Group className={classes.profile}>
+//       <Avatar src={user.picture} size="xxl" />
+//       <Stack ml={30} gap="xs" flex={1}>
+//         <Text className={classes.profileHeading}>Profile Info</Text>
+//         <Text>Name {user.name}</Text>
+//         <Text>Email {user.email}</Text>
+//       </Stack>
+//     </Group>
+//   )
+// }
 
 function SettingsPage() {
-  const [active, setActive] = useState('Settings');
-
   return (
-    <Flex>
-      <NavbarSimple active={active} setActive={setActive} />
-      <Stack flex={1}>
-        <SimpleHeader text="Settings" />
-        <Stack mx="lg">
-          <ThemeSettings />
-          <NotificationSettings />
-          <PetSettings />
-        </Stack>
+    <>
+      <SimpleHeader text="Settings" />
+      <Stack p={40} flex={1}>
+        <AccountSettings />
       </Stack>
-    </Flex>
+    </>
   )
 }
 

@@ -1,37 +1,33 @@
 import { useState } from "react";
 import { Flex } from "@mantine/core";
-import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
-import { TaskInput } from "./TaskInput/TaskInput";
-import { Timer } from "./Timer/Timer";
+import { TaskInput } from "./TaskInputBar/TaskInput";
+import { Timer } from "./TaskInputBar/Timer";
 import { Project } from "../../classes/models";
-import SocketConnection from "./SocketConnection";
-import { Socket } from "socket.io-client";
-import { SocketContext } from "../../context/SocketContext";
+import TodoList from "./Todo/TodoList";
+// import classes from "./TimerPage.module.css";
+// import BongoCat from "../../assets/sleepy-cat-1.gif";
 
 function TimerPage() {
   const [task, setTask] = useState<string>("");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [active, setActive] = useState<string>("Timer");
-
+  
   return (
-    <>
-      <Flex direction={"row"}>
-        <NavbarSimple active={active} setActive={setActive} />
-        <Flex direction={"column"} flex={1}>
-          <TaskInput
-            task={task}
-            setTask={setTask}
-            selectedProject={selectedProject}
-            setSelectedProject={setSelectedProject}
-          />
-          <Timer
-            task={task}
-            selectedProject={selectedProject}
-          />
-        </Flex>
-        <SocketConnection></SocketConnection>
+    <Flex direction={"row"} py={20} px={40} gap={20}>
+      <Flex direction={"column"} flex={1}>
+        <TaskInput
+          task={task}
+          setTask={setTask}
+          selectedProject={selectedProject}
+          setSelectedProject={setSelectedProject}
+        />
+        {/* <Image className={classes.sleepyBreathing} w={300} h={300} src={BongoCat} /> */}
+        <Timer
+          task={task}
+          selectedProject={selectedProject}
+        />
       </Flex>
-    </>
+      <TodoList />
+    </Flex>
   );
 }
 
