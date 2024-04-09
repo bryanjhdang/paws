@@ -22,7 +22,7 @@ interface TimerProps {
 }
 
 export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
-  const { getAccessTokenSilently } = useAuth0();
+  const { user, getAccessTokenSilently } = useAuth0();
 
   /* ---------------------------------- State --------------------------------- */
   const [timerValue, setTimerValue] = useState<number>(0); // in seconds
@@ -85,9 +85,10 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
     const makeAuthenticatedRequest = async () => {
       try {
         const token = await getAccessTokenSilently();
+        const userId = user?.sub || "invalid user";
 
-        // TODO: make this userID not hardcoded
-        getAccount("nemLmP1npemf5VSzAKRC", token).then(
+        // TODO: don't send userId, let the backend handle automatically?
+        getAccount(userId, token).then(
           (response) => {        
             if (response.runningTime.plannedEndTime) {
               if (Date.now() < response.runningTime.plannedEndTime) {

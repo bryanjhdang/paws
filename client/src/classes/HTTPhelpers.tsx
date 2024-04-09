@@ -2,7 +2,7 @@ import axios from "axios";
 import { Pet, Project, TimeEntry, Todo, User } from "./models";
         
 // Account
-// todo: remove accountId from this function, not needed
+// todo: remove accountId from this function, handle on backend instead?
 export function getAccount(accountId: string, accessToken: string): Promise<User> {
 	const createUser = (any : any): User => {
 		return new User(
