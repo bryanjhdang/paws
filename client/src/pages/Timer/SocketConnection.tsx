@@ -1,16 +1,13 @@
 import { ActionIcon, Text } from "@mantine/core"
-import { useState } from "react";
-import { io } from "socket.io-client"
+import { useContext, useState } from "react";
+import { Socket, io } from "socket.io-client"
+import { SocketContext, useSocketContext } from "../../context/SocketContext";
 
 function SocketConnection() {
-    const [text, setText] = useState("");
-    const URL = import.meta.env.VITE_API_SERVER_URL || 'http:///localhost:3000'
+    const socket : Socket = useSocketContext();
 
-    const socket = io(URL, {
-        query: {
-            token: "nemLmP1npemf5VSzAKRC"
-        }
-    });
+    const [text, setText] = useState("");
+
 
     socket.on('users', (data) => {
         console.log(data);
