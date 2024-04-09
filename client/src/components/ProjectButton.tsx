@@ -1,9 +1,9 @@
 import { DEFAULT_THEME, Modal, Button, Menu, TextInput, ColorPicker, Text, Stack } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
-import { IconFolderOpen, IconPlus, IconPointFilled } from "@tabler/icons-react";
+import { IconPlus, IconPointFilled } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-import { Project } from "../../classes/models";
-import { getProjects, postProject } from "../../classes/HTTPhelpers";
+import { Project } from "../classes/models";
+import { getProjects, postProject } from "../classes/HTTPhelpers";
 import classes from "./ProjectButton.module.css";
 
 interface NewProjectModalProps {
@@ -54,9 +54,10 @@ function NewProjectModal({ opened, close, onAddProject }: NewProjectModalProps):
 interface ProjectButtonProps {
   selectedProject: Project | null;
   setSelectedProject: React.Dispatch<React.SetStateAction<Project | null>>;
+  target: JSX.Element;
 }
 
-export function ProjectButton({ selectedProject, setSelectedProject }: ProjectButtonProps) {
+export function ProjectButton({ selectedProject, setSelectedProject, target }: ProjectButtonProps) {
   const [opened, { open, close }] = useDisclosure();
   const [projects, setProjects] = useState<Project[]>([]);
 
@@ -78,14 +79,7 @@ export function ProjectButton({ selectedProject, setSelectedProject }: ProjectBu
       <NewProjectModal opened={opened} close={close} onAddProject={handleAddProject} />
       <Menu shadow="md" width={200}>
         <Menu.Target>
-          <Button
-            variant="light"
-            radius={"lg"}
-            color={selectedProject ? selectedProject.hex : "black"}
-            leftSection={<IconFolderOpen />}
-          >
-            {selectedProject ? selectedProject.name : "No Project"}
-          </Button>
+          {target}
         </Menu.Target>
 
         <Menu.Dropdown>

@@ -160,7 +160,8 @@ export async function postProject(project: Project) {
 		url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/project`,
 		data: {
 			name: project.name,
-			hex: project.hex
+			hex: project.hex,
+			dateCreated: project.dateCreated
 		}
 	})
 	.then((response) => {
@@ -173,7 +174,7 @@ export async function postProject(project: Project) {
 export async function getProjects(): Promise<Project[]> {
 	const createProjects = (any: any): Project[] => {
 		return any.data.projects.map((element: any) => {
-			return new Project(element.hex, element.name, element.id);
+			return new Project(element.hex, element.name, element.dateCreated, element.id);
 		});
 	}
 
