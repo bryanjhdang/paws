@@ -71,7 +71,7 @@ export class FirestoreHelper implements DatabaseHelper {
       }
     }
 
-    return admin.firestore.FieldValue.delete();
+    return {}
   }
 
   private serializeTimeEntry(userId: string, timeEntry: TimeEntry) {
@@ -192,7 +192,7 @@ export class FirestoreHelper implements DatabaseHelper {
     /* prev testing add user code that was functional */
     // this.userDB.doc(user.id).set(user.makeSimple());
     
-    user.id = this.userDB.doc().id;
+    // user.id = this.userDB.doc().id;
     this.userDB.doc(user.id).set(this.serializeUser(user));
     return user.id;
   }
