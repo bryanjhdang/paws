@@ -4,6 +4,7 @@ import { NavbarSimple } from "../../components/Navbar/NavbarSimple";
 import { TaskInput } from "./TaskInput/TaskInput";
 import { Timer } from "./Timer/Timer";
 import { Project } from "../../classes/models";
+import SocketConnection from "./SocketConnection";
 
 function TimerPage() {
   const [task, setTask] = useState<string>("");
@@ -26,6 +27,7 @@ function TimerPage() {
             selectedProject={selectedProject}
           />
         </Flex>
+        <SocketConnection></SocketConnection>
       </Flex>
     </>
   );

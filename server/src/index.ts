@@ -16,7 +16,11 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 8080;
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173"
+  }
+});
 
 app.use(cors());
 app.use(express.json());
