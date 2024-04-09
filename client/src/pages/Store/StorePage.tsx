@@ -49,7 +49,8 @@ function StorePage() {
         const updatedOwned = [...pets.ownedCats, id];
         setPets(new Pet(pets.restId, pets.workId, updatedOwned));
         notifications.show({
-          message: "Purchased!",
+          title: "Purchased",
+          message: "Your new cat friend is excited to work with you.",
           color: "green",
           withBorder: true
         })
@@ -61,12 +62,13 @@ function StorePage() {
     });
   }
 
-  const handleEquipItem = (pet: Pet) => {
-    equipPet(pet).then(() => {
-      if (pets) {
-        const updatedPets = [pet]
-      }
-    })
+  const handleEquipItem = (id: number) => {
+    
+    // equipPet(pet).then(() => {
+    //   if (pets) {
+    //     const updatedPets = [pet]
+    //   }
+    // })
   }
 
   const coinDisplay = () => {
@@ -88,7 +90,14 @@ function StorePage() {
 
         <Group mb={50}>
           {RestCats.map((catItem, index) => (
-            <StoreItem key={index} catItem={catItem} onBuy={handleBuyItem} />
+            <StoreItem
+              key={index}
+              catItem={catItem}
+              onBuy={handleBuyItem}
+              onEquip={handleEquipItem}
+              isOwned={pets ? pets.ownedCats.includes(catItem.id) : false}
+              isInUse={pets ? (pets.restId === catItem.id || pets.workId === catItem.id) : false}
+            />
           ))}
         </Group>
 
@@ -100,7 +109,14 @@ function StorePage() {
 
         <Group mb={50}>
           {WorkCats.map((catItem, index) => (
-            <StoreItem key={index} catItem={catItem} onBuy={handleBuyItem} />
+            <StoreItem
+              key={index}
+              catItem={catItem}
+              onBuy={handleBuyItem}
+              onEquip={handleEquipItem}
+              isOwned={pets ? pets.ownedCats.includes(catItem.id) : false}
+              isInUse={pets ? (pets.restId === catItem.id || pets.workId === catItem.id) : false}
+            />
           ))}
         </Group>
       </Stack>

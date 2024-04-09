@@ -26,3 +26,18 @@
   /* font-weight: 500; */
   /* font-size: var(--mantine-font-size-lg); */
 }
+
+.itemInUseButton {
+  width: 100%;
+}
+
+.itemInUseButton {
+  &:disabled,
+  &[data-disabled] {
+    background-color: var(--mantine-color-gray-3);
+  }
+}
+
+.itemNotInUseButton {
+  width: 100%;
+}
