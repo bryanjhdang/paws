@@ -1,4 +1,4 @@
-import { Button, Group, Stack, Table, Text } from "@mantine/core";
+import { Button, Group, Stack, Table, Text, Title } from "@mantine/core";
 import { FunctionalHeader, SimpleHeader, TextHeader } from "../../components/Headers";
 import { Project } from "../../classes/models";
 import { useEffect, useState } from "react";
@@ -26,8 +26,11 @@ function ProjectsPage() {
 
   const addProjectButton = () => {
     return (
-      <Button>
-        TODO Add
+      <Button
+        className={classes.addBtn}
+        leftSection={<IconPlus stroke={1.5} />}
+      >
+        New Project
       </Button>
     )
   }
@@ -38,26 +41,41 @@ function ProjectsPage() {
       <Table.Td>{element.hex}</Table.Td>
       <Table.Td>TODO</Table.Td>
       <Table.Td>
-        <Button>TODO Edit</Button>
         <Button onClick={() => handleDeleteProject(element.id)}>Delete</Button>
       </Table.Td>
     </Table.Tr>
   ));
 
+  const noProject = () => {
+    return (
+      <Stack align="center">
+        <Text className={classes.noProjectHeader}>Looks like there's nothing here.</Text>
+        <Text className={classes.noProjectText}>
+          Click on the + New Project button to create a new project!
+        </Text>
+      </Stack>
+    )
+  }
+
   return (
     <>
       <FunctionalHeader text="Projects" element={addProjectButton()} />
       <Stack p={40}>
-        <Table>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>Project</Table.Th>
-              <Table.Th>Color</Table.Th>
-              <Table.Th>Date Created</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
+        {projects.length === 0 ? (
+          noProject()
+        ) : (
+          <Table>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>Project</Table.Th>
+                <Table.Th>Color</Table.Th>
+                <Table.Th>Date Created</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{rows}</Table.Tbody>
+          </Table>
+        )}
+
       </Stack>
     </>
   )
