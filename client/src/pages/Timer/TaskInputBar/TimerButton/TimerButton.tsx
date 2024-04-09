@@ -6,6 +6,11 @@ import { IconAlarm } from "@tabler/icons-react";
 import { Timer } from "./Timer";
 
 import { Project } from "../../../../classes/models";
+import {
+  TimerContext,
+  useTimerContext,
+} from "../../../../context/TimerContext";
+import { useContext } from "react";
 
 interface TimerProps {
   task: string;
@@ -19,10 +24,18 @@ export function TimerButton({
   /* ---------------------------------- state --------------------------------- */
   const [opened, { open, close }] = useDisclosure();
 
+  // contains the status about the running timer.
+  // two fields: isRunning (.getIsRunning(): boolean) and timeRemaining (.getTimeRemaining(): string)
+  const timerContext = useTimerContext();
+
   return (
     <>
       <Button variant="light" radius={"lg"} color="black" onClick={open}>
-        <IconAlarm />
+        {timerContext.getIsRunning() ? (
+          timerContext.getTimeRemaining()
+        ) : (
+          <IconAlarm />
+        )}
       </Button>
 
       <Modal
@@ -30,8 +43,8 @@ export function TimerButton({
         onClose={close}
         size={"auto"}
         transitionProps={{
-            // transition: "rotate-right"
-            transition: "pop-top-right"
+          // transition: "rotate-right"
+          transition: "pop-top-right",
         }}
         overlayProps={{
           backgroundOpacity: 0.55,
