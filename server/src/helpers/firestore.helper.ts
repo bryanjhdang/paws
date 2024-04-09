@@ -193,10 +193,6 @@ export class FirestoreHelper implements DatabaseHelper {
 
   // todo: take idstring, use defaults?
   async addUser(user: User): Promise<string> {
-    /* prev testing add user code that was functional */
-    // this.userDB.doc(user.id).set(user.makeSimple());
-    
-    // user.id = this.userDB.doc().id;
     this.userDB.doc(user.id).set(this.serializeUser(user));
     return user.id;
   }
