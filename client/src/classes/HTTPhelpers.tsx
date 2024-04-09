@@ -65,7 +65,6 @@ export async function getPet(accountId: string): Promise<Pet> {
 
 export async function buyPet(id: number, cost: number) {
 	try {
-		console.log("id " + id + " cost: " + cost);
 		await axios.put(`${import.meta.env.VITE_API_SERVER_URL}/pet/buy?id=${id}&cost=${cost}`);
 	} catch (error) {
 		console.error(error);
@@ -73,14 +72,15 @@ export async function buyPet(id: number, cost: number) {
 	}
 }
 
-// export async function equipPet(pet: Pet) {
-// 	try {
-// 		await axios.put(`${import.meta.env.VITE_API_SERVER_URL}/pet/equip`); 
-// 	} catch (error) {
-// 		console.error(error);
-// 		throw error;
-// 	}
-// }
+export async function equipPet(pet: Pet) {
+	try {
+		await axios.put(`${import.meta.env.VITE_API_SERVER_URL}/pet/equip?workId=${pet.workId}&cost=${pet.restId}`);
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+}
+
 
 export async function getCoins(accountId: string): Promise<number> {
 	try {
