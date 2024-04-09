@@ -13,6 +13,9 @@ import { PageLoader } from "./components/PageLoader/PageLoader";
 import { AuthenticationGuard } from "./utils/Auth0/AuthenticationGuard";
 import { CallbackPage } from "./pages/Callback/CallbackPage";
 import { NotFoundPage } from "./pages/NotFound/NotFoundPage";
+import { io } from "socket.io-client";
+import SocketConnection from "./pages/Timer/SocketConnection";
+import { SocketContext } from "./context/SocketContext";
 
 export const App: React.FC = () => {
   const { isLoading } = useAuth0();
@@ -26,35 +29,45 @@ export const App: React.FC = () => {
     );
   }
 
+  const URL = import.meta.env.VITE_API_SERVER_URL || 'http:///localhost:3000'
+
+  const socket = io(URL, {
+    query: {
+      token: "nemLmP1npemf5VSzAKRC"
+    }
+  });
+
   return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route
-        path="/timer"
-        element={<AuthenticationGuard component={TimerPage} />}
-      />
-      <Route
-        path="/pet"
-        element={<AuthenticationGuard component={PetPage} />}
-      />
-      <Route
-        path="/statistics"
-        element={<AuthenticationGuard component={StatisticsPage} />}
-      />
-      <Route
-        path="/friends"
-        element={<AuthenticationGuard component={FriendsPage} />}
-      />
-      <Route
-        path="/profile"
-        element={<AuthenticationGuard component={ProfilePage} />}
-      />
-      <Route
-        path="/settings"
-        element={<AuthenticationGuard component={SettingsPage} />}
-      />
-      <Route path="/callback" element={<CallbackPage />} />
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+    <SocketContext.Provider value={socket} >
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route
+          path="/timer"
+          element={<AuthenticationGuard component={TimerPage} />}
+        />
+        <Route
+          path="/pet"
+          element={<AuthenticationGuard component={PetPage} />}
+        />
+        <Route
+          path="/statistics"
+          element={<AuthenticationGuard component={StatisticsPage} />}
+        />
+        <Route
+          path="/friends"
+          element={<AuthenticationGuard component={FriendsPage} />}
+        />
+        <Route
+          path="/profile"
+          element={<AuthenticationGuard component={ProfilePage} />}
+        />
+        <Route
+          path="/settings"
+          element={<AuthenticationGuard component={SettingsPage} />}
+        />
+        <Route path="/callback" element={<CallbackPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </SocketContext.Provider>
   )
 }

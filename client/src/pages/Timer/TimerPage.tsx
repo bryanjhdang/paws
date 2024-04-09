@@ -5,6 +5,8 @@ import { TaskInput } from "./TaskInput/TaskInput";
 import { Timer } from "./Timer/Timer";
 import { Project } from "../../classes/models";
 import SocketConnection from "./SocketConnection";
+import { Socket } from "socket.io-client";
+import { SocketContext } from "../../context/SocketContext";
 
 function TimerPage() {
   const [task, setTask] = useState<string>("");
