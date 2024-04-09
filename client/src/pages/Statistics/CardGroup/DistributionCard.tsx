@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { Card, Text, } from "@mantine/core";
+import { Text, } from "@mantine/core";
 import ReactECharts from "echarts-for-react";
 
 export function DistributionCard(props: any): JSX.Element {

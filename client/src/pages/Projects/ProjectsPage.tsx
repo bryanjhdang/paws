@@ -1,13 +1,13 @@
-import { Button, Group, Stack, Table, Text, Title } from "@mantine/core";
-import { FunctionalHeader, SimpleHeader, TextHeader } from "../../components/Headers";
+import { Button, Stack, Table, Text } from "@mantine/core";
+import { FunctionalHeader } from "../../components/Headers";
 import { Project } from "../../classes/models";
 import { useEffect, useState } from "react";
 import { deleteProject, getProjects, postProject } from "../../classes/HTTPhelpers";
-import { IconCoin, IconPlus } from "@tabler/icons-react";
+import { IconPlus } from "@tabler/icons-react";
 import classes from "./ProjectsPage.module.css";
 import { useDisclosure } from "@mantine/hooks";
 import NewProjectModal from "../../components/NewProjectModal";
-import { handleLegacySelectEvents } from "echarts/types/src/legacy/dataSelectAction.js";
+// import { handleLegacySelectEvents } from "echarts/types/src/legacy/dataSelectAction.js";
 // import { IconCoin, IconPlus } from "@tabler/icons-react";
 // import classes from "./ProjectsPage.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
