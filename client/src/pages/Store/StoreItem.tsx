@@ -5,9 +5,10 @@ import { CatItem } from "../../classes/models";
 
 interface StoreItemProps {
   catItem: CatItem;
+  onBuy: (id: number, cost: number) => void;
 }
 
-function StoreItem({ catItem }: StoreItemProps) {
+function StoreItem({ catItem, onBuy }: StoreItemProps) {
   const handlePurchaseItem = () => {
     console.log("test!")
     // TODO
@@ -19,7 +20,7 @@ function StoreItem({ catItem }: StoreItemProps) {
       <Text className={classes.itemHeaderText}>{catItem.name}</Text>
       <Button 
         className={classes.itemPurchaseButton} 
-        onClick={handlePurchaseItem}
+        onClick={() => onBuy(catItem.id, catItem.cost)}
         color="#6ca74a"
       >
         <IconCoin stroke={1.5} />

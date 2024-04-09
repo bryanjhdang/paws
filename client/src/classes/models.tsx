@@ -1,9 +1,10 @@
 export class Pet {
   constructor(
-    public id: string,
-    public name: string,
-    public imageUrl: string,
-  ) { }
+    public restId: number = 0,
+    public workId: number = 0,
+    //todo: have something that's not a primitive
+    public ownedCats: number[] = [0],
+  ) { };
 }
 
 export class Project {
@@ -38,7 +39,7 @@ export class RunningTime {
     public plannedEndTime: number = 0,
     public projectId: string = '',
     public name: string = '',
-) {};
+  ) { };
 }
 
 export class User {
@@ -64,10 +65,11 @@ export class Todo {
 }
 
 export class CatItem {
-  constructor (
+  constructor(
     public path: string,
     public name: string,
     public cost: number,
     public id: number
   ) { }
 }
+
