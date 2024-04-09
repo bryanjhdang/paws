@@ -104,7 +104,7 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
   private deserializePet(userId : string, data: admin.firestore.DocumentData) : Pet {
-    return new Pet(data.workId, data.restId, data.ownedCats);
+    return new Pet(data.restId, data.workId, data.ownedCats);
   }
 
   private serializeTodo(userId: string, todo: Todo) {

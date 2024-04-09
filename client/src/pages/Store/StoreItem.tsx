@@ -6,7 +6,7 @@ import { CatItem } from "../../classes/models";
 interface StoreItemProps {
   catItem: CatItem;
   onBuy: (id: number, cost: number) => void;
-  onEquip: (id: number) => void;
+  onEquip: (id: number, isRestCat: boolean) => void;
   isOwned: boolean;
   isInUse: boolean;
 }
@@ -31,7 +31,7 @@ function StoreItem({ catItem, onBuy, onEquip, isOwned, isInUse }: StoreItemProps
         </Button>
       ) : (
         <Button 
-          onClick={() => onEquip(1)} 
+          onClick={() => onEquip(catItem.id, catItem.isRestCat)} 
           className={classes.itemNotInUseButton}
         >
           <Text>Use</Text>
