@@ -13,41 +13,41 @@ import { CallbackPage } from "./non-app-pages/Callback/CallbackPage";
 import { NotFoundPage } from "./non-app-pages/NotFound/NotFoundPage";
 import BasePage from "./pages/BasePage";
 import ProjectsPage from "./pages/Projects/ProjectsPage";
-import { useEffect, useState } from "react";
-import axios from "axios";
+// import { useEffect, useState } from "react";
+// import axios from "axios";
 
 export const App: React.FC = () => {
+  const { isLoading } = useAuth0();
+  // const { user, isLoading, getAccessTokenSilently } = useAuth0();
+  // const [accessToken, setAccessToken] = useState(() => {
+  //   return localStorage.getItem('accessToken') || null;
+  // });
 
-  const { isLoading, getAccessTokenSilently } = useAuth0();
-  const [accessToken, setAccessToken] = useState(() => {
-    return localStorage.getItem('accessToken') || null;
-  });
 
+  // useEffect(() => {
+  //   const fetchAccessToken = async () => {
+  //     try {
+  //       const token = await getAccessTokenSilently();
+  //       console.log("getting access token for user: ", user?.sub);
+  //       setAccessToken(token);
+  //       localStorage.setItem('accessToken', token);
+  //     } catch (error) {
+  //       console.error('Error while fetching access token:', error);
+  //     }
+  //   };
 
-  useEffect(() => {
-    const fetchAccessToken = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-        setAccessToken(token);
-        localStorage.setItem('accessToken', token);
-      } catch (error) {
-        console.error('Error while fetching access token:', error);
-      }
-    };
+  //   fetchAccessToken();
+  // }, [getAccessTokenSilently, accessToken]);
 
-    fetchAccessToken();
-  }, [getAccessTokenSilently, accessToken]);
-
-  // set default headers for axios requests
-  useEffect(() => {
-    if (accessToken) {
-      // console.log("Attaching token: ", accessToken);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    } else {
-      console.error("NO ACCESS TOKEN\n");
-      
-    }
-  }, [accessToken]);
+  // // set default headers for axios requests
+  // useEffect(() => {
+  //   if (accessToken) {
+  //     // console.log("Attaching token: ", accessToken);
+  //     axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+  //   } else {
+  //     console.error("NO ACCESS TOKEN\n");
+  //   }
+  // }, [accessToken]);
 
 
   if (isLoading) {
