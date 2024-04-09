@@ -4,7 +4,7 @@ import { IconFolderOpen, IconPlus, IconPointFilled } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { Project } from "../../classes/models";
 import { getProjects, postProject } from "../../classes/HTTPhelpers";
-import classes from "./ProjectButton.module.css";
+// import classes from "./ProjectButton.module.css";
 // import NewProjectModal from "../../components/NewProjectModal";
 import { useAuth0 } from "@auth0/auth0-react";
 // import classes from "./ProjectButton.module.css";
