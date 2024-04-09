@@ -12,7 +12,8 @@ function ProjectsPage() {
   useEffect(() => {
     getProjects().then(
       (response) => {
-        setProjects(response);
+        const sortedProjects = response.sort((a,b) => b.dateCreated - a.dateCreated);
+        setProjects(sortedProjects);
       }
     );
   }, []);
@@ -35,11 +36,21 @@ function ProjectsPage() {
     )
   }
 
+  const formatDate = (timestamp: number): string => {
+    const date = new Date(timestamp);
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+    return date.toLocaleDateString('en-US', options);
+  }
+
   const rows = projects.map((element) => (
     <Table.Tr key={element.id}>
       <Table.Td>{element.name}</Table.Td>
       <Table.Td>{element.hex}</Table.Td>
-      <Table.Td>TODO</Table.Td>
+      <Table.Td>{formatDate(element.dateCreated)}</Table.Td>
       <Table.Td>
         <Button onClick={() => handleDeleteProject(element.id)}>Delete</Button>
       </Table.Td>
@@ -67,9 +78,10 @@ function ProjectsPage() {
           <Table>
             <Table.Thead>
               <Table.Tr>
-                <Table.Th>Project</Table.Th>
-                <Table.Th>Color</Table.Th>
-                <Table.Th>Date Created</Table.Th>
+                <Table.Th className={classes.column}>Project</Table.Th>
+                <Table.Th className={classes.column}>Color</Table.Th>
+                <Table.Th className={classes.column}>Date Created</Table.Th>
+                <Table.Th className={classes.column}></Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>{rows}</Table.Tbody>

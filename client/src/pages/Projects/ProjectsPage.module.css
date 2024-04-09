@@ -10,3 +10,8 @@
 .noProjectText {
   /* text-align: center; */
 }
+
+.column {
+  width: 25%;
+}
+
