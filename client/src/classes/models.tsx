@@ -11,6 +11,7 @@ export class Project {
   constructor(
     public hex: string,
     public name: string,
+    public dateCreated: number,
     public id: string,
   ) { };
 }
