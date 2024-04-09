@@ -62,7 +62,9 @@ export const App: React.FC = () => {
         />}
       />
       <Route path="/callback" element={<CallbackPage />} />
-      <Route path="*" element={<NotFoundPage />} />
+      <Route path="*" 
+        element={<BasePage pageName="n/a"><NotFoundPage /></BasePage>} 
+      />
     </Routes>
   )
 }
