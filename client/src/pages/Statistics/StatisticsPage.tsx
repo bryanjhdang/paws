@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Flex, Space } from "@mantine/core";
+import { Flex, Space, Stack } from "@mantine/core";
 
 import { TimeEntry } from "../../classes/models";
 import { getTimeEntry } from "../../classes/HTTPhelpers";
@@ -7,6 +7,7 @@ import { getTimeEntry } from "../../classes/HTTPhelpers";
 import { Header } from "./Header/Header";
 import { StatisticsGroup } from "./StatisticsGroup/StatisticsGroup";
 import { CardGroup } from "./CardGroup/CardGroup";
+import { SimpleHeader } from "../../components/Headers";
 
 function StatisticsPage() {
   const [timeEntries, setTimeEntries] = useState<TimeEntry[]>([]);
@@ -18,28 +19,31 @@ function StatisticsPage() {
   }, []);
 
   return (
-    <Flex direction={"row"} justify={"flex-start"}>
-      <Flex
-        direction={"column"}
-        justify={"flex-start"}
-        align={"center"}
-        w={"100%"}
-        p={"md"}
-        miw={"48em"} // can be set to 86em to prevent horizontal squishing
-      >
-        <Header />
+    <Stack>
+      <SimpleHeader text="Statistics" />
+      <Flex direction={"row"} justify={"flex-start"}>
+        <Flex
+          direction={"column"}
+          justify={"flex-start"}
+          align={"center"}
+          w={"100%"}
+          p={"md"}
+          miw={"48em"} // can be set to 86em to prevent horizontal squishing
+        >
+          <Header />
 
-        <Space h={"xl"} />
+          <Space h={"xl"} />
 
-        <StatisticsGroup timeEntries={timeEntries} />
+          <StatisticsGroup timeEntries={timeEntries} />
 
-        <Space h={"xl"} />
+          <Space h={"xl"} />
 
-        <CardGroup timeEntries={timeEntries} />
+          <CardGroup timeEntries={timeEntries} />
 
-        <Space h={"xl"} />
+          <Space h={"xl"} />
+        </Flex>
       </Flex>
-    </Flex>
+    </Stack>
   );
 }
 
