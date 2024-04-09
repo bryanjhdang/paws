@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Pet, Project, TimeEntry, User } from "./models";
+import { Pet, Project, TimeEntry, Todo, User } from "./models";
         
 // Account
 export function getAccount(accountId: string): Promise<User> {
@@ -34,37 +34,62 @@ export function postAccountCreate(): void {
 }
 
 // Pet
-export function getPet(): Promise<Pet> {
-	const createPet = (any: any): Pet => {
-		return new Pet(any.data.id, any.data.name, any.data.imageUrl);
-	}
+// export function getPet(): Promise<Pet> {
+// 	const createPet = (any: any): Pet => {
+// 		return new Pet(any.data.restId, any.data.workId, any.data.ownedCats);
+// 	}
 
-	return new Promise<Pet>((resolve, reject) => {
-		axios({
-			method: 'get',
-			url: `${import.meta.env.VITE_API_SERVER_URL}/pet` 
-		})
-		.then((response) => {
-			resolve(createPet(response));
-		}, (error) => {
-			reject(error);
-		});
-	})
+// 	return new Promise<Pet>((resolve, reject) => {
+// 		axios({
+// 			method: 'get',
+// 			url: `${import.meta.env.VITE_API_SERVER_URL}/pet`
+// 		})
+// 		.then((response) => {
+// 			resolve(createPet(response));
+// 		}, (error) => {
+// 			reject(error);
+// 		});
+// 	})
+// }
+
+export async function getPet(accountId: string): Promise<Pet> {
+	try {
+		const response = await axios.get(`${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}`);
+		const { restId, workId, ownedCats } = response.data.pet;
+		return new Pet(restId, workId, ownedCats);
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
 }
 
-export function getCoins(): Promise<number> {
-	return new Promise<number>((resolve, reject) => {
-		axios({
-			method: 'get',
-			url: `${import.meta.env.VITE_API_SERVER_URL}/pet/coins`
-		})
-		.then((response) => {
-			console.log(response);
-			resolve(response.data);
-		}, (error) => {
-			reject(error);
-		});
-	})
+export async function buyPet(id: number, cost: number) {
+	try {
+		await axios.put(`${import.meta.env.VITE_API_SERVER_URL}/pet/buy?id=${id}&cost=${cost}`);
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+}
+
+export async function equipPet(pet: Pet) {
+	try {
+		await axios.put(`${import.meta.env.VITE_API_SERVER_URL}/pet/equip?workId=${pet.workId}&cost=${pet.restId}`);
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+}
+
+
+export async function getCoins(accountId: string): Promise<number> {
+	try {
+		const response = await axios.get(`${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}`)
+		return response.data.totalCoins;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
 }
 
 // TimeEntry
@@ -130,12 +155,13 @@ export function postTimeEntryStop(endTimeNumber : number): void {
 
 // Projects
 export async function postProject(project: Project) {
+	console.log(project);
 	axios({
 		method: 'post',
 		url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/project`,
 		data: {
-			hex: project.hex,
-			name: project.name
+			name: project.name,
+			hex: project.hex
 		}
 	})
 	.then((response) => {
@@ -148,7 +174,7 @@ export async function postProject(project: Project) {
 export async function getProjects(): Promise<Project[]> {
 	const createProjects = (any: any): Project[] => {
 		return any.data.projects.map((element: any) => {
-			return new Project(element.id, element.hex, element.name);
+			return new Project(element.hex, element.name, element.id);
 		});
 	}
 
@@ -161,6 +187,71 @@ export async function getProjects(): Promise<Project[]> {
 			resolve(createProjects(response));
 		}, (error) => {
 			reject(error)
+		});
+	})
+}
+
+export async function deleteProject(id: string) {
+	try {
+		await axios.delete(`${import.meta.env.VITE_API_SERVER_URL}/timeEntry/project/${id}`); 
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+}
+
+// ToDo
+export async function postTodo(todo: Todo) {
+	axios({
+		method: 'post',
+		url: `${import.meta.env.VITE_API_SERVER_URL}/todo`,
+		data: {
+			task: todo.task,
+			dateCreated: todo.dateCreated
+		}
+	})
+	.then((response) => {
+		todo.id = response.data.id;
+	}, (error) => {
+		console.log(error);
+	});
+}
+
+export async function deleteTodo(id: string) {
+	try {
+		await axios.delete(`${import.meta.env.VITE_API_SERVER_URL}/todo/${id}`); 
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+}
+
+export async function patchTodo(todo: Todo): Promise<Todo> {
+  try {
+    const response = await axios.patch(`${import.meta.env.VITE_API_SERVER_URL}/todo/`, todo);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error; 
+  }
+}
+
+export async function getTodo(): Promise<Todo[]> {
+	const createTodo = (any: any): Todo[] => {
+		return any.data.todos.map((element: any) => {
+			return new Todo(element.task, element.dateCreated, element.done, element.id);
+		});
+	}
+
+	return new Promise<Todo[]>((resolve, reject) => {
+		axios({
+			method: 'get',
+			url: `${import.meta.env.VITE_API_SERVER_URL}/todo`,
+		})
+		.then((response) => {
+			resolve(createTodo(response));
+		}, (error) => {
+			reject(error);
 		});
 	})
 }

@@ -2,6 +2,7 @@ import express, { Request, Response, Router } from "express";
 import { petService } from "../services/pet.service";
 import { StatusCodes } from "http-status-codes";
 import { Pet } from "../models/Pet";
+import { error } from "console";
 
 const petController: Router = express.Router();
 
@@ -52,6 +53,55 @@ petController.get('/', (req: Request, res: Response) => {
         .json(response);
 })
 
+petController.patch('/equip', (req: Request, res: Response) => {
+    try {
+        var query = {
+            workId : req.query.workId ? parseInt(req.query.workId.toString()) : 0,
+            restId: req.query.restId ? parseInt(req.query.restId.toString()) : 0
+        } 
+    } catch (err) {
+        return res.status(StatusCodes.UNPROCESSABLE_ENTITY)
+            .json({message : "Invalid parameters for query string!", error : err});
+    }
+
+    petService.equipPet(res.locals.user, query.workId, query.restId)
+    .then(() => {
+        res.status(StatusCodes.OK)
+        .json(res.locals.user);
+    })
+    .catch((error : Error) => {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({message : "Unable to equip pet", error : error.message});
+    });
+})
+
+petController.put('/buy', (req: Request, res: Response) => {
+    try {
+        if (req.query.id  && req.query.cost) {
+            var query = {
+                id :  parseInt(req.query.id.toString()),
+                cost : parseInt(req.query.cost.toString())
+            } 
+        } else {
+            return res.status(StatusCodes.UNPROCESSABLE_ENTITY)
+            .json({message : "Missing cost or id!"});
+        }
+
+    } catch (err) {
+        return res.status(StatusCodes.UNPROCESSABLE_ENTITY)
+            .json({message : "Invalid parameters for query string!", error : err});
+    }
+
+    petService.buyPet(res.locals.user, query.id, query.cost)
+    .then(() => {
+        res.status(StatusCodes.OK)
+        .json(res.locals.user);
+    })
+    .catch((error : Error) => {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({message : "Unable to purchase pet", error : error});
+    });
+})
 
 
 

@@ -1,16 +1,17 @@
 export class Pet {
   constructor(
-    public id: string,
-    public name: string,
-    public imageUrl: string,
-  ) { }
+    public restId: number = 0,
+    public workId: number = 0,
+    //todo: have something that's not a primitive
+    public ownedCats: number[] = [0],
+  ) { };
 }
 
 export class Project {
   constructor(
-    public id: string,
     public hex: string,
     public name: string,
+    public id: string,
   ) { };
 }
 
@@ -38,7 +39,7 @@ export class RunningTime {
     public plannedEndTime: number = 0,
     public projectId: string = '',
     public name: string = '',
-) {};
+  ) { };
 }
 
 export class User {
@@ -53,3 +54,22 @@ export class User {
     public runningTime: RunningTime,
   ) { }
 }
+
+export class Todo {
+  constructor(
+    public task: string,
+    public dateCreated: number,
+    public done: boolean = false,
+    public id: string = "",
+  ) { }
+}
+
+export class CatItem {
+  constructor(
+    public path: string,
+    public name: string,
+    public cost: number,
+    public id: number
+  ) { }
+}
+

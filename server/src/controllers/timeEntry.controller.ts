@@ -147,4 +147,15 @@ timeEntryController.get('/project', (req : Request, res: Response) => {
 
 })
 
+timeEntryController.delete('/project/:id', (req: Request, res: Response) => {
+    try {
+        timeEntryService.deleteProject(res.locals.user, req.params.id);
+        res.status(StatusCodes.NO_CONTENT)
+            .send()
+    } catch (err) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+            .json({ message: `Could not delete the todo with id ${req.params.id}`, error: err });
+    }
+})
+
 export { timeEntryController };
