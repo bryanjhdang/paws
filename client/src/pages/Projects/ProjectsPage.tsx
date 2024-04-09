@@ -1,14 +1,20 @@
-import { Button, Stack, Table } from "@mantine/core";
-import { FunctionalHeader } from "../../components/Headers";
+import { Button, Group, Stack, Table, Text, Title } from "@mantine/core";
+import { FunctionalHeader, SimpleHeader, TextHeader } from "../../components/Headers";
 import { Project } from "../../classes/models";
 import { useEffect, useState } from "react";
-import { deleteProject, getProjects } from "../../classes/HTTPhelpers";
+import { deleteProject, getProjects, postProject } from "../../classes/HTTPhelpers";
+import { IconCoin, IconPlus } from "@tabler/icons-react";
+import classes from "./ProjectsPage.module.css";
+import { useDisclosure } from "@mantine/hooks";
+import NewProjectModal from "../../components/NewProjectModal";
+import { handleLegacySelectEvents } from "echarts/types/src/legacy/dataSelectAction.js";
 // import { IconCoin, IconPlus } from "@tabler/icons-react";
 // import classes from "./ProjectsPage.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [opened, { open, close }] = useDisclosure();
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
@@ -18,7 +24,8 @@ function ProjectsPage() {
 
         getProjects(token).then(
           (response) => {
-            setProjects(response);
+            const sortedProjects = response.sort((a,b) => b.dateCreated - a.dateCreated);
+            setProjects(sortedProjects);
           }
         );
 
@@ -42,40 +49,76 @@ function ProjectsPage() {
     }) 
   }
 
-  const addProjectButton = () => {
-    return (
-      <Button>
-        TODO Add
-      </Button>
-    )
+  const formatDate = (timestamp: number): string => {
+    const date = new Date(timestamp);
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+    return date.toLocaleDateString('en-US', options);
   }
 
   const rows = projects.map((element) => (
     <Table.Tr key={element.id}>
       <Table.Td>{element.name}</Table.Td>
       <Table.Td>{element.hex}</Table.Td>
-      <Table.Td>TODO</Table.Td>
+      <Table.Td>{formatDate(element.dateCreated)}</Table.Td>
       <Table.Td>
-        <Button>TODO Edit</Button>
         <Button onClick={() => handleDeleteProject(element.id)}>Delete</Button>
       </Table.Td>
     </Table.Tr>
   ));
 
+  const noProject = () => {
+    return (
+      <Stack align="center">
+        <Text className={classes.noProjectHeader}>Looks like there's nothing here.</Text>
+        <Text className={classes.noProjectText}>
+          Click on the + New Project button to create a new project!
+        </Text>
+      </Stack>
+    )
+  }
+
+  const handleAddProject = (project : Project) => {
+    setProjects([...projects, project]);
+    postProject(project);
+  }
+
+  const addProjectButton = () => {
+    return (
+      <Button
+        className={classes.addBtn}
+        onClick={() => open()}
+        leftSection={<IconPlus stroke={1.5} />}
+      >
+        New Project
+      </Button>
+    )
+  }
+
   return (
     <>
+      <NewProjectModal opened={opened} close={close} onAddProject={handleAddProject} />
       <FunctionalHeader text="Projects" element={addProjectButton()} />
       <Stack p={40}>
-        <Table>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>Project</Table.Th>
-              <Table.Th>Color</Table.Th>
-              <Table.Th>Date Created</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
+        {projects.length === 0 ? (
+          noProject()
+        ) : (
+          <Table>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th className={classes.column}>Project</Table.Th>
+                <Table.Th className={classes.column}>Color</Table.Th>
+                <Table.Th className={classes.column}>Date Created</Table.Th>
+                <Table.Th className={classes.column}></Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{rows}</Table.Tbody>
+          </Table>
+        )}
+
       </Stack>
     </>
   )

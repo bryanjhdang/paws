@@ -90,6 +90,7 @@ export class FirestoreHelper implements DatabaseHelper {
       userId: userId,
       hex: project.hex,
       name: project.name,
+      dateCreated: project.dateCreated,
       id: project.id
     }
   }
@@ -161,7 +162,7 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
   private deserializeProject(project: any): Project {
-    return new Project(project.hex, project.name, project.id)
+    return new Project(project.hex, project.name, project.dateCreated, project.id)
   }
 
 

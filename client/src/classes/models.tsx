@@ -1,7 +1,7 @@
 export class Pet {
   constructor(
-    public restId: number = 1, // VERY HARD CODE AND HACKY
-    public workId: number = 5, // VERY HARD CODE AND HACKY 
+    public restId: number, // VERY HARD CODE AND HACKY
+    public workId: number, // VERY HARD CODE AND HACKY 
     //todo: have something that's not a primitive
     public ownedCats: number[] = [0],
   ) { };
@@ -11,6 +11,7 @@ export class Project {
   constructor(
     public hex: string,
     public name: string,
+    public dateCreated: number,
     public id: string,
   ) { };
 }
