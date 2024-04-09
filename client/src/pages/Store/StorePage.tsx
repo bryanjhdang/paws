@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { Text, Flex, Stack, Group, Divider } from "@mantine/core";
 import { Pet } from "../../classes/models";
-import { buyPet, getCoins, getPet } from "../../classes/HTTPhelpers";
+import { buyPet, equipPet, getCoins, getPet } from "../../classes/HTTPhelpers";
 import { FunctionalHeader } from "../../components/Headers";
 import StoreItem from "./StoreItem";
 import classes from "./StorePage.module.css";
 import { IconCoin } from '@tabler/icons-react';
 import { RestCats, WorkCats } from "../../classes/shopItems";
-
 import { notifications } from "@mantine/notifications";
 
 function StorePage() {
@@ -30,16 +29,18 @@ function StorePage() {
   }, []);
 
   const handleBuyItem = (id: number, cost: number) => {
-    if (cost > coins) {
-      notifications.show({
-        title: 'Default notification',
-        message: 'You don\'t have have enough coins!',
-      })
+    // This should never be called
+    if (pets && pets.ownedCats.includes(id)) {
       return;
     }
 
-    // This should never be called
-    if (pets && pets.ownedCats.includes(id)) {
+    if (cost > coins) {
+      notifications.show({
+        title: "Unable to Purchase",
+        message: "You don't have enough coins!",
+        color: "red",
+        withBorder: true
+      });
       return;
     }
 
@@ -47,6 +48,11 @@ function StorePage() {
       if (pets) {
         const updatedOwned = [...pets.ownedCats, id];
         setPets(new Pet(pets.restId, pets.workId, updatedOwned));
+        notifications.show({
+          message: "Purchased!",
+          color: "green",
+          withBorder: true
+        })
       }
       setCoins(prevCoins => prevCoins - cost);
     }).catch(error => {
@@ -55,11 +61,13 @@ function StorePage() {
     });
   }
 
-  // const handleEquipItem = (id: number) => {
-  //   equipPet(id).then(() => {
-  //     const updatedPets = pet
-  //   })
-  // }
+  const handleEquipItem = (pet: Pet) => {
+    equipPet(pet).then(() => {
+      if (pets) {
+        const updatedPets = [pet]
+      }
+    })
+  }
 
   const coinDisplay = () => {
     return (
