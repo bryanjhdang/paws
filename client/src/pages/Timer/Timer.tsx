@@ -109,7 +109,7 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
     };
 
     makeAuthenticatedRequest
-  }, [getAccessTokenSilently])
+  }, [getAccessTokenSilently, user?.sub])
 
   /* ------------------------- Timer Lifecycle Methods ------------------------ */
   const intervalReference = useRef<NodeJS.Timeout | null>(null);

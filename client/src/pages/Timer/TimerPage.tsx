@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Flex, Image, ScrollArea, Stack } from "@mantine/core";
+import { Flex } from "@mantine/core";
 import { TaskInput } from "./TaskInput";
 import { Timer } from "./Timer";
 import { Project } from "../../classes/models";
 import TodoList from "./TodoList";
-import classes from "./TimerPage.module.css";
-import BongoCat from "../../assets/sleepy-cat-1.gif";
+// import classes from "./TimerPage.module.css";
+// import BongoCat from "../../assets/sleepy-cat-1.gif";
 
 function TimerPage() {
   const [task, setTask] = useState<string>("");

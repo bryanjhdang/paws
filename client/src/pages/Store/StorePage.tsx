@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Text, Flex, Stack, Group, Divider } from "@mantine/core";
 import { Pet } from "../../classes/models";
 import { getCoins, getPet } from "../../classes/HTTPhelpers";
-import { FunctionalHeader, SimpleHeader, TextHeader } from "../../components/Headers";
+import { FunctionalHeader } from "../../components/Headers";
 import StoreItem from "./StoreItem";
 import classes from "./StorePage.module.css";
 import { IconCoin } from '@tabler/icons-react';
@@ -31,6 +31,8 @@ function StorePage() {
             setCoins(response);
           }
         )
+        
+        console.log(petData);
 
       } catch (error) {
         console.error(error);
@@ -40,9 +42,9 @@ function StorePage() {
     makeAuthenticatedRequest();
   }, [getAccessTokenSilently]);
 
-  const handleBuyItem = () => {
+  // const handleBuyItem = () => {
 
-  }
+  // }
 
   const coinDisplay = () => {
     return (

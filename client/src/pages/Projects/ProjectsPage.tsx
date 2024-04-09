@@ -1,10 +1,10 @@
-import { Button, Group, Stack, Table, Text } from "@mantine/core";
-import { FunctionalHeader, SimpleHeader, TextHeader } from "../../components/Headers";
+import { Button, Stack, Table } from "@mantine/core";
+import { FunctionalHeader } from "../../components/Headers";
 import { Project } from "../../classes/models";
 import { useEffect, useState } from "react";
 import { deleteProject, getProjects } from "../../classes/HTTPhelpers";
-import { IconCoin, IconPlus } from "@tabler/icons-react";
-import classes from "./ProjectsPage.module.css";
+// import { IconCoin, IconPlus } from "@tabler/icons-react";
+// import classes from "./ProjectsPage.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function ProjectsPage() {
