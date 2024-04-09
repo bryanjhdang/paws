@@ -20,12 +20,12 @@ export class PetService {
     }
 
     async equipPet(user: User, workId: number, restId: number) {
-        if (!user.pet.ownedCats.includes(workId) || !user.pet.ownedCats.includes(restId)) {
+        if (!user.pet.ownedCats.includes(restId) || !user.pet.ownedCats.includes(workId)) {
             throw new Error("User does not own the given pet");
         } 
 
-        user.pet.workId = workId;
         user.pet.restId = restId;
+        user.pet.workId = workId;
         firestoreHelper.updateUser(user);
     }
 
