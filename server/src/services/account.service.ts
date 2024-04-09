@@ -18,7 +18,6 @@ export class AccountService {
     return "cookie goes here!";
   }
 
-  // todo: async?
   createUser(username: string, name: string): Promise<string> {
     let user = new User(name, new Pet());
     return firestoreHelper.addUser(user);
