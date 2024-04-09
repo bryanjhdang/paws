@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Project } from "../../classes/models";
 import { getProjects, postProject } from "../../classes/HTTPhelpers";
 import { useAuth0 } from "@auth0/auth0-react";
-import classes from "./ProjectButton.module.css";
+// import classes from "./ProjectButton.module.css";
 
 interface NewProjectModalProps {
   opened: boolean;

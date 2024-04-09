@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Text, Flex, Stack } from "@mantine/core";
+import { Text, Stack } from "@mantine/core";
 import { TimeEntry } from "../../classes/models";
 import { getTimeEntry } from "../../classes/HTTPhelpers";
 import { SimpleHeader } from "../../components/Headers";
