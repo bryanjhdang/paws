@@ -42,10 +42,10 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
 }
 
 export const validateAccessToken = auth({
-  // issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`,
-  issuerBaseURL: 'https://dev-iryunnqpk5if1z5x.us.auth0.com',
-  audience: 'https://tempify-server-tjucjw3zaq-uc.a.run.app',
-  // audience: process.env.AUTH0_AUDIENCE,
+  issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`,
+  // issuerBaseURL: 'https://dev-iryunnqpk5if1z5x.us.auth0.com',
+  // audience: 'https://tempify-server-tjucjw3zaq-uc.a.run.app',
+  audience: process.env.AUTH0_AUDIENCE,
 });
 
 export const checkRequiredPermissions = (requiredPermissions: string[]) => {
