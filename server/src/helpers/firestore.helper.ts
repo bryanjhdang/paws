@@ -150,7 +150,7 @@ export class FirestoreHelper implements DatabaseHelper {
       return new RunningCountdown(element.startTime, element.plannedEndTime, element.projectId, element.name);
     }
 
-    if (element) {
+    if (element.startTime) {
       return new RunningStopwatch(element.startTime, element.projectId, element.name);
     }
 

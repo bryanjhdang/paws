@@ -121,6 +121,7 @@ export function getTimeEntry(accessToken: string): Promise<TimeEntry[]> {
 }
 
 export function postTimeEntryStart(timeEntry: TimeEntry, accessToken: string): void {
+	console.log(timeEntry);
 	axios({
 		method: 'post',
 		url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/start`,
@@ -140,6 +141,7 @@ export function postTimeEntryStart(timeEntry: TimeEntry, accessToken: string): v
 }
 
 export function postTimeEntryStop(endTimeNumber: number, accessToken: string): void {
+	console.log(endTimeNumber);
 	axios({
 		method: 'post',
 		url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/stop`,
@@ -157,7 +159,6 @@ export function postTimeEntryStop(endTimeNumber: number, accessToken: string): v
 
 // Projects
 export async function postProject(project: Project, accessToken: string) {
-	console.log(project);
 	axios({
 		method: 'post',
 		url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/project`,
