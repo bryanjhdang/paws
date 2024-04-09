@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Flex, Image, ScrollArea, Stack } from "@mantine/core";
 import { TaskInput } from "./TaskInputBar/TaskInput";
-import { Timer } from "./TaskInputBar/Timer";
+import { Timer } from "./TaskInputBar/TimerButton/Timer";
 import { Project } from "../../classes/models";
 import TodoList from "./Todo/TodoList";
 import classes from "./TimerPage.module.css";
@@ -21,10 +21,6 @@ function TimerPage() {
           setSelectedProject={setSelectedProject}
         />
         {/* <Image className={classes.sleepyBreathing} w={300} h={300} src={BongoCat} /> */}
-        <Timer
-          task={task}
-          selectedProject={selectedProject}
-        />
       </Flex>
       <TodoList />
     </Flex>

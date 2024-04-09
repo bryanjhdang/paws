@@ -2,10 +2,10 @@ import { DEFAULT_THEME, Modal, Button, Menu, TextInput, ColorPicker, Text, Stack
 import { useDisclosure } from '@mantine/hooks';
 import { IconFolderOpen, IconPlus, IconPointFilled } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-import { Project } from "../../classes/models";
-import { getProjects, postProject } from "../../classes/HTTPhelpers";
+import { Project } from "../../../classes/models";
+import { getProjects, postProject } from "../../../classes/HTTPhelpers";
 import classes from "./ProjectButton.module.css";
-import NewProjectModal from "../../components/NewProjectModal";
+import NewProjectModal from "../../../components/NewProjectModal";
 
 interface ProjectButtonProps {
   selectedProject: Project | null;
