@@ -37,7 +37,7 @@
   margin-bottom: 5px;
   font-size: var(--mantine-font-size-xl);
   color: #F3F0E6;
-  border-radius: var(--mantine-radius-xl);
+  border-radius: var(--mantine-radius-md);
   padding: var(--mantine-spacing-xs);
   transition: transform 0.05s;
 
@@ -61,4 +61,8 @@
   margin-right: var(--mantine-spacing-md);
   width: 25px;
   height: 25px;
+}
+
+.menu {
+  width: 200px;
 }
