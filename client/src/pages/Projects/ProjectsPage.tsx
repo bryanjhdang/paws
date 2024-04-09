@@ -2,12 +2,16 @@ import { Button, Group, Stack, Table, Text, Title } from "@mantine/core";
 import { FunctionalHeader, SimpleHeader, TextHeader } from "../../components/Headers";
 import { Project } from "../../classes/models";
 import { useEffect, useState } from "react";
-import { deleteProject, getProjects } from "../../classes/HTTPhelpers";
+import { deleteProject, getProjects, postProject } from "../../classes/HTTPhelpers";
 import { IconCoin, IconPlus } from "@tabler/icons-react";
 import classes from "./ProjectsPage.module.css";
+import { useDisclosure } from "@mantine/hooks";
+import NewProjectModal from "../../components/NewProjectModal";
+import { handleLegacySelectEvents } from "echarts/types/src/legacy/dataSelectAction.js";
 
 function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [opened, { open, close }] = useDisclosure();
 
   useEffect(() => {
     getProjects().then(
@@ -23,17 +27,6 @@ function ProjectsPage() {
       const updatedProjects = projects.filter((project) => project.id !== id);
       setProjects(updatedProjects);
     })
-  }
-
-  const addProjectButton = () => {
-    return (
-      <Button
-        className={classes.addBtn}
-        leftSection={<IconPlus stroke={1.5} />}
-      >
-        New Project
-      </Button>
-    )
   }
 
   const formatDate = (timestamp: number): string => {
@@ -68,8 +61,26 @@ function ProjectsPage() {
     )
   }
 
+  const handleAddProject = (project : Project) => {
+    setProjects([...projects, project]);
+    postProject(project);
+  }
+
+  const addProjectButton = () => {
+    return (
+      <Button
+        className={classes.addBtn}
+        onClick={() => open()}
+        leftSection={<IconPlus stroke={1.5} />}
+      >
+        New Project
+      </Button>
+    )
+  }
+
   return (
     <>
+      <NewProjectModal opened={opened} close={close} onAddProject={handleAddProject} />
       <FunctionalHeader text="Projects" element={addProjectButton()} />
       <Stack p={40}>
         {projects.length === 0 ? (
