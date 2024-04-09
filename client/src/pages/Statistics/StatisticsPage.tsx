@@ -22,8 +22,6 @@ function StatisticsPage() {
 
   return (
     <Flex direction={"row"} justify={"flex-start"}>
-      <NavbarSimple active={active} setActive={setActive} />
-
       <Flex
         direction={"column"}
         justify={"flex-start"}
