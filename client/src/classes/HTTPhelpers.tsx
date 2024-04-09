@@ -34,36 +34,62 @@ export function postAccountCreate(): void {
 }
 
 // Pet
-export function getPet(): Promise<Pet> {
-	const createPet = (any: any): Pet => {
-		return new Pet(any.data.id, any.data.name, any.data.imageUrl);
-	}
+// export function getPet(): Promise<Pet> {
+// 	const createPet = (any: any): Pet => {
+// 		return new Pet(any.data.restId, any.data.workId, any.data.ownedCats);
+// 	}
 
-	return new Promise<Pet>((resolve, reject) => {
-		axios({
-			method: 'get',
-			url: `${import.meta.env.VITE_API_SERVER_URL}/pet` 
-		})
-		.then((response) => {
-			resolve(createPet(response));
-		}, (error) => {
-			reject(error);
-		});
-	})
+// 	return new Promise<Pet>((resolve, reject) => {
+// 		axios({
+// 			method: 'get',
+// 			url: `${import.meta.env.VITE_API_SERVER_URL}/pet`
+// 		})
+// 		.then((response) => {
+// 			resolve(createPet(response));
+// 		}, (error) => {
+// 			reject(error);
+// 		});
+// 	})
+// }
+
+export async function getPet(accountId: string): Promise<Pet> {
+	try {
+		const response = await axios.get(`${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}`);
+		const { restId, workId, ownedCats } = response.data.pet;
+		return new Pet(restId, workId, ownedCats);
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
 }
 
-export function getCoins(): Promise<number> {
-	return new Promise<number>((resolve, reject) => {
-		axios({
-			method: 'get',
-			url: `${import.meta.env.VITE_API_SERVER_URL}/pet/coins`
-		})
-		.then((response) => {
-			resolve(response.data.coins);
-		}, (error) => {
-			reject(error);
-		});
-	})
+export async function buyPet(id: number, cost: number) {
+	try {
+		console.log("id " + id + " cost: " + cost);
+		await axios.put(`${import.meta.env.VITE_API_SERVER_URL}/pet/buy?id=${id}&cost=${cost}`);
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+}
+
+// export async function equipPet(pet: Pet) {
+// 	try {
+// 		await axios.put(`${import.meta.env.VITE_API_SERVER_URL}/pet/equip`); 
+// 	} catch (error) {
+// 		console.error(error);
+// 		throw error;
+// 	}
+// }
+
+export async function getCoins(accountId: string): Promise<number> {
+	try {
+		const response = await axios.get(`${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}`)
+		return response.data.totalCoins;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
 }
 
 // TimeEntry
