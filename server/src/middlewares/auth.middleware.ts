@@ -7,6 +7,7 @@ import {
   claimCheck,
   InsufficientScopeError,
 } from "express-oauth2-jwt-bearer";
+import { StatusCodes } from "http-status-codes";
 
 dotenv.config();
 
@@ -26,7 +27,8 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
     }).catch((error) => {
       // console.error("could not find user, creating new: \n", error);
       console.error("could not find user... ", error);
-      next();
+
+      return res.status(StatusCodes.BAD_REQUEST).json({message: "User not found"});
       // oAuthHelper.addNewUser(userId).then((user) => {
       //   res.locals.user = user;
       //   next();
