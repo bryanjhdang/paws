@@ -26,11 +26,11 @@ export class TimeEntryService {
 
   stopEntry(user : User, endTime: number): Promise<TimeEntry> {
     return new Promise<TimeEntry>((resolve, reject) => {
-      console.log(user);
       let result = user.stop(endTime);
       if (result instanceof TimeEntry) {
         try {
           firestoreHelper.updateUser(user);
+          wsService.updateUser(user);
           firestoreHelper.createTimeEntry(user.id, result).then((timeEntry) => {
             resolve(timeEntry);});
         } catch(err) {

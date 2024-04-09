@@ -4,6 +4,7 @@ import { TaskInput } from "./TaskInputBar/TaskInput";
 import { Timer } from "./TaskInputBar/Timer";
 import { Project } from "../../classes/models";
 import TodoList from "./Todo/TodoList";
+import SocketConnection from "./SocketConnection";
 // import classes from "./TimerPage.module.css";
 // import BongoCat from "../../assets/sleepy-cat-1.gif";
 
@@ -27,6 +28,7 @@ function TimerPage() {
         />
       </Flex>
       <TodoList />
+      <SocketConnection></SocketConnection>
     </Flex>
   );
 }

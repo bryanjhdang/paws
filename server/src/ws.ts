@@ -18,7 +18,6 @@ export function wsInit(io: any) {
             if (!userId) { return }
 
             let user: User = await accountService.getUserInfo(userId.toString());
-            console.log("sending from join");
             updateUsers(user);
         })
 
@@ -34,7 +33,6 @@ export function wsInit(io: any) {
         });
 
         socket.on('updateUser', (user: User) => {
-            console.log("sending from internal");
             updateUsers(user);
         });
     });
