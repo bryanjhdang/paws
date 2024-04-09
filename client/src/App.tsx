@@ -13,6 +13,7 @@ import { CallbackPage } from "./non-app-pages/Callback/CallbackPage";
 import { NotFoundPage } from "./non-app-pages/NotFound/NotFoundPage";
 import BasePage from "./pages/BasePage";
 import ProjectsPage from "./pages/Projects/ProjectsPage";
+import '@mantine/notifications/styles.css';
 
 export const App: React.FC = () => {
   const { isLoading } = useAuth0();

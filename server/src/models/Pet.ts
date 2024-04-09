@@ -1,7 +1,8 @@
 export class Pet {
     constructor(
-        public id: string = '',
-        public name: string = '',
-        public imageUrl: string = ''
+        public restId: number = 0, 
+        public workId: number = 0,
+        //todo: have something that's not a primitive
+        public ownedCats : number[] = [0],
     ) { };
 }
