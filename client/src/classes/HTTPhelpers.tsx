@@ -36,28 +36,11 @@ export function postAccountCreate(): void {
 }
 
 // Pet
-// export function getPet(accessToken: string): Promise<Pet> {
-// 	const createPet = (any: any): Pet => {
-// 		return new Pet(any.data.id, any.data.name, any.data.imageUrl);
-// 	}
-
-// 	return new Promise<Pet>((resolve, reject) => {
-// 		axios({
-// 			method: 'get',
-// 			url: `${import.meta.env.VITE_API_SERVER_URL}/pet`,
-// 			headers: { Authorization: `Bearer ${accessToken}` }
-// 		})
-// 		.then((response) => {
-// 			resolve(createPet(response));
-// 		}, (error) => {
-// 			reject(error);
-// 		});
-// 	})
-// }
-
-export async function getPet(accountId: string): Promise<Pet> {
+export async function getPet(accountId: string, accessToken: string): Promise<Pet> {
 	try {
-		const response = await axios.get(`${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}`);
+		const response = await axios.get(`${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}`, {
+			headers: { Authorization: `Bearer ${accessToken}`}
+		});
 		const { restId, workId, ownedCats } = response.data.pet;
 		return new Pet(restId, workId, ownedCats);
 	} catch (error) {
@@ -66,27 +49,33 @@ export async function getPet(accountId: string): Promise<Pet> {
 	}
 }
 
-export async function buyPet(id: number, cost: number) {
+export async function buyPet(id: number, cost: number, accessToken: string) {
 	try {
-		await axios.put(`${import.meta.env.VITE_API_SERVER_URL}/pet/buy?id=${id}&cost=${cost}`);
+		await axios.put(`${import.meta.env.VITE_API_SERVER_URL}/pet/buy?id=${id}&cost=${cost}`, {
+			headers: { Authorization: `Bearer ${accessToken}`}
+		});
 	} catch (error) {
 		console.error(error);
 		throw error;
 	}
 }
 
-export async function equipPet(pet: Pet) {
+export async function equipPet(pet: Pet, accessToken: string) {
 	try {
-		await axios.patch(`${import.meta.env.VITE_API_SERVER_URL}/pet/equip?restId=${pet.restId}&workId=${pet.workId}`);
+		await axios.patch(`${import.meta.env.VITE_API_SERVER_URL}/pet/equip?restId=${pet.restId}&workId=${pet.workId}`, {
+				headers: { Authorization: `Bearer ${accessToken}`}
+		});
 	} catch (error) {
 		console.error(error);
 		throw error;
 	}
 }
 
-export async function getCoins(accountId: string): Promise<number> {
+export async function getCoins(accountId: string, accessToken: string): Promise<number> {
 	try {
-		const response = await axios.get(`${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}`)
+		const response = await axios.get(`${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}`, {
+			headers: { Authorization: `Bearer ${accessToken}`}
+		})
 		return response.data.totalCoins;
 	} catch (error) {
 		console.error(error);
