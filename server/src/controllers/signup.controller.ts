@@ -24,6 +24,7 @@ signupController.post('/', (req: Request, res: Response) => {
 
   let user = new User(email, new Pet(), new NoRunning(), 0, userId);
   const id = firestoreHelper.addUser(user);
+  return res.status(StatusCodes.OK).json("user added");
 })
 
 
