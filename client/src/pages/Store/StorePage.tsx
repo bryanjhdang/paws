@@ -11,11 +11,10 @@ import { notifications } from "@mantine/notifications";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function StorePage() {
-  const [pets, setPets] = useState<Pet>();
 
   // const [storeItems, setStoreItems] = useState<>
   const [petData, setPetData] = useState<Pet>();
-  const [coins, setCoins] = useState<number>();
+  const [coins, setCoins] = useState<number>(0);
   const { getAccessTokenSilently } = useAuth0();
   const { user } = useAuth0();
 
@@ -28,6 +27,7 @@ function StorePage() {
         // todo: handle these in the backend instead of sending as request?
         getPet(userId, token).then(
           (response) => {
+            console.log(response);
             setPetData(response);
           }
         );
@@ -50,7 +50,9 @@ function StorePage() {
 
   const handleBuyItem = (id: number, cost: number) => {
     // This should never be called
-    if (pets && pets.ownedCats.includes(id)) {
+    
+    if (petData?.ownedCats.includes(id)) {
+      console.log("inside");
       return;
     }
 
@@ -66,9 +68,9 @@ function StorePage() {
 
     getAccessTokenSilently().then((token) => {
       buyPet(id, cost, token).then(() => {
-        if (pets) {
-          const updatedOwned = [...pets.ownedCats, id];
-          setPets(new Pet(pets.restId, pets.workId, updatedOwned));
+        if (petData) {
+          const updatedOwned = [...petData.ownedCats, id];
+          setPetData(new Pet(petData.restId, petData.workId, updatedOwned));
           notifications.show({
             title: "Purchased",
             message: "Your new cat friend is excited to work with you.",
@@ -87,22 +89,22 @@ function StorePage() {
   }
 
   const handleEquipItem = (id: number, isRestCat: boolean) => {
-    if (!pets) return;
+    if (!petData) return;
 
     console.log(id);
     console.log(isRestCat);
 
     const updatedPet = new Pet(
-      isRestCat ? id : pets.restId,
-      !isRestCat ? id : pets.workId, 
-      pets.ownedCats
+      isRestCat ? id : petData.restId,
+      !isRestCat ? id : petData.workId, 
+      petData.ownedCats
     );
 
     console.log(updatedPet);
     
     getAccessTokenSilently().then((token) => {
       equipPet(updatedPet, token).then(() => {
-        setPets(updatedPet);
+        setPetData(updatedPet);
       })
     })
   }
@@ -131,8 +133,8 @@ function StorePage() {
               catItem={catItem}
               onBuy={handleBuyItem}
               onEquip={handleEquipItem}
-              isOwned={pets ? pets.ownedCats.includes(catItem.id) : false}
-              isInUse={pets ? (pets.restId === catItem.id || pets.workId === catItem.id) : false}
+              isOwned={petData ? petData.ownedCats.includes(catItem.id) : false}
+              isInUse={petData ? (petData.restId === catItem.id || petData.workId === catItem.id) : false}
             />
           ))}
         </Group>
@@ -150,8 +152,8 @@ function StorePage() {
               catItem={catItem}
               onBuy={handleBuyItem}
               onEquip={handleEquipItem}
-              isOwned={pets ? pets.ownedCats.includes(catItem.id) : false}
-              isInUse={pets ? (pets.restId === catItem.id || pets.workId === catItem.id) : false}
+              isOwned={petData ? petData.ownedCats.includes(catItem.id) : false}
+              isInUse={petData ? (petData.restId === catItem.id || petData.workId === catItem.id) : false}
             />
           ))}
         </Group>
