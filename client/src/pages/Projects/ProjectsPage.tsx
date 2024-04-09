@@ -81,10 +81,21 @@ function ProjectsPage() {
     )
   }
 
-  const handleAddProject = (project : Project) => {
-    setProjects([...projects, project]);
-    postProject(project);
-  }
+  const handleAddProject = (project: Project) => {
+    const makeAuthenticatedRequest = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        
+        setProjects([...projects, project]);
+        postProject(project, token);
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    
+    makeAuthenticatedRequest();
+  };
 
   const addProjectButton = () => {
     return (

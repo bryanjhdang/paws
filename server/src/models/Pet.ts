@@ -3,6 +3,6 @@ export class Pet {
         public restId: number = 1, // very hacky dont like
         public workId: number = 5, // very hacky dont like
         //todo: have something that's not a primitive
-        public ownedCats : number[] = [0],
+        public ownedCats : number[] = [1,5],
     ) { };
 }
