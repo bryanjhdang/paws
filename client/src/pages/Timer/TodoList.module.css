@@ -1,0 +1,69 @@
+.section {
+  background-color: #794B62;
+  /* margin: 20px 20px; */
+  padding: 20px;
+  border-radius: var(--mantine-radius-lg);
+  height: fit-content;
+  width: 300px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+.icon {
+  color: white;
+  transition: transform 0.1s;
+}
+
+.icon:hover {
+  color: white;
+  transform: scale(1.2);
+  background-color: rgba(255,255,255,0.1);
+  border-radius: var(--mantine-radius-xl);
+}
+
+.headerText {
+  /* font-size: var(--mantine-font-size-xl); */
+  color: white;
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.itemText {
+  color: white;
+  width: 100%;
+}
+
+.itemCompleted {
+  text-decoration: line-through;
+  color: var(--mantine-color-dark-1);
+}
+
+.addinput {
+  background-color: white;
+  width: 100%;
+  padding: 0 10px;
+  margin-right: 10px;
+  border-radius: var(--mantine-radius-md);
+}
+
+.addbutton {
+  background-color: #dba644;
+  border-radius: var(--mantine-radius-md);
+  transition: transform 0.1s;
+  min-width: fit-content;
+}
+
+.addbutton:hover {
+  background-color: #dba644;
+  transform: scale(1.1);
+}
+
+.todolist {
+  margin-top: 10px;
+}
+
+.noTodoText {
+  margin-top: 10px;
+  color: white;
+  text-align: center;
+}
+

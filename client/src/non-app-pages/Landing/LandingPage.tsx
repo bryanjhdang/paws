@@ -70,7 +70,7 @@ function LandingPage() {
     //     );
     // }
 
-  function tempifyTitle() {
+  function pawsTitle() {
     return (
       <>
         <Center>
@@ -86,7 +86,7 @@ function LandingPage() {
                 deg: 90,
               }}
             >
-              TEMPIFY
+              PAWS
             </Text>
           </Title>
         </Center>
@@ -99,7 +99,7 @@ function LandingPage() {
       <Center style={{ height: "100vh" }}>
         <Box style={{ width: 200 }}>
           <Flex direction="column" gap="md">
-            {tempifyTitle()}
+            {pawsTitle()}
             {signInButton()}
           </Flex>
         </Box>

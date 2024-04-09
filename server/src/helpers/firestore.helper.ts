@@ -7,7 +7,6 @@ import { TimeEntry } from "../models/TimeEntry";
 import { Pet } from "../models/Pet";
 import { Project } from "../models/Project";
 import { Todo } from "../models/Todo";
-import { todo } from "node:test";
 dotenv.config();
 
 
@@ -89,32 +88,37 @@ export class FirestoreHelper implements DatabaseHelper {
   private serializeProject(userId: string, project: Project) {
     return {
       userId: userId,
-      id: project.id,
       hex: project.hex,
-      name: project.name
+      name: project.name,
+      id: project.id
     }
   }
 
   private serializePet(userId : string, pet : Pet) {
     return {
       userId: userId,
-      id: pet.id, 
-      name: pet.name,
-      imageUrl : pet.imageUrl
+      restId: pet.restId, 
+      workId: pet.workId,
+      ownedCats : pet.ownedCats,
     }
+  }
+
+  private deserializePet(userId : string, data: admin.firestore.DocumentData) : Pet {
+    return new Pet(data.workId, data.restId, data.ownedCats);
   }
 
   private serializeTodo(userId: string, todo: Todo) {
     return {
       userId: userId, 
       task: todo.task,
+      dateCreated: todo.dateCreated,
       done: todo.done,
       id: todo.id
     }
   }
 
   private deserializeTodo(element : any) : Todo {
-    return new Todo(element.task, element.done, element.id); 
+    return new Todo(element.task, element.dateCreated, element.done, element.id); 
   }
 
   private saveTodo(userId: string, todo: Todo) : Promise<Todo> {
@@ -133,7 +137,7 @@ export class FirestoreHelper implements DatabaseHelper {
   private deserializeUser(userId: string, data: admin.firestore.DocumentData): User {
     return new User(
       data!.displayName,
-      new Pet(data!.pet.id, data!.pet.name, data!.pet.imageUrl),
+      this.deserializePet(userId, data.pet),
       data?.runningTime ? this.deserializeRunningTime(data.runningTime) : new NoRunning(),
       data!.totalCoins,
       userId
@@ -157,7 +161,7 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
   private deserializeProject(project: any): Project {
-    return new Project(project.id, project.hex, project.name)
+    return new Project(project.hex, project.name, project.id)
   }
 
 
@@ -258,6 +262,13 @@ export class FirestoreHelper implements DatabaseHelper {
           reject(err);
         })
     })
+  }
+
+  deleteProject(projectId: string) : void {
+    this.projectDB.doc(projectId).delete()
+      .catch((err : Error) => {
+      console.log(err);
+    })  
   }
 
   createTodo(userId: string, todo: Todo) : Promise<Todo> {
