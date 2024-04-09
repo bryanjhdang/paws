@@ -1,7 +1,10 @@
 import { Flex, TextInput } from "@mantine/core";
+
 import { Project } from "../../../classes/models";
-import { ProjectButton } from "../ProjectButton";
-import classes from './TaskInput.module.css';
+import { ProjectButton } from "../ProjectButton/ProjectButton";
+import { TimerButton } from "./TimerButton/TimerButton";
+
+import classes from "./TaskInput.module.css";
 
 interface TaskInputProps {
   task: string;
@@ -10,7 +13,12 @@ interface TaskInputProps {
   setSelectedProject: React.Dispatch<React.SetStateAction<Project | null>>;
 }
 
-export function TaskInput({ task, setTask, selectedProject, setSelectedProject }: TaskInputProps): JSX.Element {
+export function TaskInput({
+  task,
+  setTask,
+  selectedProject,
+  setSelectedProject,
+}: TaskInputProps): JSX.Element {
   return (
     <>
       <Flex className={classes.textinput}>
@@ -22,10 +30,14 @@ export function TaskInput({ task, setTask, selectedProject, setSelectedProject }
           value={task}
           onChange={(event) => setTask(event.currentTarget.value)}
         />
-        <Flex>
-          <ProjectButton 
-            selectedProject={selectedProject} 
-            setSelectedProject={setSelectedProject} 
+        <Flex gap={"xs"}>
+          <TimerButton 
+            task={task}
+            selectedProject={selectedProject}
+          />
+          <ProjectButton
+            selectedProject={selectedProject}
+            setSelectedProject={setSelectedProject}
           />
         </Flex>
       </Flex>
