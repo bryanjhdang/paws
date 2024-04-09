@@ -1,9 +1,9 @@
 import { ActionIcon, Button, Checkbox, Flex, Stack, Text, TextInput } from "@mantine/core";
 import { IconTrash } from '@tabler/icons-react';
 import classes from "./TodoList.module.css"
-import { Todo } from "../../classes/models";
+import { Todo } from "../../../classes/models";
 import { useEffect, useState } from "react";
-import { deleteTodo, getTodo, patchTodo, postTodo } from "../../classes/HTTPhelpers";
+import { deleteTodo, getTodo, patchTodo, postTodo } from "../../../classes/HTTPhelpers";
 import { useForm } from "@mantine/form";
 import { useAuth0 } from "@auth0/auth0-react";
 

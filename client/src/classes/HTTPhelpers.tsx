@@ -36,38 +36,62 @@ export function postAccountCreate(): void {
 }
 
 // Pet
-export function getPet(accessToken: string): Promise<Pet> {
-	const createPet = (any: any): Pet => {
-		return new Pet(any.data.id, any.data.name, any.data.imageUrl);
-	}
+// export function getPet(accessToken: string): Promise<Pet> {
+// 	const createPet = (any: any): Pet => {
+// 		return new Pet(any.data.id, any.data.name, any.data.imageUrl);
+// 	}
 
-	return new Promise<Pet>((resolve, reject) => {
-		axios({
-			method: 'get',
-			url: `${import.meta.env.VITE_API_SERVER_URL}/pet`,
-			headers: { Authorization: `Bearer ${accessToken}` }
-		})
-		.then((response) => {
-			resolve(createPet(response));
-		}, (error) => {
-			reject(error);
-		});
-	})
+// 	return new Promise<Pet>((resolve, reject) => {
+// 		axios({
+// 			method: 'get',
+// 			url: `${import.meta.env.VITE_API_SERVER_URL}/pet`,
+// 			headers: { Authorization: `Bearer ${accessToken}` }
+// 		})
+// 		.then((response) => {
+// 			resolve(createPet(response));
+// 		}, (error) => {
+// 			reject(error);
+// 		});
+// 	})
+// }
+
+export async function getPet(accountId: string): Promise<Pet> {
+	try {
+		const response = await axios.get(`${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}`);
+		const { restId, workId, ownedCats } = response.data.pet;
+		return new Pet(restId, workId, ownedCats);
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
 }
 
-export function getCoins(accessToken: string): Promise<number> {
-	return new Promise<number>((resolve, reject) => {
-		axios({
-			method: 'get',
-			url: `${import.meta.env.VITE_API_SERVER_URL}/pet/coins`,
-			headers: { Authorization: `Bearer ${accessToken}` }
-		})
-		.then((response) => {
-			resolve(response.data.coins);
-		}, (error) => {
-			reject(error);
-		});
-	})
+export async function buyPet(id: number, cost: number) {
+	try {
+		await axios.put(`${import.meta.env.VITE_API_SERVER_URL}/pet/buy?id=${id}&cost=${cost}`);
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+}
+
+export async function equipPet(pet: Pet) {
+	try {
+		await axios.patch(`${import.meta.env.VITE_API_SERVER_URL}/pet/equip?restId=${pet.restId}&workId=${pet.workId}`);
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+}
+
+export async function getCoins(accountId: string): Promise<number> {
+	try {
+		const response = await axios.get(`${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}`)
+		return response.data.totalCoins;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
 }
 
 // TimeEntry

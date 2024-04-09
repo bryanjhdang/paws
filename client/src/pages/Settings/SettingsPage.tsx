@@ -26,7 +26,6 @@ function SettingsPage() {
     <>
       <SimpleHeader text="Settings" />
       <Stack p={40} flex={1}>
-        <NotificationSettings />
         <AccountSettings />
       </Stack>
     </>
