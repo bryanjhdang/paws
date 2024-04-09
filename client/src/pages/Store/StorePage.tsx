@@ -10,7 +10,6 @@ import { RestCats, WorkCats } from "../../classes/shopItems";
 import { notifications } from "@mantine/notifications";
 
 function StorePage() {
-  // const [storeItems, setStoreItems] = useState<>
   const [pets, setPets] = useState<Pet>();
   const [coins, setCoins] = useState<number>(0);
 
@@ -49,7 +48,8 @@ function StorePage() {
         const updatedOwned = [...pets.ownedCats, id];
         setPets(new Pet(pets.restId, pets.workId, updatedOwned));
         notifications.show({
-          message: "Purchased!",
+          title: "Purchased",
+          message: "Your new cat friend is excited to work with you.",
           color: "green",
           withBorder: true
         })
@@ -61,11 +61,22 @@ function StorePage() {
     });
   }
 
-  const handleEquipItem = (pet: Pet) => {
-    equipPet(pet).then(() => {
-      if (pets) {
-        const updatedPets = [pet]
-      }
+  const handleEquipItem = (id: number, isRestCat: boolean) => {
+    if (!pets) return;
+
+    console.log(id);
+    console.log(isRestCat);
+
+    const updatedPet = new Pet(
+      isRestCat ? id : pets.restId,
+      !isRestCat ? id : pets.workId, 
+      pets.ownedCats
+    );
+
+    console.log(updatedPet);
+  
+    equipPet(updatedPet).then(() => {
+      setPets(updatedPet);
     })
   }
 
@@ -88,7 +99,14 @@ function StorePage() {
 
         <Group mb={50}>
           {RestCats.map((catItem, index) => (
-            <StoreItem key={index} catItem={catItem} onBuy={handleBuyItem} />
+            <StoreItem
+              key={index}
+              catItem={catItem}
+              onBuy={handleBuyItem}
+              onEquip={handleEquipItem}
+              isOwned={pets ? pets.ownedCats.includes(catItem.id) : false}
+              isInUse={pets ? (pets.restId === catItem.id || pets.workId === catItem.id) : false}
+            />
           ))}
         </Group>
 
@@ -100,7 +118,14 @@ function StorePage() {
 
         <Group mb={50}>
           {WorkCats.map((catItem, index) => (
-            <StoreItem key={index} catItem={catItem} onBuy={handleBuyItem} />
+            <StoreItem
+              key={index}
+              catItem={catItem}
+              onBuy={handleBuyItem}
+              onEquip={handleEquipItem}
+              isOwned={pets ? pets.ownedCats.includes(catItem.id) : false}
+              isInUse={pets ? (pets.restId === catItem.id || pets.workId === catItem.id) : false}
+            />
           ))}
         </Group>
       </Stack>

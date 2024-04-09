@@ -1,7 +1,7 @@
 export class Pet {
   constructor(
-    public restId: number = 0,
-    public workId: number = 0,
+    public restId: number = 1, // VERY HARD CODE AND HACKY
+    public workId: number = 5, // VERY HARD CODE AND HACKY 
     //todo: have something that's not a primitive
     public ownedCats: number[] = [0],
   ) { };
@@ -69,6 +69,7 @@ export class CatItem {
     public path: string,
     public name: string,
     public cost: number,
+    public isRestCat: boolean,
     public id: number
   ) { }
 }
