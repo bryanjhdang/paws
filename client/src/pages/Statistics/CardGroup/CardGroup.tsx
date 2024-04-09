@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Flex, Group, Title } from "@mantine/core";
+import { Flex, Group, Title, Card } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import "@mantine/dates/styles.css";
 
@@ -17,14 +17,11 @@ export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
     lastDay,
   ]);
 
-  const [dateFilteredTimeEntries, setDateFilteredTimeEntries] = useState<any[]>(
-    []
-  );
-
   const [projectDistributions, setProjectDistributions] = useState<
     Map<string, number>
   >(new Map());
-  const [timerAverage, setTimerAverage] = useState<Map<string, number>>(
+
+  const [dayMostStudied, setDayMostStudied] = useState<Map<string, number>>(
     new Map()
   );
 
@@ -33,7 +30,6 @@ export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
   // because it might take some time for timeEntries to have proper data in it
   useEffect(() => {
     if (dateRange[0] && dateRange[1] && dateRange[0] <= dateRange[1]) {
-      console.log("timeEntries has loaded / changed. Filtering data...");
       filterUpdated();
     } else {
       console.log("dateRange is not valid. Not filtering data.");
@@ -73,19 +69,23 @@ export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
     setProjectDistributions(topProjects);
   }
 
-  function filtertimerAverage(entries: any): void {
-    let totalTimeStudied: number = 0;
+  function filterDayMostStudied(entries: any): void {
+    let days: Map<string, number> = new Map();
+
     entries.forEach((entry: any) => {
-      let timeStudied = entry.endTime - entry.startTime;
-      totalTimeStudied += timeStudied;
+      let entryDate = new Date(entry.startTime);
+      let day = entryDate.toLocaleDateString("en-US", { weekday: "long" });
+
+      if (days.has(day)) {
+        days.set(day, (days.get(day) ?? 0) + 1);
+      } else {
+        days.set(day, 1);
+      }
     });
-    let averageTimeStudied = totalTimeStudied / entries.length;
 
-    let timerAverage: Map<string, number> = new Map();
-    timerAverage.set("Studying", averageTimeStudied);
-    timerAverage.set("Not studying", 24 * 60 * 60 - averageTimeStudied);
+    let sortedDays = new Map([...days.entries()].sort((a, b) => b[1] - a[1]));
 
-    setTimerAverage(timerAverage);
+    setDayMostStudied(sortedDays);
   }
 
   function filterUpdated(): void {
@@ -102,10 +102,9 @@ export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
         filteredTimeEntries.push(entry);
       }
     });
-    console.log("after filtering: ", dateFilteredTimeEntries.length);
 
     filterProjectDistributions(filteredTimeEntries);
-    filtertimerAverage(filteredTimeEntries);
+    filterDayMostStudied(filteredTimeEntries);
   }
 
   /* ----------------------------- Event handlers ----------------------------- */
@@ -139,18 +138,39 @@ export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
 
         {dateRangePicker()}
 
-        <Group justify="center" grow pt={10}>
-          <DistributionCard
-            title={"Project Distribution"}
-            description={"This chart shows you your top 3 projects."}
-            timeEntries={projectDistributions}
-          />
+        <Group justify="flex-start" grow pt={10}>
+          <Card
+            shadow="xs"
+            padding="md"
+            bg={"#5B3347"}
+            c={"black"}
+            radius={"md"}
+            mih={"28em"}
+            mah={"28em"}
 
-          <DistributionCard
-            title={"Timer Average"}
-            description={"This chart shows you how much you study in a day."}
-            timeEntries={timerAverage}
-          />
+          >
+            <DistributionCard
+              title={"Project Distribution"}
+              description={"This chart shows you your top 3 projects."}
+              timeEntries={projectDistributions}
+            />
+          </Card>
+
+          <Card
+            shadow="xs"
+            padding="md"
+            bg={"#5B3347"}
+            c={"black"}
+            radius={"md"}
+            mih={"28em"}
+            mah={"32em"}
+          >
+            <DistributionCard
+              title={"Day Distrubution"}
+              description={"This chart shows you what day you study the most."}
+              timeEntries={dayMostStudied}
+            />
+          </Card>
         </Group>
       </Flex>
     </>

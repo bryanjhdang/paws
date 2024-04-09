@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 
 import { Card, Text, } from "@mantine/core";
 import ReactECharts from "echarts-for-react";
-import { color } from "echarts";
 
 export function DistributionCard(props: any): JSX.Element {
   /* ---------------------------------- State --------------------------------- */
@@ -10,7 +9,6 @@ export function DistributionCard(props: any): JSX.Element {
 
   /* ---------------------------- Lifecycle Methods --------------------------- */
   useEffect(() => {
-    console.log("Time entries changed. Mapping data...");
     mapData(props.timeEntries);
   }, [props.timeEntries]);
 
@@ -35,10 +33,11 @@ export function DistributionCard(props: any): JSX.Element {
       left: "center",
       textStyle: {
         color: "#F3F0E6",
-      }
+      },
     },
     series: [
       {
+        top: 20,
         type: "pie",
         radius: ["40%", "70%"],
         avoidLabelOverlap: false,
@@ -61,7 +60,7 @@ export function DistributionCard(props: any): JSX.Element {
           show: false,
         },
         tooltip: {
-            show: true,
+            show: false,
         },
         data: chartData,
       },
@@ -70,19 +69,9 @@ export function DistributionCard(props: any): JSX.Element {
 
   return (
     <>
-      <Card
-        shadow="xs"
-        padding="md"
-        bg={"#5B3347"}
-        c={"black"}
-        radius={"md"}
-        mih={"28em"}
-        mah={"28em"}
-      >
         <Text c={"#F3F0E6"} size="lg" fw={700}>{props.title}</Text>
         <ReactECharts option={chart} />
         <Text c={"#F3F0E6"} size="lg">{props.description}</Text>
-      </Card>
     </>
   );
 }

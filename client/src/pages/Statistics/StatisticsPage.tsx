@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Flex, Space } from "@mantine/core";
+import { Flex, Space, Card } from "@mantine/core";
+import ReactECharts from "echarts-for-react";
 
 import { NavbarSimple } from "../../components/NavbarSimple";
 import { TimeEntry } from "../../classes/models";
@@ -8,10 +9,9 @@ import { getTimeEntry } from "../../classes/HTTPhelpers";
 import { Header } from "./Header/Header";
 import { StatisticsGroup } from "./StatisticsGroup/StatisticsGroup";
 import { CardGroup } from "./CardGroup/CardGroup";
-import { StatisticsGraph } from "./StatisticsGraph/StatisticsGraph";
 
 function StatisticsPage() {
-  const [active, setActive ] = useState('Stats')
+  const [active, setActive] = useState("Stats");
   const [timeEntries, setTimeEntries] = useState<TimeEntry[]>([]);
 
   useEffect(() => {
@@ -29,9 +29,8 @@ function StatisticsPage() {
         justify={"flex-start"}
         align={"center"}
         w={"100%"}
-        flex={1}
         p={"md"}
-        miw={"48em"} // can be set to 86em to prevent horizontal squishing 
+        miw={"48em"} // can be set to 86em to prevent horizontal squishing
       >
         <Header />
 
@@ -44,8 +43,6 @@ function StatisticsPage() {
         <CardGroup timeEntries={timeEntries} />
 
         <Space h={"xl"} />
-
-        {/* <StatisticsGraph /> */}
       </Flex>
     </Flex>
   );
