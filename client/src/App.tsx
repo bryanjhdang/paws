@@ -5,7 +5,6 @@ import LandingPage from "./non-app-pages/Landing/LandingPage";
 import TimerPage from "./pages/Timer/TimerPage";
 import StorePage from "./pages/Store/StorePage";
 import StatisticsPage from "./pages/Statistics/StatisticsPage";
-import SettingsPage from "./pages/Settings/SettingsPage";
 import { useAuth0 } from "@auth0/auth0-react";
 import { PageLoader } from "./components/PageLoader";
 import { AuthenticationGuard } from "./utils/Auth0/AuthenticationGuard";
@@ -13,6 +12,7 @@ import { CallbackPage } from "./non-app-pages/Callback/CallbackPage";
 import { NotFoundPage } from "./non-app-pages/NotFound/NotFoundPage";
 import BasePage from "./pages/BasePage";
 import ProjectsPage from "./pages/Projects/ProjectsPage";
+import '@mantine/notifications/styles.css';
 
 export const App: React.FC = () => {
   const { isLoading } = useAuth0();
@@ -58,14 +58,6 @@ export const App: React.FC = () => {
         element={<AuthenticationGuard 
           component={() => (
             <BasePage pageName="Projects"><ProjectsPage /></BasePage>
-          )}
-        />}
-      />
-      <Route
-        path="/settings"
-        element={<AuthenticationGuard 
-          component={() => (
-            <BasePage pageName="Settings"><SettingsPage /></BasePage>
           )}
         />}
       />

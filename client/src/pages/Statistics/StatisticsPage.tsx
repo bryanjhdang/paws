@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
-import { Text, Stack } from "@mantine/core";
+import { Flex, Space, Stack } from "@mantine/core";
+
 import { TimeEntry } from "../../classes/models";
 import { getTimeEntry } from "../../classes/HTTPhelpers";
+
+import { Header } from "./Header/Header";
+import { StatisticsGroup } from "./StatisticsGroup/StatisticsGroup";
+import { CardGroup } from "./CardGroup/CardGroup";
 import { SimpleHeader } from "../../components/Headers";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -25,13 +30,31 @@ function StatisticsPage() {
   }, [getAccessTokenSilently]);
 
   return (
-    <>
+    <Stack>
       <SimpleHeader text="Statistics" />
-      <Stack p={40}>
-        <Text>The statistics stuff is under construction. Come back after the checkpoint. Here's a JSON representation of the data.</Text>
-        <Text style={{ whiteSpace: 'pre-line' }}>{JSON.stringify(timeEntries, null, 2)}</Text>
-      </Stack>
-    </>
+      <Flex direction={"row"} justify={"flex-start"}>
+        <Flex
+          direction={"column"}
+          justify={"flex-start"}
+          align={"center"}
+          w={"100%"}
+          p={"md"}
+          miw={"48em"} // can be set to 86em to prevent horizontal squishing
+        >
+          <Header />
+
+          <Space h={"xl"} />
+
+          <StatisticsGroup timeEntries={timeEntries} />
+
+          <Space h={"xl"} />
+
+          <CardGroup timeEntries={timeEntries} />
+
+          <Space h={"xl"} />
+        </Flex>
+      </Flex>
+    </Stack>
   );
 }
 

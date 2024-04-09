@@ -12,9 +12,8 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { IconPlayerStop } from "@tabler/icons-react";
-import { getAccount, postTimeEntryStart, postTimeEntryStop } from "../../classes/HTTPhelpers";
-import { Project, TimeEntry } from "../../classes/models";
-import { useAuth0 } from "@auth0/auth0-react";
+import { getAccount, postTimeEntryStart, postTimeEntryStop } from "../../../classes/HTTPhelpers";
+import { Project, TimeEntry } from "../../../classes/models";
 
 interface TimerProps {
   task: string,
@@ -22,8 +21,6 @@ interface TimerProps {
 }
 
 export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
-  const { user, getAccessTokenSilently } = useAuth0();
-
   /* ---------------------------------- State --------------------------------- */
   const [timerValue, setTimerValue] = useState<number>(0); // in seconds
   const [timerProgressTextValue, setTimerProgressTextValue] =
@@ -35,7 +32,6 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
 
   const [mountTimerInput, setMountTimerInput] = useState<boolean>(true);
   const [timerRunning, setTimerRunning] = useState<boolean>(false);
-  
 
   /* ---------------------------- Helper Functions ---------------------------- */
   function convertSliderValueToSeconds(value: number): number {
@@ -82,34 +78,21 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
   }
 
   useEffect(() => {
-    const makeAuthenticatedRequest = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-        const userId = user?.sub || "invalid user";
-
-        // TODO: don't send userId, let the backend handle automatically?
-        getAccount(userId, token).then(
-          (response) => {        
-            if (response.runningTime.plannedEndTime) {
-              if (Date.now() < response.runningTime.plannedEndTime) {
-                const timeRemaining = Math.floor((response.runningTime.plannedEndTime - Date.now())/1000);
-                setTimerValue(timeRemaining); 
-                setTimerRunning(true);
-                setMountTimerInput(false);
-              } else {
-                postTimeEntryStop(response.runningTime.plannedEndTime, token);
-              }
-            }
+    getAccount("nemLmP1npemf5VSzAKRC").then(
+      (response) => {        
+        if (response.runningTime.plannedEndTime) {
+          if (Date.now() < response.runningTime.plannedEndTime) {
+            const timeRemaining = Math.floor((response.runningTime.plannedEndTime - Date.now())/1000);
+            setTimerValue(timeRemaining); 
+            setTimerRunning(true);
+            setMountTimerInput(false);
+          } else {
+            postTimeEntryStop(response.runningTime.plannedEndTime);
           }
-        )
-
-      } catch (error) {
-        console.error(error);
+        }
       }
-    };
-
-    makeAuthenticatedRequest
-  }, [getAccessTokenSilently, user?.sub])
+    )
+  }, [])
 
   /* ------------------------- Timer Lifecycle Methods ------------------------ */
   const intervalReference = useRef<NodeJS.Timeout | null>(null);
@@ -171,54 +154,40 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
   }, [timerRunning, timerValue]); // this useEffect runs/is triggered when the timerRunning or timerValue state changes
 
   /* ----------------------------- Event Handlers ----------------------------- */
-  // todo: is this function ok as async?
-  async function handleTimerStopButton(): Promise<void> {
-    try {
-      const token = await getAccessTokenSilently();
-      console.log("Timer Stop Requested");
+  function handleTimerStopButton(): void {
+    console.log("Timer Stopped");
 
-      // make a post request to stop the timer
-      postTimeEntryStop(Date.now(), token);
+    // make a post request to stop the timer
+    postTimeEntryStop(Date.now());
 
-      // just some extra safety checks to ensure that the timer is stopped
-      clearInterval(intervalReference.current!);
-      intervalReference.current = null;
-      console.log("Time remaining: " + timerValue + " seconds");
-      // you can use the timerValue state to do something with the remaining time if need be
+    // just some extra safety checks to ensure that the timer is stopped
+    clearInterval(intervalReference.current!);
+    intervalReference.current = null;
+    console.log("Time remaining: " + timerValue + " seconds");
+    // you can use the timerValue state to do something with the remaining time if need be
 
-      setTimerRunning(false);
-      setMountTimerInput(true);
-    } catch (error) {
-      console.error(error);
-    }
+    setTimerRunning(false);
+    setMountTimerInput(true);
   }
+  function handleTimerStartButton(): void {
+    const newTimeEntry = new TimeEntry(
+      "NULL",
+      Date.now(),
+      Date.now() + (timerValue * 1000),
+      selectedProject?.id || "",
+      task,
+      -1
+    );
+    postTimeEntryStart(newTimeEntry);
 
-  // TODO: is this ok as an async function?
-  async function handleTimerStartButton(): Promise<void> {
-    try {
-      const token = await getAccessTokenSilently();
+    console.log(
+      "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
+    );
 
-      const newTimeEntry = new TimeEntry(
-        "NULL",
-        Date.now(),
-        Date.now() + (timerValue * 1000),
-        selectedProject?.id || "",
-        task,
-        -1
-      );
-      postTimeEntryStart(newTimeEntry, token);
+    // the amount of time the timer will run for is set in the timerValue state so use that
 
-      console.log(
-        "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
-      );
-
-      // the amount of time the timer will run for is set in the timerValue state so use that
-
-      setTimerRunning(true); // sets the trigger to start the timer
-      setMountTimerInput(false);
-    } catch (error) {
-      console.error(error);
-    }
+    setTimerRunning(true); // sets the trigger to start the timer
+    setMountTimerInput(false);
   }
   function handleTimerSlider(value: number): void {
     // if rounding is enabled, it shows even when the value is 0
