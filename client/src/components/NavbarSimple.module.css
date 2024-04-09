@@ -37,7 +37,7 @@
   margin-bottom: 5px;
   font-size: var(--mantine-font-size-xl);
   color: #F3F0E6;
-  border-radius: var(--mantine-radius-md);
+  border-radius: var(--mantine-radius-lg);
   padding: var(--mantine-spacing-xs);
   transition: transform 0.05s;
 
