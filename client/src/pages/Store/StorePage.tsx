@@ -10,7 +10,6 @@ import { RestCats, WorkCats } from "../../classes/shopItems";
 import { notifications } from "@mantine/notifications";
 
 function StorePage() {
-  // const [storeItems, setStoreItems] = useState<>
   const [pets, setPets] = useState<Pet>();
   const [coins, setCoins] = useState<number>(0);
 
@@ -62,13 +61,23 @@ function StorePage() {
     });
   }
 
-  const handleEquipItem = (id: number) => {
-    
-    // equipPet(pet).then(() => {
-    //   if (pets) {
-    //     const updatedPets = [pet]
-    //   }
-    // })
+  const handleEquipItem = (id: number, isRestCat: boolean) => {
+    if (!pets) return;
+
+    console.log(id);
+    console.log(isRestCat);
+
+    const updatedPet = new Pet(
+      isRestCat ? id : pets.restId,
+      !isRestCat ? id : pets.workId, 
+      pets.ownedCats
+    );
+
+    console.log(updatedPet);
+  
+    equipPet(updatedPet).then(() => {
+      setPets(updatedPet);
+    })
   }
 
   const coinDisplay = () => {

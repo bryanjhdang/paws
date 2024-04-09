@@ -74,13 +74,12 @@ export async function buyPet(id: number, cost: number) {
 
 export async function equipPet(pet: Pet) {
 	try {
-		await axios.put(`${import.meta.env.VITE_API_SERVER_URL}/pet/equip?workId=${pet.workId}&cost=${pet.restId}`);
+		await axios.patch(`${import.meta.env.VITE_API_SERVER_URL}/pet/equip?restId=${pet.restId}&workId=${pet.workId}`);
 	} catch (error) {
 		console.error(error);
 		throw error;
 	}
 }
-
 
 export async function getCoins(accountId: string): Promise<number> {
 	try {
