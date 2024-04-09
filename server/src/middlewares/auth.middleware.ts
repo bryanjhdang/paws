@@ -24,12 +24,13 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
         res.locals.user = user;
         next();
     }).catch((error) => {
-      console.error("could not find user, creating new: \n", error);
-
-      oAuthHelper.addNewUser(userId).then((user) => {
-        res.locals.user = user;
-        next();
-      });
+      // console.error("could not find user, creating new: \n", error);
+      console.error("could not find user... ", error);
+      next();
+      // oAuthHelper.addNewUser(userId).then((user) => {
+      //   res.locals.user = user;
+      //   next();
+      // });
     });
   } else {
     return res
