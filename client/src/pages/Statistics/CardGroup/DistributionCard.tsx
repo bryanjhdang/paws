@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { Card, Text, Title } from "@mantine/core";
+import { Card, Text, } from "@mantine/core";
 import ReactECharts from "echarts-for-react";
 import { color } from "echarts";
 
@@ -10,6 +10,7 @@ export function DistributionCard(props: any): JSX.Element {
 
   /* ---------------------------- Lifecycle Methods --------------------------- */
   useEffect(() => {
+    console.log("Time entries changed. Mapping data...");
     mapData(props.timeEntries);
   }, [props.timeEntries]);
 
