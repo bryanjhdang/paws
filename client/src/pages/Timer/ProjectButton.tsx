@@ -4,6 +4,7 @@ import { IconFolderOpen, IconPlus, IconPointFilled } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { Project } from "../../classes/models";
 import { getProjects, postProject } from "../../classes/HTTPhelpers";
+import { useAuth0 } from "@auth0/auth0-react";
 import classes from "./ProjectButton.module.css";
 
 interface NewProjectModalProps {
@@ -59,18 +60,41 @@ interface ProjectButtonProps {
 export function ProjectButton({ selectedProject, setSelectedProject }: ProjectButtonProps) {
   const [opened, { open, close }] = useDisclosure();
   const [projects, setProjects] = useState<Project[]>([]);
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    getProjects().then(
-      (response) => {
-        setProjects(response);
+    const makeAuthenticatedRequest = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+
+        getProjects(token).then(
+          (response) => {
+            setProjects(response);
+          }
+        );
+
+      } catch (error) {
+        console.error(error);
       }
-    );
-  }, []);
+    }
+
+    makeAuthenticatedRequest();
+  }, [getAccessTokenSilently]);
 
   const handleAddProject = (project: Project) => {
-    setProjects([...projects, project]);
-    postProject(project);
+    const makeAuthenticatedRequest = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        
+        setProjects([...projects, project]);
+        postProject(project, token);
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    
+    makeAuthenticatedRequest();
   };
 
   return (

@@ -12,7 +12,9 @@ export class OAuthHelper {
         // let user = new User("temp_name", new Pet(), new NoRunning(), 0, oAuthSub);
         // user.id = oAuthSub;
 
-        let user = new User("test name", new Pet());
+        // let user = new User("test name", new Pet());
+        let user = new User();
+        user.id = oAuthSub;
 
         const id = firestoreHelper.addUser(user);
         return firestoreHelper.getUser(oAuthSub); // todo: return directly?

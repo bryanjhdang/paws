@@ -3,23 +3,41 @@ import { TextHeader } from "../../components/Headers";
 import { Project } from "../../classes/models";
 import { useEffect, useState } from "react";
 import { deleteProject, getProjects } from "../../classes/HTTPhelpers";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    getProjects().then(
-      (response) => {
-        setProjects(response);
-      }
-    );
-  }, []);
+    const makeAuthenticatedRequest = async () => {
+      try {
+        const token = await getAccessTokenSilently();
 
+        getProjects(token).then(
+          (response) => {
+            setProjects(response);
+          }
+        );
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    makeAuthenticatedRequest();
+  }, [getAccessTokenSilently]);
+
+  // todo: prefer this syntax to try...catch?
   const handleDeleteProject = (id: string) => {
-    deleteProject(id).then(() => {
-      const updatedProjects = projects.filter((project) => project.id !== id);
-      setProjects(updatedProjects);
-    })
+    getAccessTokenSilently().then((token) => {
+      deleteProject(id, token).then(() => {
+        const updatedProjects = projects.filter((project) => project.id !== id);
+        setProjects(updatedProjects);
+      })
+    }).catch((error) => {
+      console.error(error);
+    }) 
   }
 
   const rows = projects.map((element) => (

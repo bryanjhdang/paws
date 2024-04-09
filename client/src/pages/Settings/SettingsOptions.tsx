@@ -35,6 +35,9 @@ export function AccountSettings() {
   const { logout } = useAuth0();
 
   const handleLogout = () => {
+    // clear local storage on logout
+    // localStorage.removeItem('accessToken');
+
     logout({
       logoutParams: {
         returnTo: window.location.origin,

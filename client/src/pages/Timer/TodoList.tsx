@@ -5,6 +5,7 @@ import { Todo } from "../../classes/models";
 import { useEffect, useState } from "react";
 import { deleteTodo, getTodo, patchTodo, postTodo } from "../../classes/HTTPhelpers";
 import { useForm } from "@mantine/form";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface TodoProps {
   item: Todo;
@@ -13,6 +14,7 @@ interface TodoProps {
 
 function TodoItem({ item, handleDeleteTodo }: TodoProps) {
   const [checked, setChecked] = useState(item.done);
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     setChecked(item.done);
@@ -23,7 +25,8 @@ function TodoItem({ item, handleDeleteTodo }: TodoProps) {
     item.done = checked;
 
     try {
-      await patchTodo(item);
+      const token = await getAccessTokenSilently();
+      await patchTodo(item, token);
     } catch (error) {
       console.error(error);
     }
@@ -93,24 +96,46 @@ function TodoHeader() {
 
 function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    getTodo().then(
-      (response) => {
-        setTodos(response);
-      }
-    )
-  }, []);
+    const makeAuthenticatedRequest = async () => {
+      try {
+        const token = await getAccessTokenSilently();
 
+        getTodo(token).then(
+          (response) => {
+            setTodos(response);
+          }
+        )
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    
+    makeAuthenticatedRequest();
+  }, [getAccessTokenSilently]);
+
+  // todo: prefer try...catch?
   const handleAddTodo = (todo: Todo) => {
-    setTodos([...todos, todo]);
-    postTodo(todo);
+    getAccessTokenSilently().then((token) => {
+      setTodos([...todos, todo]);
+      postTodo(todo, token);
+    }).catch((error) => {
+      console.error(error);
+    })
+    
   }
 
+  // todo: prefer try...catch?
   const handleDeleteTodo = (id: string) => {
-    deleteTodo(id).then(() => {
-      const updatedTodos = todos.filter((todo) => todo.id !== id);
-      setTodos(updatedTodos);
+    getAccessTokenSilently().then((token) => {
+      deleteTodo(id, token).then(() => {
+        const updatedTodos = todos.filter((todo) => todo.id !== id);
+        setTodos(updatedTodos);
+      })
+    }).catch((error) => {
+      console.error(error);
     })
   }
 

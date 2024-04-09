@@ -7,25 +7,38 @@ import StoreItem from "./StoreItem";
 import classes from "./StorePage.module.css";
 import { IconCoin } from '@tabler/icons-react';
 import { RestCats, WorkCats } from "../../classes/shopItems";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function StorePage() {
   // const [storeItems, setStoreItems] = useState<>
   const [petData, setPetData] = useState<Pet>();
   const [coins, setCoins] = useState<number>();
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    getPet().then(
-      (response) => {
-        setPetData(response);
+    const makeAuthenticatedRequest = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+
+        getPet(token).then(
+          (response) => {
+            setPetData(response);
+          }
+        );
+        getCoins(token).then(
+          (response) => {
+            console.log(response);
+            setCoins(response);
+          }
+        )
+
+      } catch (error) {
+        console.error(error);
       }
-    );
-    getCoins().then(
-      (response) => {
-        console.log(response);
-        setCoins(response);
-      }
-    )
-  }, []);
+    };
+
+    makeAuthenticatedRequest();
+  }, [getAccessTokenSilently]);
 
   const handleBuyItem = () => {
 
