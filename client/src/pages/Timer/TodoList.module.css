@@ -2,7 +2,7 @@
   background-color: #794B62;
   /* margin: 20px 20px; */
   padding: 20px;
-  border-radius: var(--mantine-radius-lg);
+  border-radius: var(--mantine-radius-md);
   height: fit-content;
   width: 300px;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
