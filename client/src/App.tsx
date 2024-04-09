@@ -13,9 +13,12 @@ import { NotFoundPage } from "./non-app-pages/NotFound/NotFoundPage";
 import BasePage from "./pages/BasePage";
 import ProjectsPage from "./pages/Projects/ProjectsPage";
 import '@mantine/notifications/styles.css';
+import { io } from "socket.io-client";
+import SocketConnection from "./pages/Timer/SocketConnection";
+import { SocketContext } from "./context/SocketContext";
 
 export const App: React.FC = () => {
-  const { isLoading } = useAuth0();
+  const { user, isLoading } = useAuth0();
 
   if (isLoading) {
     return (
@@ -30,49 +33,53 @@ export const App: React.FC = () => {
 
   const socket = io(URL, {
     query: {
-      token: "nemLmP1npemf5VSzAKRC"
+      token: user?.sub
     }
   });
 
   return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route
-        path="/timer"
-        element={<AuthenticationGuard 
-          component={() => (
-            <BasePage pageName="Timer"><TimerPage /></BasePage>
-          )}
-        />}
-      />
-      <Route
-        path="/store"
-        element={<AuthenticationGuard
-          component={() => (
-            <BasePage pageName="Store"><StorePage /></BasePage>
-          )}
-        />}
-      />
-      <Route
-        path="/statistics"
-        element={<AuthenticationGuard 
-          component={() => (
-            <BasePage pageName="Stats"><StatisticsPage /></BasePage>
-          )}
-        />}
-      />
-      <Route
-        path="/projects"
-        element={<AuthenticationGuard 
-          component={() => (
-            <BasePage pageName="Projects"><ProjectsPage /></BasePage>
-          )}
-        />}
-      />
-      <Route path="/callback" element={<CallbackPage />} />
-      <Route path="*" 
-        element={<BasePage pageName="n/a"><NotFoundPage /></BasePage>} 
-      />
-    </Routes>
+    <SocketContext.Provider value={socket}>
+
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route
+          path="/timer"
+          element={<AuthenticationGuard
+            component={() => (
+              <BasePage pageName="Timer"><TimerPage /></BasePage>
+            )}
+          />}
+        />
+        <Route
+          path="/store"
+          element={<AuthenticationGuard
+            component={() => (
+              <BasePage pageName="Store"><StorePage /></BasePage>
+            )}
+          />}
+        />
+        <Route
+          path="/statistics"
+          element={<AuthenticationGuard
+            component={() => (
+              <BasePage pageName="Stats"><StatisticsPage /></BasePage>
+            )}
+          />}
+        />
+        <Route
+          path="/projects"
+          element={<AuthenticationGuard
+            component={() => (
+              <BasePage pageName="Projects"><ProjectsPage /></BasePage>
+            )}
+          />}
+        />
+        <Route path="/callback" element={<CallbackPage />} />
+        <Route path="*"
+          element={<BasePage pageName="n/a"><NotFoundPage /></BasePage>}
+        />
+      </Routes>
+    </SocketContext.Provider>
+
   )
 }
