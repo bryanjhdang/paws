@@ -14,13 +14,13 @@ export class TimeEntryService {
   ) { };
 
   startEntry(user: User, description: string, projectId: string, startTime: number, endTime : number) {
-    // let result = user.stop(startTime);
-    // if (result instanceof TimeEntry) {
-    //   firestoreHelper.createTimeEntry(user.id, result);
-    // }
+    let result = user.stop(startTime);
+    if (result instanceof TimeEntry) {
+      firestoreHelper.createTimeEntry(user.id, result);
+    }
 
     user.runningTime = new RunningCountdown(startTime, endTime, projectId, description);
-    // firestoreHelper.updateUser(user);
+    firestoreHelper.updateUser(user);
     wsService.updateUser(user);
   }
 
