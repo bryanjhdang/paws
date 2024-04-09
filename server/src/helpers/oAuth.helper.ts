@@ -7,10 +7,11 @@ export class OAuthHelper {
         return firestoreHelper.getUser(oAuthSub);
     }
 
+    // note: in the process of phasing out this function, use with caution
     async addNewUser(oAuthSub: string): Promise<User> {
-        // todo: initialize username in a better way
-        let user = new User("temp_name", new Pet(), new NoRunning(), 0, oAuthSub);
-
+        // let user = new User("temp_name", new Pet(), new NoRunning(), 0, oAuthSub);
+        let user = new User();
+        user.id = oAuthSub;
 
         const id = firestoreHelper.addUser(user);
         return firestoreHelper.getUser(oAuthSub); // todo: return directly?
