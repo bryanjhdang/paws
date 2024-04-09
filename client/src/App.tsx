@@ -19,7 +19,7 @@ export const App: React.FC = () => {
 
   if (isLoading) {
     return (
-      // TODO: style to fix scaling issue
+      // TODO: dark mode issue?
       <div>
         <PageLoader />
       </div>
