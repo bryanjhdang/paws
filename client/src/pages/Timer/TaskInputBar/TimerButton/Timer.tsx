@@ -19,9 +19,9 @@ import {
   postTimeEntryStart,
   postTimeEntryStop,
 } from "../../../../classes/HTTPhelpers";
-import { Project, TimeEntry, TimerStatus } from "../../../../classes/models";
+import { Project, TimeEntry } from "../../../../classes/models";
 
-import { TimerContext, useTimerContext } from "../../../../context/TimerContext";
+import { useTimerContext } from "../../../../context/TimerContext";
 
 interface TimerProps {
   task: string;
@@ -127,7 +127,7 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
           setTimerProgressWheelValue(
             convertSecondsToProgressWheelValue(timerValue - 1) // update the timer display wheel
           );
-          timerContext.setTimeRemaining(convertSecondsToProgressTextValue(timerValue - 1));
+          timerContext.setTimeRemaining(timerValue - 1);
 
           // if the timer value is 0, that means that the timer has finished
           if (timerValue === 0) {
@@ -145,7 +145,7 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
           setTimerProgressTextValue(convertSecondsToProgressTextValue(0));
           setTimerProgressWheelValue(convertSecondsToProgressWheelValue(0));
 
-          timerContext.setTimeRemaining(convertSecondsToProgressTextValue(timerValue - 1));
+          timerContext.setTimeRemaining(timerValue - 1);
 
           console.log("Timer finished with " + timerValue + " seconds");
 

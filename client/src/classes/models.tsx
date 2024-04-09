@@ -17,28 +17,39 @@ export class Project {
 }
 
 export class Settings {
-  constructor() // Empty for now
-  {}
+  constructor() {} // Empty for now
 }
 
 export class TimerStatus {
-  constructor(private isRunning: boolean, private timeRemaning: string) {}
+  constructor(private isRunning: boolean, private timeRemaining: number) {}
 
   public setIsRunning(isRunning: boolean): void {
     this.isRunning = isRunning;
   }
 
-  public setTimeRemaining(timeRemaining: string): void {
-    this.timeRemaning = timeRemaining;
+  public setTimeRemaining(timeRemaining: number): void {
+    this.timeRemaining = timeRemaining;
   }
 
   public getIsRunning(): boolean {
     return this.isRunning;
   }
 
-    public getTimeRemaining(): string {
-        return this.timeRemaning;
-    }
+  public getTimeRemaining(): number {
+    return this.timeRemaining;
+  }
+
+  public getTimeRemainingConverted(timeRemaining: number): string {
+    // we take the floor of the seconds divided by 60 to get the minutes
+    // we take the remainder of the seconds divided by 60 to get the remaining seconds
+    let minutes = Math.floor(timeRemaining / 60);
+    let remainingSeconds = timeRemaining % 60;
+
+    // padStart is used to ensure that the string str is at least 2 characters long.
+    // If str is less than 2 characters long, padStart will add "0"s to the start of str
+    // until it is 2 characters long. this is for seconds < 10
+    return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
+  }
 }
 
 export class TimeEntry {
