@@ -168,7 +168,8 @@ export async function postProject(project: Project, accessToken: string) {
 		headers: { Authorization: `Bearer ${accessToken}` },
 		data: {
 			name: project.name,
-			hex: project.hex
+			hex: project.hex,
+			dateCreated: project.dateCreated
 		}
 	})
 	.then((response) => {
@@ -181,7 +182,7 @@ export async function postProject(project: Project, accessToken: string) {
 export async function getProjects(accessToken: string): Promise<Project[]> {
 	const createProjects = (any: any): Project[] => {
 		return any.data.projects.map((element: any) => {
-			return new Project(element.hex, element.name, element.id);
+			return new Project(element.hex, element.name, element.dateCreated, element.id);
 		});
 	}
 
