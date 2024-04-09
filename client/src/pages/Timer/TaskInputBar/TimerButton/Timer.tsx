@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+
 import {
   RingProgress,
   Title,
@@ -12,11 +13,18 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { IconPlayerStop } from "@tabler/icons-react";
-import { getAccount, postTimeEntryStart, postTimeEntryStop } from "../../../../classes/HTTPhelpers";
-import { Project, TimeEntry } from "../../../../classes/models";
+
+import {
+  getAccount,
+  postTimeEntryStart,
+  postTimeEntryStop,
+} from "../../../../classes/HTTPhelpers";
+import { Project, TimeEntry, TimerStatus } from "../../../../classes/models";
+
+import { TimerContext, useTimerContext } from "../../../../context/TimerContext";
 
 interface TimerProps {
-  task: string,
+  task: string;
   selectedProject: Project | null;
 }
 
@@ -32,6 +40,8 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
 
   const [mountTimerInput, setMountTimerInput] = useState<boolean>(true);
   const [timerRunning, setTimerRunning] = useState<boolean>(false);
+
+  const timerContext = useTimerContext();
 
   /* ---------------------------- Helper Functions ---------------------------- */
   function convertSliderValueToSeconds(value: number): number {
@@ -78,21 +88,21 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
   }
 
   useEffect(() => {
-    getAccount("nemLmP1npemf5VSzAKRC").then(
-      (response) => {        
-        if (response.runningTime.plannedEndTime) {
-          if (Date.now() < response.runningTime.plannedEndTime) {
-            const timeRemaining = Math.floor((response.runningTime.plannedEndTime - Date.now())/1000);
-            setTimerValue(timeRemaining); 
-            setTimerRunning(true);
-            setMountTimerInput(false);
-          } else {
-            postTimeEntryStop(response.runningTime.plannedEndTime);
-          }
+    getAccount("nemLmP1npemf5VSzAKRC").then((response) => {
+      if (response.runningTime.plannedEndTime) {
+        if (Date.now() < response.runningTime.plannedEndTime) {
+          const timeRemaining = Math.floor(
+            (response.runningTime.plannedEndTime - Date.now()) / 1000
+          );
+          setTimerValue(timeRemaining);
+          setTimerRunning(true);
+          setMountTimerInput(false);
+        } else {
+          postTimeEntryStop(response.runningTime.plannedEndTime);
         }
       }
-    )
-  }, [])
+    });
+  }, []);
 
   /* ------------------------- Timer Lifecycle Methods ------------------------ */
   const intervalReference = useRef<NodeJS.Timeout | null>(null);
@@ -117,6 +127,7 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
           setTimerProgressWheelValue(
             convertSecondsToProgressWheelValue(timerValue - 1) // update the timer display wheel
           );
+          timerContext.setTimeRemaining(convertSecondsToProgressTextValue(timerValue - 1));
 
           // if the timer value is 0, that means that the timer has finished
           if (timerValue === 0) {
@@ -124,6 +135,7 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
             clearInterval(intervalReference.current!);
             intervalReference.current = null; // clear the timer reference so that a new one can be created
             setTimerRunning(false);
+            timerContext.setIsRunning(false);
             setMountTimerInput(true);
             console.log("Timer Finished");
           }
@@ -133,11 +145,14 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
           setTimerProgressTextValue(convertSecondsToProgressTextValue(0));
           setTimerProgressWheelValue(convertSecondsToProgressWheelValue(0));
 
+          timerContext.setTimeRemaining(convertSecondsToProgressTextValue(timerValue - 1));
+
           console.log("Timer finished with " + timerValue + " seconds");
 
           clearInterval(intervalReference.current!);
           intervalReference.current = null;
           setTimerRunning(false);
+          timerContext.setIsRunning(false);
           setMountTimerInput(true);
           console.log("edge case timer stopped");
         }
@@ -167,13 +182,14 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
     // you can use the timerValue state to do something with the remaining time if need be
 
     setTimerRunning(false);
+    timerContext.setIsRunning(false);
     setMountTimerInput(true);
   }
   function handleTimerStartButton(): void {
     const newTimeEntry = new TimeEntry(
       "NULL",
       Date.now(),
-      Date.now() + (timerValue * 1000),
+      Date.now() + timerValue * 1000,
       selectedProject?.id || "",
       task,
       -1
@@ -187,6 +203,7 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
     // the amount of time the timer will run for is set in the timerValue state so use that
 
     setTimerRunning(true); // sets the trigger to start the timer
+    timerContext.setIsRunning(true);
     setMountTimerInput(false);
   }
   function handleTimerSlider(value: number): void {

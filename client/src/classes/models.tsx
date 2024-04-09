@@ -1,10 +1,10 @@
 export class Pet {
   constructor(
     public restId: number, // VERY HARD CODE AND HACKY
-    public workId: number, // VERY HARD CODE AND HACKY 
+    public workId: number, // VERY HARD CODE AND HACKY
     //todo: have something that's not a primitive
-    public ownedCats: number[] = [0],
-  ) { };
+    public ownedCats: number[] = [0]
+  ) {}
 }
 
 export class Project {
@@ -12,14 +12,33 @@ export class Project {
     public hex: string,
     public name: string,
     public dateCreated: number,
-    public id: string,
-  ) { };
+    public id: string
+  ) {}
 }
 
 export class Settings {
-  constructor(
-    // Empty for now
-  ) { }
+  constructor() // Empty for now
+  {}
+}
+
+export class TimerStatus {
+  constructor(private isRunning: boolean, private timeRemaning: string) {}
+
+  public setIsRunning(isRunning: boolean): void {
+    this.isRunning = isRunning;
+  }
+
+  public setTimeRemaining(timeRemaining: string): void {
+    this.timeRemaning = timeRemaining;
+  }
+
+  public getIsRunning(): boolean {
+    return this.isRunning;
+  }
+
+    public getTimeRemaining(): string {
+        return this.timeRemaning;
+    }
 }
 
 export class TimeEntry {
@@ -29,8 +48,8 @@ export class TimeEntry {
     public endTime: number,
     public projectId: string,
     public name: string,
-    public earnedCoins: number,
-  ) { }
+    public earnedCoins: number
+  ) {}
 }
 
 //TODO: this is a bit hacky and I don't like it right now
@@ -38,9 +57,9 @@ export class RunningTime {
   constructor(
     public startTime: number = 0,
     public plannedEndTime: number = 0,
-    public projectId: string = '',
-    public name: string = '',
-  ) { };
+    public projectId: string = "",
+    public name: string = ""
+  ) {}
 }
 
 export class User {
@@ -52,8 +71,8 @@ export class User {
     public currentTimerStart: number,
     public projects: Project[],
     public totalCoins: number,
-    public runningTime: RunningTime,
-  ) { }
+    public runningTime: RunningTime
+  ) {}
 }
 
 export class Todo {
@@ -61,8 +80,8 @@ export class Todo {
     public task: string,
     public dateCreated: number,
     public done: boolean = false,
-    public id: string = "",
-  ) { }
+    public id: string = ""
+  ) {}
 }
 
 export class CatItem {
@@ -72,6 +91,5 @@ export class CatItem {
     public cost: number,
     public isRestCat: boolean,
     public id: number
-  ) { }
+  ) {}
 }
-
