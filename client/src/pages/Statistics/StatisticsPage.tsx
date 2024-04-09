@@ -8,15 +8,27 @@ import { Header } from "./Header/Header";
 import { StatisticsGroup } from "./StatisticsGroup/StatisticsGroup";
 import { CardGroup } from "./CardGroup/CardGroup";
 import { SimpleHeader } from "../../components/Headers";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function StatisticsPage() {
   const [timeEntries, setTimeEntries] = useState<TimeEntry[]>([]);
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    getTimeEntry().then((response) => {
-      setTimeEntries(response);
-    });
-  }, []);
+    const makeAuthenticatedRequest = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        getTimeEntry(token).then((response) => {
+          console.log(response);
+          setTimeEntries(response);
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    makeAuthenticatedRequest();
+  }, [getAccessTokenSilently]);
 
   return (
     <Stack>

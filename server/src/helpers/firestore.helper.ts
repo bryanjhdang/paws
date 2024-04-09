@@ -70,7 +70,7 @@ export class FirestoreHelper implements DatabaseHelper {
       }
     }
 
-    return admin.firestore.FieldValue.delete();
+    return {}
   }
 
   private serializeTimeEntry(userId: string, timeEntry: TimeEntry) {
@@ -150,7 +150,7 @@ export class FirestoreHelper implements DatabaseHelper {
       return new RunningCountdown(element.startTime, element.plannedEndTime, element.projectId, element.name);
     }
 
-    if (element) {
+    if (element.startTime) {
       return new RunningStopwatch(element.startTime, element.projectId, element.name);
     }
 
@@ -191,8 +191,8 @@ export class FirestoreHelper implements DatabaseHelper {
     this.userDB.doc(user.id).delete();
   }
 
+  // todo: take idstring, use defaults?
   async addUser(user: User): Promise<string> {
-    user.id = this.userDB.doc().id;
     this.userDB.doc(user.id).set(this.serializeUser(user));
     return user.id;
   }

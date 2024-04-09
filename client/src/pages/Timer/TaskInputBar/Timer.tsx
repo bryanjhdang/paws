@@ -14,6 +14,7 @@ import {
 import { IconPlayerStop } from "@tabler/icons-react";
 import { getAccount, postTimeEntryStart, postTimeEntryStop } from "../../../classes/HTTPhelpers";
 import { Project, TimeEntry } from "../../../classes/models";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface TimerProps {
   task: string,
@@ -21,6 +22,8 @@ interface TimerProps {
 }
 
 export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
+  const { user, getAccessTokenSilently } = useAuth0();
+
   /* ---------------------------------- State --------------------------------- */
   const [timerValue, setTimerValue] = useState<number>(0); // in seconds
   const [timerProgressTextValue, setTimerProgressTextValue] =
@@ -78,21 +81,34 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
   }
 
   useEffect(() => {
-    getAccount("nemLmP1npemf5VSzAKRC").then(
-      (response) => {        
-        if (response.runningTime.plannedEndTime) {
-          if (Date.now() < response.runningTime.plannedEndTime) {
-            const timeRemaining = Math.floor((response.runningTime.plannedEndTime - Date.now())/1000);
-            setTimerValue(timeRemaining); 
-            setTimerRunning(true);
-            setMountTimerInput(false);
-          } else {
-            postTimeEntryStop(response.runningTime.plannedEndTime);
+    const makeAuthenticatedRequest = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        const userId = user?.sub || "invalid user";
+
+        // TODO: don't send userId, let the backend handle automatically?
+        getAccount(userId, token).then(
+          (response) => {        
+            if (response.runningTime.plannedEndTime) {
+              if (Date.now() < response.runningTime.plannedEndTime) {
+                const timeRemaining = Math.floor((response.runningTime.plannedEndTime - Date.now())/1000);
+                setTimerValue(timeRemaining); 
+                setTimerRunning(true);
+                setMountTimerInput(false);
+              } else {
+                postTimeEntryStop(response.runningTime.plannedEndTime, token);
+              }
+            }
           }
-        }
+        )
+
+      } catch (error) {
+        console.error(error);
       }
-    )
-  }, [])
+    };
+
+    makeAuthenticatedRequest
+  }, [getAccessTokenSilently, user?.sub])
 
   /* ------------------------- Timer Lifecycle Methods ------------------------ */
   const intervalReference = useRef<NodeJS.Timeout | null>(null);
@@ -158,7 +174,9 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
     console.log("Timer Stopped");
 
     // make a post request to stop the timer
-    postTimeEntryStop(Date.now());
+    getAccessTokenSilently().then((token) => {
+      postTimeEntryStop(Date.now(), token);
+    });
 
     // just some extra safety checks to ensure that the timer is stopped
     clearInterval(intervalReference.current!);
@@ -178,7 +196,9 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
       task,
       -1
     );
-    postTimeEntryStart(newTimeEntry);
+    getAccessTokenSilently().then((token) => {
+      postTimeEntryStart(newTimeEntry, token);
+    });
 
     console.log(
       "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
