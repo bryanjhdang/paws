@@ -1,29 +1,46 @@
 import { useEffect, useState } from "react";
-import { Text, Flex, Stack } from "@mantine/core";
+import { Flex, Space } from "@mantine/core";
+
 import { TimeEntry } from "../../classes/models";
 import { getTimeEntry } from "../../classes/HTTPhelpers";
-import { SimpleHeader } from "../../components/Headers";
+
+import { Header } from "./Header/Header";
+import { StatisticsGroup } from "./StatisticsGroup/StatisticsGroup";
+import { CardGroup } from "./CardGroup/CardGroup";
 
 function StatisticsPage() {
   const [timeEntries, setTimeEntries] = useState<TimeEntry[]>([]);
 
   useEffect(() => {
-    getTimeEntry().then(
-      (response) => {
-        setTimeEntries(response);
-      }
-    )
+    getTimeEntry().then((response) => {
+      setTimeEntries(response);
+    });
   }, []);
 
   return (
-    <>
-      <SimpleHeader text="Statistics" />
-      <Stack p={40}>
-        <Text>The statistics stuff is under construction. Come back after the checkpoint. Here's a JSON representation of the data.</Text>
-        <Text style={{ whiteSpace: 'pre-line' }}>{JSON.stringify(timeEntries, null, 2)}</Text>
-      </Stack>
-    </>
+    <Flex direction={"row"} justify={"flex-start"}>
+      <Flex
+        direction={"column"}
+        justify={"flex-start"}
+        align={"center"}
+        w={"100%"}
+        p={"md"}
+        miw={"48em"} // can be set to 86em to prevent horizontal squishing
+      >
+        <Header />
+
+        <Space h={"xl"} />
+
+        <StatisticsGroup timeEntries={timeEntries} />
+
+        <Space h={"xl"} />
+
+        <CardGroup timeEntries={timeEntries} />
+
+        <Space h={"xl"} />
+      </Flex>
+    </Flex>
   );
 }
 
-export default StatisticsPage
+export default StatisticsPage;
