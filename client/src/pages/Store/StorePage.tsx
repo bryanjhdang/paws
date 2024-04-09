@@ -17,18 +17,21 @@ function StorePage() {
   const [petData, setPetData] = useState<Pet>();
   const [coins, setCoins] = useState<number>();
   const { getAccessTokenSilently } = useAuth0();
+  const { user } = useAuth0();
 
   useEffect(() => {
     const makeAuthenticatedRequest = async () => {
       try {
         const token = await getAccessTokenSilently();
+        const userId = user?.sub || "not logged in";
 
-        getPet(token).then(
+        // todo: handle these in the backend instead of sending as request?
+        getPet(userId, token).then(
           (response) => {
             setPetData(response);
           }
         );
-        getCoins(token).then(
+        getCoins(userId, token).then(
           (response) => {
             console.log(response);
             setCoins(response);
@@ -61,22 +64,26 @@ function StorePage() {
       return;
     }
 
-    buyPet(id, cost).then(() => {
-      if (pets) {
-        const updatedOwned = [...pets.ownedCats, id];
-        setPets(new Pet(pets.restId, pets.workId, updatedOwned));
-        notifications.show({
-          title: "Purchased",
-          message: "Your new cat friend is excited to work with you.",
-          color: "green",
-          withBorder: true
-        })
-      }
-      setCoins(prevCoins => prevCoins - cost);
+    getAccessTokenSilently().then((token) => {
+      buyPet(id, cost, token).then(() => {
+        if (pets) {
+          const updatedOwned = [...pets.ownedCats, id];
+          setPets(new Pet(pets.restId, pets.workId, updatedOwned));
+          notifications.show({
+            title: "Purchased",
+            message: "Your new cat friend is excited to work with you.",
+            color: "green",
+            withBorder: true
+          })
+        }
+        setCoins(prevCoins => prevCoins - cost);
+      }).catch(error => {
+        console.error("Purchase failed:", error);
+        alert("Failed to purchase item.");
+      });
     }).catch(error => {
-      console.error("Purchase failed:", error);
-      alert("Failed to purchase item.");
-    });
+      console.error(error);
+    })
   }
 
   const handleEquipItem = (id: number, isRestCat: boolean) => {
@@ -92,9 +99,11 @@ function StorePage() {
     );
 
     console.log(updatedPet);
-  
-    equipPet(updatedPet).then(() => {
-      setPets(updatedPet);
+    
+    getAccessTokenSilently().then((token) => {
+      equipPet(updatedPet, token).then(() => {
+        setPets(updatedPet);
+      })
     })
   }
 
