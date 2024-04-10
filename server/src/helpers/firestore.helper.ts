@@ -166,7 +166,7 @@ export class FirestoreHelper implements DatabaseHelper {
   }
 
 
-  updateUser(user: User) {
+  async updateUser(user: User): Promise<void> {
     this.userDB.doc(user.id).update(this.serializeUser(user));
   }
 
