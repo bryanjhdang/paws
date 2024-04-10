@@ -5,7 +5,7 @@ import { Pet, Project, TimerStatus } from "../../classes/models";
 import TodoList from "./Todo/TodoList";
 import SocketConnection from "./SocketConnection/SocketConnection";
 import { Timer } from "./TaskInputBar/Timer";
-import { TimerContext } from "../../context/TimerContext";
+import { TimerContext, useTimerContext } from "../../context/TimerContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getAccount } from "../../classes/HTTPhelpers";
 import { getPathById } from "../../classes/shopItems";
@@ -29,8 +29,10 @@ function TimerPage() {
 
         getAccount(userId, token).then(
           (response) => {
+            console.log(response);
             setPet(response.pet);
             setStartTime(response.runningTime.startTime);
+            setTask(response.runningTime.name);
           }
         )
       } catch (error) {
@@ -54,16 +56,17 @@ function TimerPage() {
 
           <div className={classes.img}>
             {pet && (
-              timerStatus.getIsRunning() === true ? (
+              startTime === undefined ? (
                 <Image className={classes.restAnim} w={400} h={400} src={getPathById(true, pet.restId)} />
               ) : (
                 <Image className={classes.workAnim} w={400} h={400} src={getPathById(false, pet.workId)} />
               )
             )}
           </div>
+
         </Flex>
         <Flex direction={"column"} gap={20}>
-            <Timer task={task} selectedProject={selectedProject} />
+            <Timer task={task} selectedProject={selectedProject} setStart={setStartTime} />
           <TodoList setTask={setTask} />
           <SocketConnection />
         </Flex>
