@@ -33,8 +33,14 @@ export class TimeEntry {
   ) { }
 }
 
+export interface Running {
+  startTime: number, 
+  name: string,
+  plannedEndTime: number
+}
+
 //TODO: this is a bit hacky and I don't like it right now
-export class RunningTime {
+export class RunningTime implements Running {
   constructor(
     public startTime: number = 0,
     public plannedEndTime: number = 0,
