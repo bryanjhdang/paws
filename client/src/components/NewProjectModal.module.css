@@ -1,0 +1,13 @@
+
+.modal {
+  background-color: red;
+}
+
+.colorDisplay {
+
+}
+
+.submitBtn {
+  align-self: flex-end ;
+  width: fit-content;
+}

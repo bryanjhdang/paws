@@ -1,7 +1,7 @@
 import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
-import { IconAlarm } from "@tabler/icons-react";
+import { IconPlayerPlayFilled } from "@tabler/icons-react";
 
 import { Timer } from "./Timer";
 
@@ -57,8 +57,8 @@ export function TimerButton({
 
   return (
     <>
-      <Button variant="light" radius={"lg"} color="black" onClick={open}>
-        {timerContext.getIsRunning() ? timeRemaining : <IconAlarm />}
+      <Button variant="light" radius={"lg"} color="white" style={{ backgroundColor: '#a36384' }} onClick={open}>
+        {timerContext.getIsRunning() ? timeRemaining : <IconPlayerPlayFilled size={20} />}
       </Button>
 
       <Modal

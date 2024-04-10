@@ -20,7 +20,7 @@ function StoreItem({ catItem, onBuy, onEquip, isOwned, isInUse }: StoreItemProps
         <Button
           className={classes.itemPurchaseButton}
           onClick={() => onBuy(catItem.id, catItem.cost)}
-          color="#4D9B31"
+          color="#62A64A"
         >
           <IconCoin stroke={1.5} />
           <Text className={classes.itemPriceText}>{catItem.cost}</Text>
