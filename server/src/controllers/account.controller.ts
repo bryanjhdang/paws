@@ -3,6 +3,7 @@ import { accountService } from "../services/account.service";
 import { StatusCodes } from "http-status-codes";
 import { User } from "../models/User";
 import { firestoreHelper } from "../helpers/firestore.helper";
+import { checkRequiredPermissions } from "../middlewares/auth.middleware";
 
 const accountController: Router = express.Router();
 
@@ -55,30 +56,33 @@ accountController.post('/start', (req: Request, res: Response) => {
 });
 
 // todo: add middleware
-accountController.post('/addCoins', (req: Request, res: Response) => {
-    try {
-        var query = {
-            numCoins: req.query.numCoins ? parseInt(req.query.numCoins.toString()) : 0
-        } 
-    } catch (err) {
-        return res.status(StatusCodes.UNPROCESSABLE_ENTITY)
-            .json({message : "Invalid parameters for query string!", error : err});
-    }
+accountController.post(
+    '/addCoins', 
+    checkRequiredPermissions(["read:admin"]), 
+    (req: Request, res: Response) => {
+        try {
+            var query = {
+                numCoins: req.query.numCoins ? parseInt(req.query.numCoins.toString()) : 0
+            } 
+        } catch (err) {
+            return res.status(StatusCodes.UNPROCESSABLE_ENTITY)
+                .json({message : "Invalid parameters for query string!", error : err});
+        }
 
-    
-    // console.log(query.numCoins);
-    res.locals.user.totalCoins += query.numCoins;
-    // console.log(res.locals.user.totalCoins);
+        
+        // console.log(query.numCoins);
+        res.locals.user.totalCoins += query.numCoins;
+        // console.log(res.locals.user.totalCoins);
 
-    firestoreHelper.updateUser(res.locals.user)
-    .then(() => {
-        res.status(StatusCodes.CREATED)
-        .json("user updated");
-    })
-    .catch((err : Error) => {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json(err);
-    });
+        firestoreHelper.updateUser(res.locals.user)
+        .then(() => {
+            res.status(StatusCodes.CREATED)
+            .json("user updated");
+        })
+        .catch((err : Error) => {
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+            .json(err);
+        });
 });
 
 
