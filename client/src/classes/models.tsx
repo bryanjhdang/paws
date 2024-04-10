@@ -1,9 +1,9 @@
 export class Pet {
   constructor(
     public restId: number = 0, // VERY HARD CODE AND HACKY
-    public workId: number = 0, // VERY HARD CODE AND HACKY 
+    public workId: number = 4, // VERY HARD CODE AND HACKY 
     //todo: have something that's not a primitive
-    public ownedCats: number[] = [0,0],
+    public ownedCats: number[] = [0,4],
   ) { };
 }
 
