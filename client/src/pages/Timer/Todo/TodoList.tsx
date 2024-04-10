@@ -33,10 +33,11 @@ function TodoItem({ item, handleDeleteTodo }: TodoProps) {
   }
 
   return (
-    <Flex align="flex-start" gap={10}>
+    <Flex align="center" gap={10} className={classes.todoItem}>
       <Checkbox
         checked={checked}
         onChange={(event) => handlePatchTodo(event.currentTarget.checked)}
+        size="xs"
       />
       <Text className={`${classes.itemText} ${checked ? classes.itemCompleted : ''}`}>
         {item.task}
@@ -46,7 +47,7 @@ function TodoItem({ item, handleDeleteTodo }: TodoProps) {
         variant="transparent"
         onClick={() => handleDeleteTodo(item.id)}
       >
-        <IconTrash />
+        <IconTrash width={20} />
       </ActionIcon>
     </Flex>
   )
@@ -80,9 +81,14 @@ function TodoEntry({ handleAddTodo }: TodoEntryProps) {
           {...form.getInputProps('task')}
           className={classes.addinput}
           variant="unstyled"
-          placeholder="New Task"
+          placeholder="+ New"
+          color="white"
+          styles={{
+            input: {
+              color: 'white'
+            }
+          }}
         />
-        <Button type="submit" className={classes.addbutton}>Add</Button>
       </Flex>
     </form>
   );
@@ -112,7 +118,7 @@ function TodoList() {
         console.error(error);
       }
     }
-    
+
     makeAuthenticatedRequest();
   }, [getAccessTokenSilently]);
 
@@ -124,7 +130,7 @@ function TodoList() {
     }).catch((error) => {
       console.error(error);
     })
-    
+
   }
 
   // todo: prefer try...catch?
@@ -142,9 +148,8 @@ function TodoList() {
   return (
     <Stack className={classes.section}>
       <TodoHeader />
-      <TodoEntry handleAddTodo={handleAddTodo} />
       {todos.length > 0 ? (
-        <Stack className={classes.todolist}>
+        <Stack className={classes.todolist} gap={10}>
           {todos
             .sort((a, b) => a.dateCreated - b.dateCreated)
             .map((todo) => (
@@ -156,8 +161,9 @@ function TodoList() {
             ))}
         </Stack>
       ) : (
-        <Text className={classes.noTodoText}>Enter some tasks!</Text>
+        <></>
       )}
+      <TodoEntry handleAddTodo={handleAddTodo} />
     </Stack>
   )
 }
