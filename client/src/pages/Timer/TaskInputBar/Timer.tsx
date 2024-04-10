@@ -18,10 +18,10 @@ import {
   getAccount,
   postTimeEntryStart,
   postTimeEntryStop,
-} from "../../../../classes/HTTPhelpers";
-import { Project, TimeEntry } from "../../../../classes/models";
+} from "../../../classes/HTTPhelpers";
+import { Project, TimeEntry } from "../../../classes/models";
 
-import { useTimerContext } from "../../../../context/TimerContext";
+import { useTimerContext } from "../../../context/TimerContext";
 
 interface TimerProps {
   task: string;
