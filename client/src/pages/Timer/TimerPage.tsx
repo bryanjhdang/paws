@@ -4,6 +4,7 @@ import { TaskInput } from "./TaskInputBar/TaskInput";
 import { Pet, Project, TimerStatus } from "../../classes/models";
 import TodoList from "./Todo/TodoList";
 import SocketConnection from "./SocketConnection/SocketConnection";
+import { Timer } from "./TaskInputBar/Timer";
 import { TimerContext } from "../../context/TimerContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getAccount } from "../../classes/HTTPhelpers";
@@ -62,6 +63,7 @@ function TimerPage() {
           </div>
         </Flex>
         <Flex direction={"column"} gap={20}>
+            <Timer task={task} selectedProject={selectedProject} />
           <TodoList setTask={setTask} />
           <SocketConnection />
         </Flex>

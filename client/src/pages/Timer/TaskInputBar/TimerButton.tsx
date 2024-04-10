@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
+
 import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+
 
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -29,6 +31,7 @@ export function TimerButton({
   const timerContext = useTimerContext();
 
   /* ----------------------------- timer lifecycle ---------------------------- */
+  // setting the timer up
   // setting the timer up
   const intervalReference = useRef<NodeJS.Timeout | null>(null);
   useEffect(() => {
@@ -68,15 +71,16 @@ export function TimerButton({
         const token = await getAccessTokenSilently();
         const userId = user?.sub || "invalid user";
 
-        // TODO: don't send userId, let the backend handle automatically?
         getAccount(userId, token).then((response) => {
           if (response.runningTime.plannedEndTime) {
             if (Date.now() < response.runningTime.plannedEndTime) {
               const timeRemaining = Math.floor(
                 (response.runningTime.plannedEndTime - Date.now()) / 1000
               );
-              timerContext.setIsRunning(true);
-              timerContext.setTimeRemaining(timeRemaining);
+                console.log("one");
+                timerContext.setTimeRemaining(timeRemaining);
+                timerContext.setIsRunning(true);
+                console.log("two")
             } else {
             }
           }
@@ -87,7 +91,7 @@ export function TimerButton({
     };
 
     makeAuthenticatedRequest();
-  });
+  }, [getAccessTokenSilently, user?.sub]);
 
   return (
     <>
