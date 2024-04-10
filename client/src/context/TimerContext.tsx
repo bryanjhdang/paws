@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
 
 import { TimerStatus } from "../classes/models";
 
