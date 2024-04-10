@@ -1,4 +1,4 @@
-import { DEFAULT_THEME, Modal, Button, Menu, TextInput, ColorPicker, Text, Stack } from "@mantine/core";
+import { Button, Menu, Text } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 import { IconFolderOpen, IconPlus, IconPointFilled } from "@tabler/icons-react";
 import { useEffect, useState } from "react";

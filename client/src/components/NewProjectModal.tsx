@@ -1,4 +1,4 @@
-import { DEFAULT_THEME, Modal, Button, TextInput, ColorPicker, Text, Stack, Divider } from "@mantine/core";
+import { DEFAULT_THEME, Modal, Button, TextInput, ColorPicker, Text, Stack } from "@mantine/core";
 import { useState } from "react";
 import { Project } from "../classes/models";
 import classes from "./NewProjectModal.module.css";
