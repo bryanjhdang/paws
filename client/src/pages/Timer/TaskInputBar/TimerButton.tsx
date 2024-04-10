@@ -9,7 +9,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import { IconPlayerPlayFilled } from "@tabler/icons-react";
 
-import { Timer } from "./Timer";
+// import { Timer } from "./Timer";
 
 import { Project } from "../../../classes/models";
 import { useTimerContext } from "../../../context/TimerContext";
@@ -20,9 +20,10 @@ interface TimerProps {
   selectedProject: Project | null;
 }
 
+// eslint-disable-next-line no-empty-pattern
 export function TimerButton({
-  task,
-  selectedProject,
+  // task,
+  // selectedProject,
 }: TimerProps): JSX.Element {
   /* ---------------------------------- state --------------------------------- */
   const [timeRemaining, setTimeRemaining] = useState<string>("Starting...");
@@ -81,8 +82,10 @@ export function TimerButton({
                 timerContext.setTimeRemaining(timeRemaining);
                 timerContext.setIsRunning(true);
                 console.log("two")
-            } else {
-            }
+            } 
+            // else {
+            // 
+            // }
           }
         });
       } catch (error) {

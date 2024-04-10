@@ -1,16 +1,13 @@
 import { Accordion, Image, Button, Group, Stack, Text } from "@mantine/core";
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { Socket, io } from "socket.io-client";
+import { Socket } from "socket.io-client";
 import {
-  SocketContext,
   useSocketContext,
 } from "../../../context/SocketContext";
 import {
   IconLink,
-  IconBook,
-  IconBook2,
   IconCircleFilled,
 } from "@tabler/icons-react";
 import classes from "./SocketConnection.module.css";
