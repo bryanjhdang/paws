@@ -5,10 +5,13 @@ import { OAuthHelper, oAuthHelper } from "../helpers/oAuth.helper";
 import { TimeEntry } from "../models/TimeEntry";
 import { RunningCountdown, User } from "../models/User";
 import { Project } from "../models/Project";
+import { wsService, WsService } from "./websocket.service";
 
 export class TimeEntryService {
   constructor(private db: DatabaseHelper,
-    private accountService: AccountHelper) { };
+    private accountService: AccountHelper,
+    private wsService: WsService
+  ) { };
 
   startEntry(user: User, description: string, projectId: string, startTime: number, endTime : number) {
     let result = user.stop(startTime);
@@ -18,15 +21,16 @@ export class TimeEntryService {
 
     user.runningTime = new RunningCountdown(startTime, endTime, projectId, description);
     firestoreHelper.updateUser(user);
+    wsService.updateUser(user);
   }
 
   stopEntry(user : User, endTime: number): Promise<TimeEntry> {
     return new Promise<TimeEntry>((resolve, reject) => {
-      console.log(user);
       let result = user.stop(endTime);
       if (result instanceof TimeEntry) {
         try {
           firestoreHelper.updateUser(user);
+          wsService.updateUser(user);
           firestoreHelper.createTimeEntry(user.id, result).then((timeEntry) => {
             resolve(timeEntry);});
         } catch(err) {
@@ -60,6 +64,7 @@ export class TimeEntryService {
 const timeEntryService = new TimeEntryService(
   firestoreHelper,
   oAuthHelper,
+  wsService
 );
 
 export { timeEntryService };
