@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+
 import {
   RingProgress,
   Title,
@@ -12,12 +13,19 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { IconPlayerStop } from "@tabler/icons-react";
-import { getAccount, postTimeEntryStart, postTimeEntryStop } from "../../../classes/HTTPhelpers";
+
+import {
+  getAccount,
+  postTimeEntryStart,
+  postTimeEntryStop,
+} from "../../../classes/HTTPhelpers";
 import { Project, TimeEntry } from "../../../classes/models";
+
+import { useTimerContext } from "../../../context/TimerContext";
 import { useAuth0 } from "@auth0/auth0-react";
 
 interface TimerProps {
-  task: string,
+  task: string;
   selectedProject: Project | null;
 }
 
@@ -35,6 +43,8 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
 
   const [mountTimerInput, setMountTimerInput] = useState<boolean>(true);
   const [timerRunning, setTimerRunning] = useState<boolean>(false);
+
+  const timerContext = useTimerContext();
 
   /* ---------------------------- Helper Functions ---------------------------- */
   function convertSliderValueToSeconds(value: number): number {
@@ -107,7 +117,7 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
       }
     };
 
-    makeAuthenticatedRequest
+    makeAuthenticatedRequest();
   }, [getAccessTokenSilently, user?.sub])
 
   /* ------------------------- Timer Lifecycle Methods ------------------------ */
@@ -133,6 +143,7 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
           setTimerProgressWheelValue(
             convertSecondsToProgressWheelValue(timerValue - 1) // update the timer display wheel
           );
+          timerContext.setTimeRemaining(timerValue - 1);
 
           // if the timer value is 0, that means that the timer has finished
           if (timerValue === 0) {
@@ -140,6 +151,7 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
             clearInterval(intervalReference.current!);
             intervalReference.current = null; // clear the timer reference so that a new one can be created
             setTimerRunning(false);
+            timerContext.setIsRunning(false);
             setMountTimerInput(true);
             console.log("Timer Finished");
           }
@@ -149,11 +161,14 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
           setTimerProgressTextValue(convertSecondsToProgressTextValue(0));
           setTimerProgressWheelValue(convertSecondsToProgressWheelValue(0));
 
+          timerContext.setTimeRemaining(timerValue - 1);
+
           console.log("Timer finished with " + timerValue + " seconds");
 
           clearInterval(intervalReference.current!);
           intervalReference.current = null;
           setTimerRunning(false);
+          timerContext.setIsRunning(false);
           setMountTimerInput(true);
           console.log("edge case timer stopped");
         }
@@ -185,13 +200,14 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
     // you can use the timerValue state to do something with the remaining time if need be
 
     setTimerRunning(false);
+    timerContext.setIsRunning(false);
     setMountTimerInput(true);
   }
   function handleTimerStartButton(): void {
     const newTimeEntry = new TimeEntry(
       "NULL",
       Date.now(),
-      Date.now() + (timerValue * 1000),
+      Date.now() + timerValue * 1000,
       selectedProject?.id || "",
       task,
       -1
@@ -207,6 +223,7 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
     // the amount of time the timer will run for is set in the timerValue state so use that
 
     setTimerRunning(true); // sets the trigger to start the timer
+    timerContext.setIsRunning(true);
     setMountTimerInput(false);
   }
   function handleTimerSlider(value: number): void {
