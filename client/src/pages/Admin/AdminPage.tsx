@@ -1,4 +1,4 @@
-import { Stack, Text } from "@mantine/core";
+import { Stack, Text, Button } from "@mantine/core";
 import { SimpleHeader } from "../../components/Headers";
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -22,9 +22,19 @@ function AdminPage() {
   return (
     <>
       <SimpleHeader text="Admin" />
-      <Stack p={40} flex={1}>
-        <Text>{isAdmin ? "authorized!" : "not authorized"}</Text>
-      </Stack>
+      {isAdmin ? (
+        /* Admin content */
+        <Stack p={40} align="flex-start">
+          <Text>{"authorized!"}</Text>
+          <Button variant="filled" size="md">Add Coins</Button>
+        </Stack>
+      ) : (
+        /* Non-Admin content */
+        <Stack p={40} align="flex-start">
+          <Text>{"Error: Not Authorized"}</Text>
+        </Stack>
+      )}
+      
     </>
   )
 }
