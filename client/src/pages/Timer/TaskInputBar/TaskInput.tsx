@@ -37,7 +37,7 @@ export function TaskInput({
           onChange={(event) => setTask(event.currentTarget.value)}
         />
         <Flex gap={"xs"}>
-          <TimerButton task={task} selectedProject={selectedProject} />
+          {/* <TimerButton task={task} selectedProject={selectedProject} /> */}
           <ProjectButton
             selectedProject={selectedProject}
             setSelectedProject={setSelectedProject}

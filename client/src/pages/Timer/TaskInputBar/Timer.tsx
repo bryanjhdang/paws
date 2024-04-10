@@ -97,30 +97,29 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
         const userId = user?.sub || "invalid user";
 
         // TODO: don't send userId, let the backend handle automatically?
-        getAccount(userId, token).then(
-          (response) => {        
-            if (response.runningTime.plannedEndTime) {
-              if (Date.now() < response.runningTime.plannedEndTime) {
-                const timeRemaining = Math.floor((response.runningTime.plannedEndTime - Date.now())/1000);
-                setTimerValue(timeRemaining); 
-                setTimerRunning(true);
-                timerContext.setIsRunning(true);
-                timerContext.setTimeRemaining(timeRemaining);
-                setMountTimerInput(false);
-              } else {
-                postTimeEntryStop(response.runningTime.plannedEndTime, token);
-              }
+        getAccount(userId, token).then((response) => {
+          if (response.runningTime.plannedEndTime) {
+            if (Date.now() < response.runningTime.plannedEndTime) {
+              const timeRemaining = Math.floor(
+                (response.runningTime.plannedEndTime - Date.now()) / 1000
+              );
+              setTimerValue(timeRemaining);
+              setTimerRunning(true);
+              timerContext.setIsRunning(true);
+              timerContext.setTimeRemaining(timeRemaining);
+              setMountTimerInput(false);
+            } else {
+              postTimeEntryStop(response.runningTime.plannedEndTime, token);
             }
           }
-        )
-
+        });
       } catch (error) {
         console.error(error);
       }
     };
 
     makeAuthenticatedRequest();
-  }, [getAccessTokenSilently, user?.sub])
+  }, [getAccessTokenSilently, user?.sub]);
 
   /* ------------------------- Timer Lifecycle Methods ------------------------ */
   const intervalReference = useRef<NodeJS.Timeout | null>(null);
@@ -246,7 +245,7 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
   function timerProgressText(): JSX.Element {
     return (
       <>
-        <Title order={1} size={100}>
+        <Title order={1} size={80}>
           <Text
             inherit
             span
@@ -269,7 +268,8 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
       <>
         <Button
           size="xl"
-          w={"50%"}
+          w={300}
+          h={40}
           onClick={handleTimerStartButton}
           variant="gradient"
           gradient={{
@@ -300,7 +300,40 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
   function timerProgressWheel(): JSX.Element {
     return (
       <>
-        <RingProgress
+        <Center>
+          <Flex
+            direction={"column"}
+            justify={"center"}
+            align={"center"}
+            w={"100%"}
+            flex={1}
+          >
+            {timerProgressText()}
+
+            <Transition
+              mounted={!mountTimerInput}
+              transition={"slide-down"}
+              duration={500}
+              timingFunction="ease"
+              keepMounted
+            >
+              {(transitionStyle) => (
+                <Flex
+                  style={{ ...transitionStyle, zIndex: 1 }}
+                  w={"100%"}
+                  justify={"center"}
+                  align={"center"}
+                  p={10}
+                  direction={"row"}
+                  gap={10}
+                >
+                  {timerStopButton()}
+                </Flex>
+              )}
+            </Transition>
+          </Flex>
+        </Center>
+        {/*  <RingProgress
           size={600}
           thickness={30}
           roundCaps={timerProgressWheelRounding}
@@ -308,78 +341,46 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
             { value: timerProgressWheelValue, color: "rgba(255, 157, 71, 1)" },
           ]}
           label={
-            <Center>
-              <Flex
-                direction={"column"}
-                justify={"center"}
-                align={"center"}
-                w={"100%"}
-                flex={1}
-              >
-                {timerProgressText()}
-
-                <Transition
-                  mounted={!mountTimerInput}
-                  transition={"slide-down"}
-                  duration={500}
-                  timingFunction="ease"
-                  keepMounted
-                >
-                  {(transitionStyle) => (
-                    <Flex
-                      style={{ ...transitionStyle, zIndex: 1 }}
-                      w={"100%"}
-                      justify={"center"}
-                      align={"center"}
-                      p={10}
-                      direction={"row"}
-                      gap={10}
-                    >
-                      {timerStopButton()}
-                    </Flex>
-                  )}
-                </Transition>
-              </Flex>
-            </Center>
+            
           }
-        />
+        /> */}
       </>
     );
   }
   function timerSlider(): JSX.Element {
     const maxValue: number = 120;
     const marks = [
-      { value: 0, label: "0 minutes" },
+      { value: 0, label: "0" },
       { value: 5, label: "" },
       { value: 10, label: "" },
       { value: 15, label: "" },
       { value: 20, label: "" },
       { value: 25, label: "" },
-      { value: 30, label: "30 minutes" },
+      { value: 30, label: "30" },
       { value: 35, label: "" },
       { value: 40, label: "" },
       { value: 45, label: "" },
       { value: 50, label: "" },
       { value: 55, label: "" },
-      { value: 60, label: "60 minutes" },
+      { value: 60, label: "60" },
       { value: 65, label: "" },
       { value: 70, label: "" },
       { value: 75, label: "" },
       { value: 80, label: "" },
       { value: 85, label: "" },
-      { value: 90, label: "90 minutes" },
+      { value: 90, label: "90" },
       { value: 95, label: "" },
       { value: 100, label: "" },
       { value: 105, label: "" },
       { value: 110, label: "" },
       { value: 115, label: "" },
-      { value: 120, label: "120 minutes" },
+      { value: 120, label: "120" },
     ];
 
     return (
       <>
         <Slider
-          w={"60%"}
+          w={300}
           showLabelOnHover={false}
           color={"#f1d179"}
           onChange={(value) => handleTimerSlider(value)}
