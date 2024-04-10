@@ -1,26 +1,47 @@
 import { useState, useEffect } from "react";
-import { Flex } from "@mantine/core";
+import { Flex, Image } from "@mantine/core";
 import { TaskInput } from "./TaskInputBar/TaskInput";
-import { Project, TimerStatus } from "../../classes/models";
+import { Pet, Project, TimerStatus } from "../../classes/models";
 import TodoList from "./Todo/TodoList";
 import SocketConnection from "./SocketConnection/SocketConnection";
-
 import { Timer } from "./TaskInputBar/Timer";
-
-// import classes from "./TimerPage.module.css";
-// import BongoCat from "../../assets/sleepy-cat-1.gif";
-
-import { TimerContext } from "../../context/TimerContext";
+import { TimerContext, useTimerContext } from "../../context/TimerContext";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getAccount } from "../../classes/HTTPhelpers";
+import { getPathById } from "../../classes/shopItems";
+import classes from "./TimerPage.module.css";
 
 function TimerPage() {
   const [task, setTask] = useState<string>("");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-
+  const { getAccessTokenSilently } = useAuth0();
+  const { user } = useAuth0();
   let timerStatus = new TimerStatus(false, 0);
 
+  const [pet, setPet] = useState<Pet>();
+  const [startTime, setStartTime] = useState<number | undefined>();
+
   useEffect(() => {
-    console.log("Timer status changed: ", timerStatus);
-  }, [timerStatus]);
+    const makeAuthenticatedRequest = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        const userId = user?.sub || "not logged in";
+
+        getAccount(userId, token).then(
+          (response) => {
+            console.log(response);
+            setPet(response.pet);
+            setStartTime(response.runningTime.startTime);
+            setTask(response.runningTime.name);
+          }
+        )
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    makeAuthenticatedRequest();
+  }, [getAccessTokenSilently, user?.sub]);
 
   return (
     <TimerContext.Provider value={timerStatus}>
@@ -32,10 +53,20 @@ function TimerPage() {
             selectedProject={selectedProject}
             setSelectedProject={setSelectedProject}
           />
-          {/* <Image className={classes.sleepyBreathing} w={300} h={300} src={BongoCat} /> */}
+
+          <div className={classes.img}>
+            {pet && (
+              startTime === undefined ? (
+                <Image className={classes.restAnim} w={400} h={400} src={getPathById(true, pet.restId)} />
+              ) : (
+                <Image className={classes.workAnim} w={400} h={400} src={getPathById(false, pet.workId)} />
+              )
+            )}
+          </div>
+
         </Flex>
         <Flex direction={"column"} gap={20}>
-            <Timer task={task} selectedProject={selectedProject} />
+            <Timer task={task} selectedProject={selectedProject} setStart={setStartTime} />
           <TodoList setTask={setTask} />
           <SocketConnection />
         </Flex>
