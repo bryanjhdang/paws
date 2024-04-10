@@ -35,6 +35,21 @@ export function postAccountCreate(): void {
 
 }
 
+export async function addCoins(numCoins: number, accessToken: string): Promise<number> {	
+	return new Promise<number>((resolve, reject) => {
+		axios({
+			method: 'post',
+			url: `${import.meta.env.VITE_API_SERVER_URL}/account/addCoins/?numCoins=${numCoins}`,
+			headers: { Authorization: `Bearer ${accessToken}` }
+		})
+		.then((response) => {
+			resolve(response.data.totalCoins);
+		}, (error) => {
+			reject(error);
+		})
+	})
+}
+
 // Pet
 export async function getPet(accountId: string, accessToken: string): Promise<Pet> {
 	try {

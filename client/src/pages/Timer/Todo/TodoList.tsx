@@ -1,5 +1,5 @@
 import { ActionIcon, Button, Checkbox, Flex, Stack, Text, TextInput } from "@mantine/core";
-import { IconTrash } from '@tabler/icons-react';
+import { IconTrash, IconFilePencil } from '@tabler/icons-react';
 import classes from "./TodoList.module.css"
 import { Todo } from "../../../classes/models";
 import { useEffect, useState } from "react";
@@ -10,9 +10,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 interface TodoProps {
   item: Todo;
   handleDeleteTodo: (id: string) => void;
+  handleSetTask: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function TodoItem({ item, handleDeleteTodo }: TodoProps) {
+function TodoItem({ item, handleDeleteTodo, handleSetTask }: TodoProps) {
   const [checked, setChecked] = useState(item.done);
   const { getAccessTokenSilently } = useAuth0();
 
@@ -33,10 +34,11 @@ function TodoItem({ item, handleDeleteTodo }: TodoProps) {
   }
 
   return (
-    <Flex align="flex-start" gap={10}>
+    <Flex align="center" className={classes.todoItem}>
       <Checkbox
         checked={checked}
         onChange={(event) => handlePatchTodo(event.currentTarget.checked)}
+        size="xs"
       />
       <Text className={`${classes.itemText} ${checked ? classes.itemCompleted : ''}`}>
         {item.task}
@@ -44,9 +46,16 @@ function TodoItem({ item, handleDeleteTodo }: TodoProps) {
       <ActionIcon
         className={classes.icon}
         variant="transparent"
+        onClick={() => handleSetTask(item.task)}
+      >
+        <IconFilePencil stroke={1.5} width={20} />
+      </ActionIcon>
+      <ActionIcon
+        className={classes.icon}
+        variant="transparent"
         onClick={() => handleDeleteTodo(item.id)}
       >
-        <IconTrash />
+        <IconTrash stroke={1.5} width={20} />
       </ActionIcon>
     </Flex>
   )
@@ -80,9 +89,14 @@ function TodoEntry({ handleAddTodo }: TodoEntryProps) {
           {...form.getInputProps('task')}
           className={classes.addinput}
           variant="unstyled"
-          placeholder="New Task"
+          placeholder="+ New"
+          color="white"
+          styles={{
+            input: {
+              color: 'white'
+            }
+          }}
         />
-        <Button type="submit" className={classes.addbutton}>Add</Button>
       </Flex>
     </form>
   );
@@ -94,7 +108,11 @@ function TodoHeader() {
   )
 }
 
-function TodoList() {
+interface TodoListProps {
+  setTask: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function TodoList({ setTask } : TodoListProps ) {
   const [todos, setTodos] = useState<Todo[]>([]);
   const { getAccessTokenSilently } = useAuth0();
 
@@ -112,7 +130,7 @@ function TodoList() {
         console.error(error);
       }
     }
-    
+
     makeAuthenticatedRequest();
   }, [getAccessTokenSilently]);
 
@@ -124,7 +142,7 @@ function TodoList() {
     }).catch((error) => {
       console.error(error);
     })
-    
+
   }
 
   // todo: prefer try...catch?
@@ -142,9 +160,8 @@ function TodoList() {
   return (
     <Stack className={classes.section}>
       <TodoHeader />
-      <TodoEntry handleAddTodo={handleAddTodo} />
       {todos.length > 0 ? (
-        <Stack className={classes.todolist}>
+        <Stack className={classes.todolist} gap={10}>
           {todos
             .sort((a, b) => a.dateCreated - b.dateCreated)
             .map((todo) => (
@@ -152,12 +169,14 @@ function TodoList() {
                 key={todo.id}
                 item={todo}
                 handleDeleteTodo={handleDeleteTodo}
+                handleSetTask={setTask}
               />
             ))}
         </Stack>
       ) : (
-        <Text className={classes.noTodoText}>Enter some tasks!</Text>
+        <></>
       )}
+      <TodoEntry handleAddTodo={handleAddTodo} />
     </Stack>
   )
 }

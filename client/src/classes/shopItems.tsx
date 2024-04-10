@@ -10,16 +10,28 @@ import WorkCat4 from '../assets/work-cats/work-cat-4.gif';
 
 // Rest Cats
 export const RestCats: CatItem[] = [
-  new CatItem(RestCat1, "Whiskers", 0, true, 1),
-  new CatItem(RestCat2, "Mochi", 100, true, 2),
-  new CatItem(RestCat3, "Nimbus", 100, true, 3),
-  new CatItem(RestCat4, "Tofu", 100, true, 4),
+  new CatItem(RestCat1, "Whiskers", 0, true, 0),
+  new CatItem(RestCat2, "Mochi", 100, true, 1),
+  new CatItem(RestCat3, "Nimbus", 100, true, 2),
+  new CatItem(RestCat4, "Tofu", 100, true, 3),
 ]
 
 //  Work Cats
 export const WorkCats: CatItem[] = [
-  new CatItem(WorkCat1, "Bubbles", 0, false, 5),
-  new CatItem(WorkCat2, "Pixie", 100, false, 6),
-  new CatItem(WorkCat3, "Snickers", 100, false, 7),
-  new CatItem(WorkCat4, "Frisbee", 100, false, 8),
+  new CatItem(WorkCat1, "Bubbles", 0, false, 0),
+  new CatItem(WorkCat2, "Pixie", 100, false, 1),
+  new CatItem(WorkCat3, "Snickers", 100, false, 2),
+  new CatItem(WorkCat4, "Frisbee", 100, false, 3),
 ]
+
+export function getPathById(isRestCat : boolean, id : number) : string {
+  const cats = isRestCat ? RestCats : WorkCats;
+  const catItem = cats.find((item) => item.id === id);
+
+  if (catItem) {
+    return catItem.path;
+  } else {
+    console.error("Could not find path by id. Cat does not exist.");
+    return '';
+  }  
+}
