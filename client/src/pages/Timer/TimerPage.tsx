@@ -4,6 +4,9 @@ import { TaskInput } from "./TaskInputBar/TaskInput";
 import { Project, TimerStatus } from "../../classes/models";
 import TodoList from "./Todo/TodoList";
 import SocketConnection from "./SocketConnection/SocketConnection";
+
+import { Timer } from "./TaskInputBar/Timer";
+
 // import classes from "./TimerPage.module.css";
 // import BongoCat from "../../assets/sleepy-cat-1.gif";
 
@@ -32,6 +35,7 @@ function TimerPage() {
           {/* <Image className={classes.sleepyBreathing} w={300} h={300} src={BongoCat} /> */}
         </Flex>
         <Flex direction={"column"} gap={20}>
+            <Timer task={task} selectedProject={selectedProject} />
           <TodoList setTask={setTask} />
           <SocketConnection />
         </Flex>
