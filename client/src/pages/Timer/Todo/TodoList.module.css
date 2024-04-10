@@ -1,3 +1,10 @@
+.addinput {
+  width: 100%;
+  padding: 0 10px;
+  border-radius: var(--mantine-radius-md);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
 .section {
   background-color: #794B62;
   /* margin: 20px 20px; */
@@ -30,19 +37,14 @@
 .itemText {
   color: white;
   width: 100%;
+  /* font-size: var(--mantine-font-size-md); */
+  margin-left: 10px;
 }
 
 .itemCompleted {
   text-decoration: line-through;
   color: var(--mantine-color-dark-1);
-}
-
-.addinput {
-  background-color: white;
-  width: 100%;
-  padding: 0 10px;
-  margin-right: 10px;
-  border-radius: var(--mantine-radius-md);
+  margin-left: 10px;
 }
 
 .addbutton {
@@ -58,7 +60,7 @@
 }
 
 .todolist {
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 
 .noTodoText {
@@ -67,3 +69,9 @@
   text-align: center;
 }
 
+.todoItem {
+  /* background-color: rgba(0, 0, 0, 0.1); */
+  padding: 0px 5px;
+  border-radius: var(--mantine-radius-md);
+  align-content: center;
+}
