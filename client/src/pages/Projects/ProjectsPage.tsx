@@ -1,4 +1,4 @@
-import { Button, Loader, Stack, Table, Text } from "@mantine/core";
+import { Button, Stack, Table, Text } from "@mantine/core";
 import { FunctionalHeader } from "../../components/Headers";
 import { Project } from "../../classes/models";
 import { useEffect, useState } from "react";

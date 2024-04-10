@@ -5,7 +5,7 @@ import { Pet, Project, TimerStatus } from "../../classes/models";
 import TodoList from "./Todo/TodoList";
 import SocketConnection from "./SocketConnection/SocketConnection";
 import { Timer } from "./TaskInputBar/Timer";
-import { TimerContext, useTimerContext } from "../../context/TimerContext";
+import { TimerContext } from "../../context/TimerContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getAccount } from "../../classes/HTTPhelpers";
 import { getPathById } from "../../classes/shopItems";

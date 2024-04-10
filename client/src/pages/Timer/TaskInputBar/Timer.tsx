@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect, useRef } from "react";
 
 import {
-  RingProgress,
   Title,
   Text,
   Slider,
@@ -37,10 +37,10 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
   const [timerValue, setTimerValue] = useState<number>(0); // in seconds
   const [timerProgressTextValue, setTimerProgressTextValue] =
     useState<string>(`0:00`);
-  const [timerProgressWheelValue, setTimerProgressWheelValue] =
-    useState<number>(0);
-  const [timerProgressWheelRounding, setTimerProgressWheelRounding] =
-    useState<boolean>(false);
+  // const [timerProgressWheelValue, setTimerProgressWheelValue] =
+  //   useState<number>(0);
+  // const [timerProgressWheelRounding, setTimerProgressWheelRounding] =
+  //   useState<boolean>(false);
 
   const [mountTimerInput, setMountTimerInput] = useState<boolean>(true);
   const [timerRunning, setTimerRunning] = useState<boolean>(false);
@@ -67,29 +67,30 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
     // until it is 2 characters long. this is for seconds < 10
     return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
   }
-  function convertSecondsToProgressWheelValue(seconds: number): number {
-    let value: number = 0;
+  
+  // function convertSecondsToProgressWheelValue(seconds: number): number {
+  //   let value: number = 0;
 
-    /* 
-        ring progress value to minutes mapping (as ring only goes up to 100)
-        0 -> 0
-        25 -> 30 minutes
-        50 -> 60 minutes
-        75 -> 90 minutes
-        100 -> 120 minutes
-        therefore slider value to seconds and milliseconds mapping is:
-        0 -> 0
-        25 -> 1800 seconds -> 1800000 milliseconds
-        50 -> 3600 seconds -> 3600000 milliseconds
-        75 -> 5400 seconds -> 5400000 milliseconds
-        100 -> 7200 seconds -> 7200000 milliseconds
-    */
-    // formula to convert slider value to seconds
-    //seconds = Math.floor((value / 100) * 7200);
-    value = (seconds / 7200) * 100;
+  //   /* 
+  //       ring progress value to minutes mapping (as ring only goes up to 100)
+  //       0 -> 0
+  //       25 -> 30 minutes
+  //       50 -> 60 minutes
+  //       75 -> 90 minutes
+  //       100 -> 120 minutes
+  //       therefore slider value to seconds and milliseconds mapping is:
+  //       0 -> 0
+  //       25 -> 1800 seconds -> 1800000 milliseconds
+  //       50 -> 3600 seconds -> 3600000 milliseconds
+  //       75 -> 5400 seconds -> 5400000 milliseconds
+  //       100 -> 7200 seconds -> 7200000 milliseconds
+  //   */
+  //   // formula to convert slider value to seconds
+  //   //seconds = Math.floor((value / 100) * 7200);
+  //   value = (seconds / 7200) * 100;
 
-    return value;
-  }
+  //   return value;
+  // }
 
   useEffect(() => {
     const makeAuthenticatedRequest = async () => {
@@ -141,9 +142,9 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
           setTimerProgressTextValue(
             convertSecondsToProgressTextValue(timerValue - 1) // update the timer display text
           );
-          setTimerProgressWheelValue(
-            convertSecondsToProgressWheelValue(timerValue - 1) // update the timer display wheel
-          );
+          // setTimerProgressWheelValue(
+          //   convertSecondsToProgressWheelValue(timerValue - 1) // update the timer display wheel
+          // );
           timerContext.setTimeRemaining(timerValue - 1);
 
           // if the timer value is 0, that means that the timer has finished
@@ -160,7 +161,7 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
           // this is an edge case where the timer value is 0, but the timer is still running
           setTimerValue(0);
           setTimerProgressTextValue(convertSecondsToProgressTextValue(0));
-          setTimerProgressWheelValue(convertSecondsToProgressWheelValue(0));
+          // setTimerProgressWheelValue(convertSecondsToProgressWheelValue(0));
 
           timerContext.setTimeRemaining(timerValue - 1);
 
@@ -236,15 +237,15 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
     // if rounding is enabled, it shows even when the value is 0
     // therefore we need to disable it when the value is 0
     if (value !== 0) {
-      setTimerProgressWheelRounding(true);
+      // setTimerProgressWheelRounding(true);
     } else {
-      setTimerProgressWheelRounding(false);
+      // setTimerProgressWheelRounding(false);
     }
 
     let seconds = convertSliderValueToSeconds(value);
     setTimerValue(seconds);
     setTimerProgressTextValue(convertSecondsToProgressTextValue(seconds));
-    setTimerProgressWheelValue(convertSecondsToProgressWheelValue(seconds));
+    // setTimerProgressWheelValue(convertSecondsToProgressWheelValue(seconds));
   }
 
   /* ------------------------------- Components ------------------------------- */
