@@ -1,0 +1,7 @@
+.coinDisplay {
+  color: white;
+  background-color: #538C3F;
+  justify-content: center;
+  padding: 8px 20px;
+  border-radius: var(--mantine-radius-md);
+}
