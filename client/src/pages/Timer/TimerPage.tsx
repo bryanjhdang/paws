@@ -53,7 +53,7 @@ function TimerPage() {
 
           <div className={classes.img}>
             {pet && (
-              timerStatus.getIsRunning() === false ? (
+              timerStatus.getIsRunning() === true ? (
                 <Image className={classes.restAnim} w={400} h={400} src={getPathById(true, pet.restId)} />
               ) : (
                 <Image className={classes.workAnim} w={400} h={400} src={getPathById(false, pet.workId)} />
