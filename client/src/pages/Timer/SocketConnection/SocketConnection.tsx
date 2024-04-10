@@ -32,9 +32,7 @@ function SocketConnection() {
 
   useEffect(() => {
     function updateUsers(data: User[]) {
-      let x = user?.sub;
-      // data.filter((e) => e.id != user?.sub)
-      setUsers(data);
+      setUsers(data.filter((e) => e.id != user?.sub));
     }
 
     socket.on('users', updateUsers);
