@@ -7,7 +7,7 @@ import { addCoins } from "../../classes/HTTPhelpers";
 function AdminPage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [numCoinsToAdd, setNumCoinsToAdd] = useState<string | number>(100);
-  const { user, getIdTokenClaims, getAccessTokenSilently } = useAuth0();
+  const { getIdTokenClaims, getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     getIdTokenClaims()
