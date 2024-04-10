@@ -1,16 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 
+import { useEffect, useRef, useState } from "react";
+
 import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 import { useAuth0 } from "@auth0/auth0-react";
 
-import { IconAlarm } from "@tabler/icons-react";
+import { useAuth0 } from "@auth0/auth0-react";
+
+import { IconPlayerPlayFilled } from "@tabler/icons-react";
 
 import { Timer } from "./Timer";
 
 import { Project } from "../../../classes/models";
 import { useTimerContext } from "../../../context/TimerContext";
+import { getAccount } from "../../../classes/HTTPhelpers";
 import { getAccount } from "../../../classes/HTTPhelpers";
 
 interface TimerProps {
@@ -29,6 +34,7 @@ export function TimerButton({
   const timerContext = useTimerContext();
 
   /* ----------------------------- timer lifecycle ---------------------------- */
+  // setting the timer up
   // setting the timer up
   const intervalReference = useRef<NodeJS.Timeout | null>(null);
   useEffect(() => {
@@ -92,8 +98,8 @@ export function TimerButton({
 
   return (
     <>
-      <Button variant="light" radius={"lg"} color="black" onClick={open}>
-        {timerContext.getIsRunning() ? timeRemaining : <IconAlarm />}
+      <Button variant="light" radius={"lg"} color="white" style={{backgroundColor: '#a36384'}} onClick={open}>
+        {timerContext.getIsRunning() ? timeRemaining : <IconPlayerPlayFilled />}
       </Button>
 
       <Modal
