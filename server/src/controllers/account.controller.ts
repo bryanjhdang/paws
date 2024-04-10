@@ -55,7 +55,6 @@ accountController.post('/start', (req: Request, res: Response) => {
 
 });
 
-// todo: add middleware
 accountController.post(
     '/addCoins', 
     checkRequiredPermissions(["read:admin"]), 
@@ -69,7 +68,6 @@ accountController.post(
                 .json({message : "Invalid parameters for query string!", error : err});
         }
 
-        
         // console.log(query.numCoins);
         res.locals.user.totalCoins += query.numCoins;
         // console.log(res.locals.user.totalCoins);
@@ -77,7 +75,7 @@ accountController.post(
         firestoreHelper.updateUser(res.locals.user)
         .then(() => {
             res.status(StatusCodes.CREATED)
-            .json("user updated");
+            .json("user coin count updated");
         })
         .catch((err : Error) => {
             res.status(StatusCodes.INTERNAL_SERVER_ERROR)
