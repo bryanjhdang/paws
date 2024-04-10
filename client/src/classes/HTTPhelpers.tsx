@@ -166,7 +166,6 @@ export function postTimeEntryStop(endTimeNumber: number, accessToken: string): v
 		}
 	})
 	.then((response) => {
-		console.log(response);
 	}, (error) => {
 		throw(error);
 	});

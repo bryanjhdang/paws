@@ -8,7 +8,7 @@ export class PetService {
     constructor(private db: DatabaseHelper) { };
 
     getCoins(user : User) : number {
-        return 0;
+        return user.totalCoins;
     }
 
     addCoins(user: User, count : number) : number {

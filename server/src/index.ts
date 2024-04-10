@@ -1,7 +1,9 @@
 // src/index.js
 import express, { Express, Request, Response } from "express";
+import { createServer } from 'node:http';
 import dotenv from "dotenv";
 import cors from "cors";
+import { Server, Socket } from "socket.io"
 
 import { petController } from "./controllers/pet.controller";
 import { timeEntryController } from "./controllers/timeEntry.controller";
@@ -15,18 +17,26 @@ import {
   validateAccessToken,
 } from "./middlewares/auth.middleware";
 import { errorHandler } from "./middlewares/error.middleware";
+import { wsInit } from "./ws";
 
 dotenv.config();
+
+
 
 const app: Express = express();
 const port = process.env.PORT || 8080;
 const address = process.env.ADDRESS || "localhost"
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173"
+  }
+});
 
-// todo: update cors init needed?
 app.use(cors());
 app.use(express.json());
 
-app.get(`/`, (req : Request, res : Response) => {
+app.get(`/`, (req: Request, res: Response) => {
   res.send("It's working!");
 });
 
@@ -51,6 +61,12 @@ app.use('/todo', todoController)
 
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`[server]: Server is running at http://${address}:${port}`);
+app.use('/todo', todoController)
+
+app.use(errorHandler);
+
+wsInit(io);
+
+server.listen(port, () => {
+  console.log(`[server]: Server is running at http://localhost:${port}`);
 });

@@ -51,7 +51,6 @@ interface StartResponse {
 timeEntryController.post(`/start`, (req: Request, res: Response) => {
     let body : StartRequest = req.body;
     try {
-        console.log(res.locals.user.runningTime);
         timeEntryService.startEntry(res.locals.user, body.entryName, body.projectId, body.startTime, body.endTime);
         res.status(StatusCodes.CREATED)
         .json({message: "Started time entry!"});
