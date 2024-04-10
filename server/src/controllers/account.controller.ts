@@ -65,9 +65,11 @@ accountController.post('/addCoins', (req: Request, res: Response) => {
             .json({message : "Invalid parameters for query string!", error : err});
     }
 
-    // console.log(res.locals.user.totalCoins);
+    
     // console.log(query.numCoins);
     res.locals.user.totalCoins += query.numCoins;
+    // console.log(res.locals.user.totalCoins);
+
     firestoreHelper.updateUser(res.locals.user)
     .then(() => {
         res.status(StatusCodes.CREATED)
