@@ -32,6 +32,7 @@ export class TimerStatus {
   }
 
   public getIsRunning(): boolean {
+    console.log(this.isRunning);
     return this.isRunning;
   }
 
