@@ -30,7 +30,7 @@ function TimerPage() {
           />
           {/* <Image className={classes.sleepyBreathing} w={300} h={300} src={BongoCat} /> */}
         </Flex>
-        <TodoList />
+        <TodoList  setTask={setTask} />
       </Flex>
     </TimerContext.Provider>
   );
