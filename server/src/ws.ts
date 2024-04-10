@@ -30,6 +30,16 @@ export function wsInit(io: any) {
             io.emit("users", [...connectedUsers.values()]);
         });
 
+        
+        socket.on('leave', () => {
+            let userId = socket.handshake.query.token;
+            if (!userId) { return }
+
+
+            connectedUsers.delete(userId.toString());
+            io.emit("users", [...connectedUsers.values()]);
+        });
+
         socket.on('updateUser', (user: User) => {
             updateUsers(user);
         });

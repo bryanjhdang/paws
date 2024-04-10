@@ -1,5 +1,10 @@
 .addBtn {
-  
+  transition: transform 0.05s;
+  color: var(--mantine-color-dark-6);
+}
+
+.addBtn:hover {
+  transform: scale(1.05);
 }
 
 .noProjectHeader {

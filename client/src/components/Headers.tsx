@@ -3,16 +3,18 @@ import classes from './Headers.module.css';
 
 export function SimpleHeader({ text }: { text: string }) {
   return (
-    <Text className={classes.simpleHeader}>
-      {text}
-    </Text>
+    <Group className={classes.simpleHeader}>
+      <Text className={classes.headerText}>
+        {text}
+      </Text>
+    </Group>
   )
 }
 
-export function FunctionalHeader({ text, element }: { text : string, element: JSX.Element}) {
+export function FunctionalHeader({ text, element }: { text: string, element: JSX.Element }) {
   return (
     <Group className={classes.functionalHeader}>
-      <Text className={classes.functionalHeaderText}>{text}</Text>
+      <Text className={classes.headerText}>{text}</Text>
       {element}
     </Group>
   )
@@ -20,7 +22,7 @@ export function FunctionalHeader({ text, element }: { text : string, element: JS
 
 export function TextHeader({ text }: { text: string }) {
   return (
-    <Text className={classes.textHeader}>
+    <Text className={classes.headerText}>
       {text}
     </Text>
   )

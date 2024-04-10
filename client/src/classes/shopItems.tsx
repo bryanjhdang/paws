@@ -18,10 +18,10 @@ export const RestCats: CatItem[] = [
 
 //  Work Cats
 export const WorkCats: CatItem[] = [
-  new CatItem(WorkCat1, "Bubbles", 0, false, 0),
-  new CatItem(WorkCat2, "Pixie", 100, false, 1),
-  new CatItem(WorkCat3, "Snickers", 100, false, 2),
-  new CatItem(WorkCat4, "Frisbee", 100, false, 3),
+  new CatItem(WorkCat1, "Bubbles", 0, false, 4),
+  new CatItem(WorkCat2, "Pixie", 100, false, 5),
+  new CatItem(WorkCat3, "Snickers", 100, false, 6),
+  new CatItem(WorkCat4, "Frisbee", 100, false, 7),
 ]
 
 export function getPathById(isRestCat : boolean, id : number) : string {
