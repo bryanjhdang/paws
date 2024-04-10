@@ -2,7 +2,8 @@ import axios from "axios";
 import { Pet, Project, TimeEntry, Todo, User } from "./models";
         
 // Account
-export function getAccount(accountId: string): Promise<User> {
+// todo: remove accountId from this function, handle on backend instead?
+export function getAccount(accountId: string, accessToken: string): Promise<User> {
 	const createUser = (any : any): User => {
 		return new User(
 			any.data.id,
@@ -19,7 +20,8 @@ export function getAccount(accountId: string): Promise<User> {
 	return new Promise<User>((resolve, reject) => {
 		axios({
 			method: 'get',
-			url: `${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}` 
+			url: `${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}`,
+			headers: { Authorization: `Bearer ${accessToken}` }
 		})
 		.then((response) => {
 			resolve(createUser(response));
@@ -34,27 +36,11 @@ export function postAccountCreate(): void {
 }
 
 // Pet
-// export function getPet(): Promise<Pet> {
-// 	const createPet = (any: any): Pet => {
-// 		return new Pet(any.data.restId, any.data.workId, any.data.ownedCats);
-// 	}
-
-// 	return new Promise<Pet>((resolve, reject) => {
-// 		axios({
-// 			method: 'get',
-// 			url: `${import.meta.env.VITE_API_SERVER_URL}/pet`
-// 		})
-// 		.then((response) => {
-// 			resolve(createPet(response));
-// 		}, (error) => {
-// 			reject(error);
-// 		});
-// 	})
-// }
-
-export async function getPet(accountId: string): Promise<Pet> {
+export async function getPet(accountId: string, accessToken: string): Promise<Pet> {
 	try {
-		const response = await axios.get(`${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}`);
+		const response = await axios.get(`${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}`, {
+			headers: { Authorization: `Bearer ${accessToken}`}
+		});
 		const { restId, workId, ownedCats } = response.data.pet;
 		return new Pet(restId, workId, ownedCats);
 	} catch (error) {
@@ -63,36 +49,50 @@ export async function getPet(accountId: string): Promise<Pet> {
 	}
 }
 
-export async function buyPet(id: number, cost: number) {
+export async function buyPet(id: number, cost: number, accessToken: string) {
 	try {
-		await axios.put(`${import.meta.env.VITE_API_SERVER_URL}/pet/buy?id=${id}&cost=${cost}`);
+		await axios.put(
+			`${import.meta.env.VITE_API_SERVER_URL}/pet/buy?id=${id}&cost=${cost}`,
+			null,
+			{ headers: { Authorization: `Bearer ${accessToken}`}
+		});
 	} catch (error) {
 		console.error(error);
 		throw error;
 	}
 }
 
-export async function equipPet(pet: Pet) {
+export async function equipPet(pet: Pet, accessToken: string) {
 	try {
-		await axios.patch(`${import.meta.env.VITE_API_SERVER_URL}/pet/equip?restId=${pet.restId}&workId=${pet.workId}`);
+		await axios.patch(
+			`${import.meta.env.VITE_API_SERVER_URL}/pet/equip?restId=${pet.restId}&workId=${pet.workId}`,
+			null, 
+			{ headers: { Authorization: `Bearer ${accessToken}`}
+		});
 	} catch (error) {
 		console.error(error);
 		throw error;
 	}
 }
 
-export async function getCoins(accountId: string): Promise<number> {
-	try {
-		const response = await axios.get(`${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}`)
-		return response.data.totalCoins;
-	} catch (error) {
-		console.error(error);
-		throw error;
-	}
+export async function getCoins(accountId: string, accessToken: string): Promise<number> {	
+	return new Promise<number>((resolve, reject) => {
+		axios({
+			method: 'get',
+			url: `${import.meta.env.VITE_API_SERVER_URL}/account/?id=${accountId}`,
+			headers: { Authorization: `Bearer ${accessToken}` }
+		})
+		.then((response) => {
+			resolve(response.data.totalCoins);
+		}, (error) => {
+			reject(error);
+		})
+	})
 }
 
 // TimeEntry
-export function getTimeEntry(): Promise<TimeEntry[]> {
+export function getTimeEntry(accessToken: string): Promise<TimeEntry[]> {
+
 	const createTimeEntries = (any : any): TimeEntry[] => {
 		return any.data.timeEntries.map((element: any) => {
 			return new TimeEntry(
@@ -109,7 +109,8 @@ export function getTimeEntry(): Promise<TimeEntry[]> {
 	return new Promise<TimeEntry[]>((resolve, reject) => {	
 		axios({
 			method: 'get',
-			url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry`
+			url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry`,
+			headers: { Authorization: `Bearer ${accessToken}` }
 		})
 		.then((response) => {
 			resolve(createTimeEntries(response));
@@ -119,10 +120,12 @@ export function getTimeEntry(): Promise<TimeEntry[]> {
 	})
 }
 
-export function postTimeEntryStart(timeEntry : TimeEntry): void {
+export function postTimeEntryStart(timeEntry: TimeEntry, accessToken: string): void {
+	console.log(timeEntry);
 	axios({
 		method: 'post',
 		url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/start`,
+		headers: { Authorization: `Bearer ${accessToken}` },
 		data: {
 			entryName: timeEntry.name,
 			projectId: timeEntry.projectId,
@@ -137,10 +140,12 @@ export function postTimeEntryStart(timeEntry : TimeEntry): void {
 	});
 }
 
-export function postTimeEntryStop(endTimeNumber : number): void {
+export function postTimeEntryStop(endTimeNumber: number, accessToken: string): void {
+	console.log(endTimeNumber);
 	axios({
 		method: 'post',
 		url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/stop`,
+		headers: { Authorization: `Bearer ${accessToken}` },
 		data: {
 			endTime: endTimeNumber
 		}
@@ -153,11 +158,11 @@ export function postTimeEntryStop(endTimeNumber : number): void {
 }
 
 // Projects
-export async function postProject(project: Project) {
-	console.log(project);
+export async function postProject(project: Project, accessToken: string) {
 	axios({
 		method: 'post',
 		url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/project`,
+		headers: { Authorization: `Bearer ${accessToken}` },
 		data: {
 			name: project.name,
 			hex: project.hex,
@@ -171,7 +176,7 @@ export async function postProject(project: Project) {
 	});
 }
 
-export async function getProjects(): Promise<Project[]> {
+export async function getProjects(accessToken: string): Promise<Project[]> {
 	const createProjects = (any: any): Project[] => {
 		return any.data.projects.map((element: any) => {
 			return new Project(element.hex, element.name, element.dateCreated, element.id);
@@ -181,7 +186,8 @@ export async function getProjects(): Promise<Project[]> {
 	return new Promise<Project[]>((resolve, reject) => {
 		axios({
 			method: 'get',
-			url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/project`
+			url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/project`,
+			headers: { Authorization: `Bearer ${accessToken}` }
 		})
 		.then((response) => {
 			resolve(createProjects(response));
@@ -191,9 +197,12 @@ export async function getProjects(): Promise<Project[]> {
 	})
 }
 
-export async function deleteProject(id: string) {
+// todo: correct syntax here? TEST
+export async function deleteProject(id: string, accessToken: string) {
 	try {
-		await axios.delete(`${import.meta.env.VITE_API_SERVER_URL}/timeEntry/project/${id}`); 
+		await axios.delete(`${import.meta.env.VITE_API_SERVER_URL}/timeEntry/project/${id}`, {
+			headers: { Authorization: `Bearer ${accessToken}` }
+		}); 
 	} catch (error) {
 		console.error(error);
 		throw error;
@@ -201,10 +210,11 @@ export async function deleteProject(id: string) {
 }
 
 // ToDo
-export async function postTodo(todo: Todo) {
+export async function postTodo(todo: Todo, accessToken: string) {
 	axios({
 		method: 'post',
 		url: `${import.meta.env.VITE_API_SERVER_URL}/todo`,
+		headers: { Authorization: `Bearer ${accessToken}` },
 		data: {
 			task: todo.task,
 			dateCreated: todo.dateCreated
@@ -217,18 +227,24 @@ export async function postTodo(todo: Todo) {
 	});
 }
 
-export async function deleteTodo(id: string) {
+// todo: correct syntax? TEST
+export async function deleteTodo(id: string, accessToken: string) {
 	try {
-		await axios.delete(`${import.meta.env.VITE_API_SERVER_URL}/todo/${id}`); 
+		await axios.delete(`${import.meta.env.VITE_API_SERVER_URL}/todo/${id}`, {
+			headers: { Authorization: `Bearer ${accessToken}` }
+		}); 
 	} catch (error) {
 		console.error(error);
 		throw error;
 	}
 }
 
-export async function patchTodo(todo: Todo): Promise<Todo> {
+// todo: correct syntax? 3rd argument like this?
+export async function patchTodo(todo: Todo, accessToken: string): Promise<Todo> {
   try {
-    const response = await axios.patch(`${import.meta.env.VITE_API_SERVER_URL}/todo/`, todo);
+    const response = await axios.patch(`${import.meta.env.VITE_API_SERVER_URL}/todo/`, todo, {
+			headers: { Authorization: `Bearer ${accessToken}` }
+		});
     return response.data;
   } catch (error) {
     console.error(error);
@@ -236,7 +252,7 @@ export async function patchTodo(todo: Todo): Promise<Todo> {
   }
 }
 
-export async function getTodo(): Promise<Todo[]> {
+export async function getTodo(accessToken: string): Promise<Todo[]> {
 	const createTodo = (any: any): Todo[] => {
 		return any.data.todos.map((element: any) => {
 			return new Todo(element.task, element.dateCreated, element.done, element.id);
@@ -247,6 +263,7 @@ export async function getTodo(): Promise<Todo[]> {
 		axios({
 			method: 'get',
 			url: `${import.meta.env.VITE_API_SERVER_URL}/todo`,
+			headers: { Authorization: `Bearer ${accessToken}` }
 		})
 		.then((response) => {
 			resolve(createTodo(response));

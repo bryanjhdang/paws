@@ -3,8 +3,8 @@ import { Flex } from "@mantine/core";
 import { TaskInput } from "./TaskInputBar/TaskInput";
 import { Project, TimerStatus } from "../../classes/models";
 import TodoList from "./Todo/TodoList";
-import classes from "./TimerPage.module.css";
-import BongoCat from "../../assets/sleepy-cat-1.gif";
+// import classes from "./TimerPage.module.css";
+// import BongoCat from "../../assets/sleepy-cat-1.gif";
 
 import { TimerContext, useTimerContext } from "../../context/TimerContext";
 
