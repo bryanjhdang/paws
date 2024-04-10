@@ -1,33 +1,22 @@
-import {
-  Accordion,
-  ActionIcon,
-  Button,
-  Group,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { Accordion, Image, Button, Group, Stack, Text } from "@mantine/core";
+
 import { useContext, useEffect, useState } from "react";
+
 import { Socket, io } from "socket.io-client";
 import {
   SocketContext,
   useSocketContext,
 } from "../../../context/SocketContext";
-import { IconLink } from "@tabler/icons-react";
+import {
+  IconLink,
+  IconBook,
+  IconBook2,
+  IconCircleFilled,
+} from "@tabler/icons-react";
 import classes from "./SocketConnection.module.css";
 import { User } from "../../../classes/models";
+import { getPathById } from "../../../classes/shopItems";
 import { useAuth0 } from "@auth0/auth0-react";
-
-/* interface ConnectionProp {
-  connection: User
-}
-function Connection({ connection }: ConnectionProp) {
-  return (
-    <Text
-    >
-      {`${connection.displayName} is ${connection.runningTime.name || "taking a break"}`}
-    </Text>
-  )
-} */
 
 interface UserLabelProps {
   user: User;
@@ -35,6 +24,11 @@ interface UserLabelProps {
 function UserLabel({ user }: UserLabelProps) {
   return (
     <Group wrap="nowrap">
+      {user.runningTime.startTime == undefined ? (
+        <IconCircleFilled color="orange" size={12} />
+      ) : (
+        <IconCircleFilled color="green" size={12} />
+      )}
       <Text>{user.displayName}</Text>
     </Group>
   );
@@ -45,11 +39,33 @@ interface UserListProps {
 }
 function UserList({ users }: UserListProps) {
   const items = users.map((user) => (
-    <Accordion.Item key={user.id} value={user.displayName}>
+    <Accordion.Item
+      key={user.id}
+      value={user.displayName}
+      bg={user.runningTime.startTime == undefined ? "grey" : "white"}
+      mt={10}
+    >
       <Accordion.Control>
         <UserLabel user={user} />
       </Accordion.Control>
-      <Accordion.Panel>{user.runningTime.name}</Accordion.Panel>
+      <Accordion.Panel>
+        <Text>
+          {user.runningTime.startTime == undefined
+            ? "Idling..."
+            : `${user.runningTime.name}`}
+        </Text>
+
+        <Image
+          src={
+            user.runningTime.startTime == undefined
+              ? getPathById(true, user.pet.restId)
+              : getPathById(false, user.pet.workId)
+          }
+          height={160}
+          radius={"md"}
+          mt={10}
+        />
+      </Accordion.Panel>
     </Accordion.Item>
   ));
 
