@@ -57,7 +57,7 @@ export function TimerButton({
 
   return (
     <>
-      <Button variant="light" radius={"lg"} color="white" style={{ backgroundColor: '#a36384' }} onClick={open}>
+      <Button variant="light" radius={"lg"} onClick={open}>
         {timerContext.getIsRunning() ? timeRemaining : <IconPlayerPlayFilled size={20} />}
       </Button>
 
