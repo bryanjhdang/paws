@@ -52,7 +52,7 @@ function UserList({ users }: UserListProps) {
         <Text>
           {user.runningTime.startTime == undefined
             ? "Idling..."
-            : `${user.runningTime.name}`}
+            : `Working on: ${user.runningTime.name}`}
         </Text>
 
         <Image
