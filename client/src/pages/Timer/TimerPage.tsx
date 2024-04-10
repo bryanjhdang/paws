@@ -16,7 +16,9 @@ function TimerPage() {
   const { getAccessTokenSilently } = useAuth0();
   const { user } = useAuth0();
   let timerStatus = new TimerStatus(false, 0);
+
   const [pet, setPet] = useState<Pet>();
+  const [startTime, setStartTime] = useState<number | undefined>();
 
   useEffect(() => {
     const makeAuthenticatedRequest = async () => {
@@ -27,6 +29,7 @@ function TimerPage() {
         getAccount(userId, token).then(
           (response) => {
             setPet(response.pet);
+            setStartTime(response.runningTime.startTime);
           }
         )
       } catch (error) {
@@ -35,11 +38,7 @@ function TimerPage() {
     };
 
     makeAuthenticatedRequest();
-  }, [getAccessTokenSilently, timerStatus]);
-
-  useEffect(() => {
-
-  }, [timerStatus])
+  }, [getAccessTokenSilently, user?.sub]);
 
   return (
     <TimerContext.Provider value={timerStatus}>
@@ -51,14 +50,16 @@ function TimerPage() {
             selectedProject={selectedProject}
             setSelectedProject={setSelectedProject}
           />
-          
-          {/* { pet && (
-            timerStatus.getIsRunning() === false ? (
-              <Image className={classes.restAnim} w={400} h={400} src={getPathById(true, pet.restId)} />
-            ) : (
-              <Image className={classes.workAnim} w={400} h={400} src={getPathById(false, pet.workId)}/>
-            )
-          )} */}
+
+          <div className={classes.img}>
+            {pet && (
+              timerStatus.getIsRunning() === false ? (
+                <Image className={classes.restAnim} w={400} h={400} src={getPathById(true, pet.restId)} />
+              ) : (
+                <Image className={classes.workAnim} w={400} h={400} src={getPathById(false, pet.workId)} />
+              )
+            )}
+          </div>
         </Flex>
         <Flex direction={"column"} gap={20}>
           <TodoList setTask={setTask} />
