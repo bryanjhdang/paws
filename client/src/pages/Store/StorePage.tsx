@@ -9,6 +9,7 @@ import { IconCoin } from '@tabler/icons-react';
 import { RestCats, WorkCats } from "../../classes/shopItems";
 import { notifications } from "@mantine/notifications";
 import { useAuth0 } from "@auth0/auth0-react";
+import { PageLoader } from "../../components/PageLoader";
 
 function StorePage() {
 
@@ -17,7 +18,7 @@ function StorePage() {
   const [coins, setCoins] = useState<number>(0);
   const { getAccessTokenSilently } = useAuth0();
   const { user } = useAuth0();
-
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const makeAuthenticatedRequest = async () => {
@@ -26,19 +27,15 @@ function StorePage() {
         const userId = user?.sub || "not logged in";
 
         // todo: handle these in the backend instead of sending as request?
-        getPet(userId, token).then(
-          (response) => {
-            console.log(response);
-            setPetData(response);
-          }
-        );
-        getCoins(userId, token).then(
-          (response) => {
-            console.log(response);
-            setCoins(response);
-          }
-        )
-        
+        Promise.all([
+          getPet(userId, token),
+          getCoins(userId, token)
+        ]).then((responses) => {
+          setPetData(responses[0]); 
+          setCoins(responses[1]);  
+          setLoading(false);    
+        });
+
         console.log(petData);
 
       } catch (error) {
@@ -117,6 +114,8 @@ function StorePage() {
       </Group>
     )
   }
+
+  if (loading) return <PageLoader/>
 
   return (
     <>
