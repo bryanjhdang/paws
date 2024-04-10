@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Checkbox, Flex, Stack, Text, TextInput } from "@mantine/core";
+import { ActionIcon, Checkbox, Flex, Stack, Text, TextInput } from "@mantine/core";
 import { IconTrash, IconFilePencil } from '@tabler/icons-react';
 import classes from "./TodoList.module.css"
 import { Todo } from "../../../classes/models";

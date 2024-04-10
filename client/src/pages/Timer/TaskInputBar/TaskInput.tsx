@@ -1,8 +1,14 @@
+// import { useEffect } from "react";
+
 import { Flex, TextInput } from "@mantine/core";
 
 import { Project } from "../../../classes/models";
 import { ProjectButton } from "../ProjectButton";
-import { TimerButton } from "./TimerButton";
+// import { TimerButton } from "./TimerButton";
+
+// import { useTimerContext } from "../../../context/TimerContext";
+// import { getAccount } from "../../../classes/HTTPhelpers";
+// import { useAuth0 } from "@auth0/auth0-react";
 
 import classes from "./TaskInput.module.css";
 
@@ -31,14 +37,15 @@ export function TaskInput({
           onChange={(event) => setTask(event.currentTarget.value)}
         />
         <Flex gap={"xs"}>
+          {/* <TimerButton task={task} selectedProject={selectedProject} /> */}
           <ProjectButton
             selectedProject={selectedProject}
             setSelectedProject={setSelectedProject}
           />
-          <TimerButton 
+          {/* <TimerButton 
             task={task}
             selectedProject={selectedProject}
-          />
+          /> */}
         </Flex>
       </Flex>
     </>
