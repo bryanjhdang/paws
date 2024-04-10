@@ -104,6 +104,8 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
                 const timeRemaining = Math.floor((response.runningTime.plannedEndTime - Date.now())/1000);
                 setTimerValue(timeRemaining); 
                 setTimerRunning(true);
+                timerContext.setIsRunning(true);
+                timerContext.setTimeRemaining(timeRemaining);
                 setMountTimerInput(false);
               } else {
                 postTimeEntryStop(response.runningTime.plannedEndTime, token);
