@@ -1,10 +1,7 @@
 import { DEFAULT_THEME, Modal, Button, TextInput, ColorPicker, Text, Stack } from "@mantine/core";
-// import { useDisclosure } from '@mantine/hooks';
-// import { IconPlus, IconPointFilled } from "@tabler/icons-react";
 import { useState } from "react";
 import { Project } from "../classes/models";
-// import { getProjects, postProject } from "../classes/HTTPhelpers";
-// import classes from "./ProjectButton.module.css";
+import classes from "./NewProjectModal.module.css";
 
 interface NewProjectModalProps {
   opened: boolean;
@@ -17,6 +14,8 @@ export default function NewProjectModal({ opened, close, onAddProject }: NewProj
   const [projectColor, setProjectColor] = useState(DEFAULT_THEME.colors.red[4]);
 
   const handleCreateProject = () => {
+    if (projectName.length === 0) return;
+
     const newProject = new Project(projectColor, projectName, Date.now(), Date.now().toString());
     onAddProject(newProject);
     close();
@@ -25,16 +24,24 @@ export default function NewProjectModal({ opened, close, onAddProject }: NewProj
   }
 
   return (
-    <Modal opened={opened} onClose={close} title="Create new project" centered>
+    <Modal 
+      opened={opened} 
+      onClose={close} 
+      title="Create a new project" 
+      centered 
+    >
       <Stack>
         <TextInput
           withAsterisk
-          placeholder={"Project name"}
+          label="Project Name"
+          placeholder={"Web II"}
           value={projectName}
           onChange={(event) => setProjectName(event.currentTarget.value)}
+          className={classes.test}
         />
         <ColorPicker
           format="hex"
+          swatchesPerRow={10}
           value={projectColor}
           onChange={(color) => setProjectColor(color)}
           withPicker={false}
@@ -43,8 +50,18 @@ export default function NewProjectModal({ opened, close, onAddProject }: NewProj
             Object.values(DEFAULT_THEME.colors).map(colorArray => colorArray[4])
           }
         />
-        <Text>{projectColor}</Text>
-        <Button w={"100%"} onClick={handleCreateProject}>Create project</Button>
+        <Text
+          style={{
+            backgroundColor: projectColor,
+            textAlign: 'center',
+            borderRadius: 'var(--mantine-radius-lg)',
+            padding: '5px 15px',
+            marginBottom: '10px',
+          }}    
+        >
+           
+        </Text>
+        <Button color="#a36384" className={classes.submitBtn} onClick={handleCreateProject}>Create project</Button>
       </Stack>
     </Modal>
   )
