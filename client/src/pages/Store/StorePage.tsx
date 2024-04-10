@@ -18,6 +18,7 @@ function StorePage() {
   const { getAccessTokenSilently } = useAuth0();
   const { user } = useAuth0();
 
+
   useEffect(() => {
     const makeAuthenticatedRequest = async () => {
       try {
