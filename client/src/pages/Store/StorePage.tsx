@@ -52,7 +52,6 @@ function StorePage() {
     // This should never be called
     
     if (petData?.ownedCats.includes(id)) {
-      console.log("inside");
       return;
     }
 

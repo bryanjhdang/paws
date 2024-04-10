@@ -6,7 +6,7 @@
 }
 
 .coinsAmount {
-  background-color: #6ca74a;
+  background-color: #4D9B31;
   color: white;
   width: fit-content;
   padding: 5px 20px;
@@ -29,7 +29,7 @@
 
 .coinDisplay {
   color: white;
-  background-color: #6ca74a;
+  background-color: #538C3F;
   justify-content: center;
   padding: 8px 20px;
   border-radius: var(--mantine-radius-md);
