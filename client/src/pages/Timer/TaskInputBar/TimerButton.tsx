@@ -1,5 +1,9 @@
+import { useEffect, useRef, useState } from "react";
+
 import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+
+import { useAuth0 } from "@auth0/auth0-react";
 
 import { IconAlarm } from "@tabler/icons-react";
 
@@ -7,7 +11,7 @@ import { Timer } from "./Timer";
 
 import { Project } from "../../../classes/models";
 import { useTimerContext } from "../../../context/TimerContext";
-import { useEffect, useRef, useState } from "react";
+import { getAccount } from "../../../classes/HTTPhelpers";
 
 interface TimerProps {
   task: string;
@@ -25,6 +29,7 @@ export function TimerButton({
   const timerContext = useTimerContext();
 
   /* ----------------------------- timer lifecycle ---------------------------- */
+  // setting the timer up
   const intervalReference = useRef<NodeJS.Timeout | null>(null);
   useEffect(() => {
     if (timerContext.getIsRunning()) {
@@ -54,6 +59,36 @@ export function TimerButton({
       setTimeRemaining("Starting...");
     }
   }, [timerContext.getIsRunning()]);
+
+  // resuming the timer on reload if it was running
+  const { user, getAccessTokenSilently } = useAuth0();
+  useEffect(() => {
+    const makeAuthenticatedRequest = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        const userId = user?.sub || "invalid user";
+
+        getAccount(userId, token).then((response) => {
+          if (response.runningTime.plannedEndTime) {
+            if (Date.now() < response.runningTime.plannedEndTime) {
+              const timeRemaining = Math.floor(
+                (response.runningTime.plannedEndTime - Date.now()) / 1000
+              );
+              setTimeout(() => {
+                timerContext.setIsRunning(true);
+                timerContext.setTimeRemaining(timeRemaining);
+              }, 1000);
+            } else {
+            }
+          }
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    makeAuthenticatedRequest();
+  }, []);
 
   return (
     <>
