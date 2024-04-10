@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
-import { useEffect, useRef, useState } from "react";
 
 import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
-import { useAuth0 } from "@auth0/auth0-react";
 
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -15,7 +13,6 @@ import { Timer } from "./Timer";
 
 import { Project } from "../../../classes/models";
 import { useTimerContext } from "../../../context/TimerContext";
-import { getAccount } from "../../../classes/HTTPhelpers";
 import { getAccount } from "../../../classes/HTTPhelpers";
 
 interface TimerProps {
