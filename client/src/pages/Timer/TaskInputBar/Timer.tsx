@@ -117,7 +117,7 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
       }
     };
 
-    makeAuthenticatedRequest
+    makeAuthenticatedRequest();
   }, [getAccessTokenSilently, user?.sub])
 
   /* ------------------------- Timer Lifecycle Methods ------------------------ */
