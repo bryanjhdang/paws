@@ -1,10 +1,16 @@
-import { Stack, Text, Button, Group, NumberInput } from "@mantine/core";
+import {
+  Stack,
+  Text,
+  Button,
+  Group,
+  NumberInput,
+} from "@mantine/core";
 import { SimpleHeader } from "../../components/Headers";
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { addCoins, getCoins } from "../../classes/HTTPhelpers";
 import { IconCoin } from "@tabler/icons-react";
-import classes from "./StorePage.module.css";
+import classes from "./AdminPage.module.css";
 
 function AdminPage() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -32,12 +38,10 @@ function AdminPage() {
         const token = await getAccessTokenSilently();
         const userId = user?.sub || "not logged in";
 
-        getCoins(userId, token).then(
-          (response) => {
-            console.log(response);
-            setCoins(response);
-          }
-        )
+        getCoins(userId, token).then((response) => {
+          console.log(response);
+          setCoins(response);
+        });
       } catch (error) {
         console.error(error);
       }
@@ -50,9 +54,14 @@ function AdminPage() {
     getAccessTokenSilently()
       .then((token) => {
         // const userId = user?.sub || "not logged in";
-        addCoins(numCoins, token).catch((error) => {
-          console.error("Could not add coins:", error);
-        });
+        addCoins(numCoins, token)
+          .then((response) => {
+            console.log(response);
+            setCoins(response);
+          })
+          .catch((error) => {
+            console.error("Could not add coins:", error);
+          });
       })
       .catch((error) => {
         console.error(error);
@@ -66,11 +75,15 @@ function AdminPage() {
         /* Admin content */
         <Stack p={40} align="flex-start">
           <Group>
-            <Button variant="outline" size="md" color="green">
-              {coins}
-            </Button>
+            <Group className={classes.coinDisplay} gap={10}>
+              <IconCoin stroke={1.5} />
+              <Text>{coins}</Text>
+            </Group>
+
+
             <NumberInput
               value={numCoinsToAdd}
+              size="md"
               onChange={setNumCoinsToAdd}
               allowNegative={false}
               allowDecimal={false}

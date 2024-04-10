@@ -34,6 +34,13 @@ interface CreateRequest {
 interface CreateResponse {
     id: string;
 }
+
+interface AddCoinsResponse {
+    coins : number
+}
+
+
+
 accountController.post('/start', (req: Request, res: Response) => {
     let body: CreateRequest = req.body;
 
@@ -55,6 +62,12 @@ accountController.post('/start', (req: Request, res: Response) => {
 
 });
 
+// let getCoinsResponse : GetCoinsResponse = {
+//     coins : petService.getCoins(res.locals.user)
+// }
+// return res.status(StatusCodes.OK)
+//     .json(getCoinsResponse)
+
 accountController.post(
     '/addCoins', 
     checkRequiredPermissions(["read:admin"]), 
@@ -74,8 +87,11 @@ accountController.post(
 
         firestoreHelper.updateUser(res.locals.user)
         .then(() => {
-            res.status(StatusCodes.CREATED)
-            .json("user coin count updated");
+            let addCoinsResponse: AddCoinsResponse = {
+                coins: res.locals.user.totalCoins
+            };
+            return res.status(StatusCodes.OK)
+                .json(addCoinsResponse);
         })
         .catch((err : Error) => {
             res.status(StatusCodes.INTERNAL_SERVER_ERROR)
