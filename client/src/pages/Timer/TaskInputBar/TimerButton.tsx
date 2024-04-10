@@ -112,7 +112,7 @@ export function TimerButton({
           blur: 3,
         }}
       >
-        <Timer task={task} selectedProject={selectedProject} />
+        {/* <Timer task={task} selectedProject={selectedProject}  /> */}
       </Modal>
     </>
   );
