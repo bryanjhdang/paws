@@ -7,15 +7,6 @@ import classes from "./SocketConnection.module.css";
 import { User } from "../../../classes/models";
 import { useAuth0 } from "@auth0/auth0-react";
 
-interface JoinedUser {
-  displayName: string, 
-  petIconId: number, 
-  id: string, 
-  startTime: number, 
-  entryName: string
-
-}
-
 interface ConnectionProp {
   connection: User
 }
@@ -35,14 +26,12 @@ function SocketConnection() {
 
   const [users, setUsers] = useState<User[]>([]);
 
-  const { user, isLoading } = useAuth0();
+  const { user } = useAuth0();
 
 
 
   useEffect(() => {
     function updateUsers(data: User[]) {
-      console.log("this is the data received by the server")
-      console.log(data);
       let x = user?.sub;
       // data.filter((e) => e.id != user?.sub)
       setUsers(data);
