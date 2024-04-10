@@ -11,8 +11,8 @@ export function Header() {
               fw={900}
               variant="gradient"
               gradient={{
-                from: "rgba(255, 157, 71, 1)",
-                to: "rgba(252, 210, 96, 1)",
+                from: "rgba(0, 0, 0, 0.8)",
+                to: "rgba(0, 0, 0, 0.9)",
                 deg: 90,
               }}
             >

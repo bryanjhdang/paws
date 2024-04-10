@@ -42,7 +42,7 @@ export function ProjectButton({ selectedProject, setSelectedProject }: ProjectBu
     const makeAuthenticatedRequest = async () => {
       try {
         const token = await getAccessTokenSilently();
-        
+
         setProjects([...projects, project]);
         postProject(project, token);
 
@@ -50,7 +50,7 @@ export function ProjectButton({ selectedProject, setSelectedProject }: ProjectBu
         console.error(error);
       }
     }
-    
+
     makeAuthenticatedRequest();
   };
 
@@ -78,21 +78,25 @@ export function ProjectButton({ selectedProject, setSelectedProject }: ProjectBu
           </Menu.Item>
 
           <Menu.Divider />
-          <Menu.Label>Projects</Menu.Label>
-          {projects
-            .slice()
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map(project => (
-              <Menu.Item
-                key={project.id}
-                onClick={() => setSelectedProject(project)}
-                leftSection={<IconPointFilled style={{ width: (14), height: (14), color: project.hex }} />}
-              >
-                <Text fz={"sm"} c={project.hex}>{project.name}</Text>
-              </Menu.Item>
-            ))}
+          {projects.length > 0 && (
+            <>
+              <Menu.Label>Projects</Menu.Label>
+              {projects
+                .slice()
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map(project => (
+                  <Menu.Item
+                    key={project.id}
+                    onClick={() => setSelectedProject(project)}
+                    leftSection={<IconPointFilled style={{ width: (14), height: (14), color: project.hex }} />}
+                  >
+                    <Text fz={"sm"} c={project.hex}>{project.name}</Text>
+                  </Menu.Item>
+                ))}
+                <Menu.Divider />
+            </>
+          )}
 
-          <Menu.Divider />
           <Menu.Item
             onClick={() => open()}
             leftSection={<IconPlus style={{ width: (14), height: (14) }} />}

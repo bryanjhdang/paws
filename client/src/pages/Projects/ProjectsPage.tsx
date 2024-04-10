@@ -1,4 +1,4 @@
-import { Button, Stack, Table, Text } from "@mantine/core";
+import { Button, Stack, Table, Text, noop } from "@mantine/core";
 import { FunctionalHeader } from "../../components/Headers";
 import { Project } from "../../classes/models";
 import { useEffect, useState } from "react";
@@ -139,9 +139,7 @@ function ProjectsPage() {
       <NewProjectModal opened={opened} close={close} onAddProject={handleAddProject} />
       <FunctionalHeader text="Projects" element={addProjectButton()} />
       <Stack p={40}>
-        {projects.length === 0 ? (
-          noProject()
-        ) : (
+        {projects.length ? (
           <Table>
             <Table.Thead>
               <Table.Tr>
@@ -153,6 +151,8 @@ function ProjectsPage() {
             </Table.Thead>
             <Table.Tbody>{rows}</Table.Tbody>
           </Table>
+        ) : (
+          noProject()
         )}
 
       </Stack>
