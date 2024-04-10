@@ -27,9 +27,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 interface TimerProps {
   task: string;
   selectedProject: Project | null;
+  setStart: (time : number | undefined) => void;
 }
 
-export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
+export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Element {
   const { user, getAccessTokenSilently } = useAuth0();
 
   /* ---------------------------------- State --------------------------------- */
@@ -202,6 +203,7 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
     setTimerRunning(false);
     timerContext.setIsRunning(false);
     setMountTimerInput(true);
+    setStart(undefined);
   }
   function handleTimerStartButton(): void {
     const newTimeEntry = new TimeEntry(
@@ -216,6 +218,8 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
       postTimeEntryStart(newTimeEntry, token);
     });
 
+    setStart(Date.now());
+
     console.log(
       "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
     );
@@ -225,6 +229,8 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
     setTimerRunning(true); // sets the trigger to start the timer
     timerContext.setIsRunning(true);
     setMountTimerInput(false);
+    console.log("inside timer start");
+    console.log(timerContext.getIsRunning());
   }
   function handleTimerSlider(value: number): void {
     // if rounding is enabled, it shows even when the value is 0
