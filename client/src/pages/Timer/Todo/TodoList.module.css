@@ -38,11 +38,13 @@
   color: white;
   width: 100%;
   /* font-size: var(--mantine-font-size-md); */
+  margin-left: 10px;
 }
 
 .itemCompleted {
   text-decoration: line-through;
   color: var(--mantine-color-dark-1);
+  margin-left: 10px;
 }
 
 .addbutton {
