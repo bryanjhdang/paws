@@ -18,6 +18,7 @@ function StorePage() {
   const { getAccessTokenSilently } = useAuth0();
   const { user } = useAuth0();
 
+
   useEffect(() => {
     const makeAuthenticatedRequest = async () => {
       try {
@@ -52,7 +53,6 @@ function StorePage() {
     // This should never be called
     
     if (petData?.ownedCats.includes(id)) {
-      console.log("inside");
       return;
     }
 
