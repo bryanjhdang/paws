@@ -1,8 +1,8 @@
 import { Flex, TextInput } from "@mantine/core";
 
 import { Project } from "../../../classes/models";
-import { ProjectButton } from "../ProjectButton/ProjectButton";
-import { TimerButton } from "./TimerButton/TimerButton";
+import { ProjectButton } from "../ProjectButton";
+import { TimerButton } from "./TimerButton";
 
 import classes from "./TaskInput.module.css";
 

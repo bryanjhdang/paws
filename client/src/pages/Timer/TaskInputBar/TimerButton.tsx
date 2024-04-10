@@ -5,8 +5,8 @@ import { IconAlarm } from "@tabler/icons-react";
 
 import { Timer } from "./Timer";
 
-import { Project } from "../../../../classes/models";
-import { useTimerContext } from "../../../../context/TimerContext";
+import { Project } from "../../../classes/models";
+import { useTimerContext } from "../../../context/TimerContext";
 import { useEffect, useRef, useState } from "react";
 
 interface TimerProps {
