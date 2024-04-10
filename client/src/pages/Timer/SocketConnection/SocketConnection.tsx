@@ -7,16 +7,23 @@ import classes from "./SocketConnection.module.css";
 import { User } from "../../../classes/models";
 import { useAuth0 } from "@auth0/auth0-react";
 
+interface JoinedUser {
+  displayName: string, 
+  petIconId: number, 
+  id: string, 
+  startTime: number, 
+  entryName: string
+
+}
+
 interface ConnectionProp {
   connection: User
 }
 function Connection({ connection }: ConnectionProp) {
-  const [user, setUser] = useState(connection);
-  console.log(user);
   return (
     <Text
     >
-      {`${user.displayName} is ${user.runningTime.name || "taking a break"}`}
+      {`${connection.displayName} is ${connection.runningTime.name || "taking a break"}`}
     </Text>
   )
 }
@@ -33,17 +40,20 @@ function SocketConnection() {
 
 
   useEffect(() => {
-    socket.on('users', (data: User[]) => {
+    function updateUsers(data: User[]) {
+      console.log("this is the data received by the server")
       console.log(data);
       let x = user?.sub;
       // data.filter((e) => e.id != user?.sub)
       setUsers(data);
-    });
+    }
+
+    socket.on('users', updateUsers);
 
     return () => {
-      socket.off("users");
+      socket.off('users'); 
     }
-  });
+  }, []);
 
   function socketConnect() {
     if (joined) {

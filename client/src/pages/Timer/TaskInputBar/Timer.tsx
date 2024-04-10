@@ -107,7 +107,7 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
       }
     };
 
-    makeAuthenticatedRequest
+    makeAuthenticatedRequest();
   }, [getAccessTokenSilently, user?.sub])
 
   /* ------------------------- Timer Lifecycle Methods ------------------------ */
@@ -126,7 +126,6 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
         // if the timerValue > 0, that means that the timer is still running
         if (timerValue > 0) {
           setTimerValue(timerValue - 1); // decrement the timer value by 1
-          console.log("Time remaining: " + timerValue + " seconds");
           setTimerProgressTextValue(
             convertSecondsToProgressTextValue(timerValue - 1) // update the timer display text
           );
