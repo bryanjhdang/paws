@@ -27,9 +27,7 @@ const data = [
 export function NavbarSimple({ active, setActive }: NavbarProps) {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
-  const { getAccessTokenSilently, getIdTokenClaims, user } = useAuth0();
-
-  // let isUserAdmin = false;
+  const { getIdTokenClaims } = useAuth0();
   
   useEffect(() => {
     getIdTokenClaims().then((token) => {
