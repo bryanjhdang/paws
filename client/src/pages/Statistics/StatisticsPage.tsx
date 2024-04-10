@@ -9,10 +9,12 @@ import { StatisticsGroup } from "./StatisticsGroup/StatisticsGroup";
 import { CardGroup } from "./CardGroup/CardGroup";
 import { SimpleHeader } from "../../components/Headers";
 import { useAuth0 } from "@auth0/auth0-react";
+import { PageLoader } from "../../components/PageLoader";
 
 function StatisticsPage() {
   const [timeEntries, setTimeEntries] = useState<TimeEntry[]>([]);
   const { getAccessTokenSilently } = useAuth0();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const makeAuthenticatedRequest = async () => {
@@ -21,6 +23,7 @@ function StatisticsPage() {
         getTimeEntry(token).then((response) => {
           console.log(response);
           setTimeEntries(response);
+          setLoading(false);
         });
       } catch (error) {
         console.error(error);
@@ -29,6 +32,8 @@ function StatisticsPage() {
 
     makeAuthenticatedRequest();
   }, [getAccessTokenSilently]);
+
+  if (loading) return <PageLoader/>
 
   return (
     <Stack>

@@ -11,12 +11,14 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { addCoins, getCoins } from "../../classes/HTTPhelpers";
 import { IconCoin } from "@tabler/icons-react";
 import classes from "./AdminPage.module.css";
+import { PageLoader } from "../../components/PageLoader";
 
 function AdminPage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [coins, setCoins] = useState<number>(0);
   const [numCoinsToAdd, setNumCoinsToAdd] = useState<string | number>(100);
   const { user, getIdTokenClaims, getAccessTokenSilently } = useAuth0();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getIdTokenClaims()
@@ -24,6 +26,7 @@ function AdminPage() {
         if (token && token["roleType/roles"]) {
           const roles = token["roleType/roles"];
           setIsAdmin(roles.includes("Admin"));
+          setLoading(false);
         }
       })
       .catch((error) => {
@@ -67,6 +70,8 @@ function AdminPage() {
         console.error(error);
       });
   };
+
+  if (loading) return <PageLoader/>
 
   return (
     <>

@@ -1,5 +1,6 @@
 import { Loader } from "@mantine/core";
 import React from "react";
+import classes from "./PageLoader.module.css";
 
 export const PageLoader: React.FC = () => {
   // const loadingImg = "https://cdn.auth0.com/blog/hello-auth0/loader.svg";
@@ -8,6 +9,6 @@ export const PageLoader: React.FC = () => {
     // <div className="loader">
     //   <img src={loadingImg} alt="Loading..." />
     // </div>
-    <Loader color="yellow" size="lg" type="dots" />
+    <Loader className={classes.loader} color="gray" size="lg" />
   );
 };

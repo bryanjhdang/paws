@@ -11,11 +11,13 @@ import NewProjectModal from "../../components/NewProjectModal";
 // import { IconCoin, IconPlus } from "@tabler/icons-react";
 // import classes from "./ProjectsPage.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
+import { PageLoader } from "../../components/PageLoader";
 
 function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [opened, { open, close }] = useDisclosure();
   const { getAccessTokenSilently } = useAuth0();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const makeAuthenticatedRequest = async () => {
@@ -26,6 +28,7 @@ function ProjectsPage() {
           (response) => {
             const sortedProjects = response.sort((a, b) => b.dateCreated - a.dateCreated);
             setProjects(sortedProjects);
+            setLoading(false);
           }
         );
 
@@ -134,6 +137,8 @@ function ProjectsPage() {
     )
   }
 
+  if (loading) return <PageLoader/>
+
   return (
     <>
       <NewProjectModal opened={opened} close={close} onAddProject={handleAddProject} />
@@ -154,7 +159,6 @@ function ProjectsPage() {
         ) : (
           noProject()
         )}
-
       </Stack>
     </>
   )
