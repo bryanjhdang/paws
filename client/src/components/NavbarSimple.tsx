@@ -1,4 +1,4 @@
-import { Button, Menu, Text, rem } from '@mantine/core';
+import { Menu, Text } from '@mantine/core';
 import { IconClock, IconChartBar, IconBuildingStore, IconMenu2, IconFolderOpen, IconLogout } from '@tabler/icons-react';
 import classes from './NavbarSimple.module.css';
 import { useNavigate } from 'react-router-dom';
@@ -16,9 +16,9 @@ const data = [
   { link: '/projects', label: 'Projects', icon: IconFolderOpen }
 ];
 
-const footerData = [
-  { link: '/settings', label: 'More', icon: IconMenu2 }
-];
+// const footerData = [
+//   { link: '/settings', label: 'More', icon: IconMenu2 }
+// ];
 
 export function NavbarSimple({ active, setActive }: NavbarProps) {
   const navigate = useNavigate();
@@ -40,22 +40,22 @@ export function NavbarSimple({ active, setActive }: NavbarProps) {
     </a>
   ));
 
-  const footerLinks = footerData.map((item) => (
-    <a
-      className={classes.link}
-      data-active={item.label === active || undefined}
-      href={item.link}
-      key={item.label}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(item.label);
-        navigate(item.link);
-      }}
-    >
-      <item.icon className={classes.linkIcon} stroke={1.5} />
-      <span>{item.label}</span>
-    </a>
-  ));
+  // const footerLinks = footerData.map((item) => (
+  //   <a
+  //     className={classes.link}
+  //     data-active={item.label === active || undefined}
+  //     href={item.link}
+  //     key={item.label}
+  //     onClick={(event) => {
+  //       event.preventDefault();
+  //       setActive(item.label);
+  //       navigate(item.link);
+  //     }}
+  //   >
+  //     <item.icon className={classes.linkIcon} stroke={1.5} />
+  //     <span>{item.label}</span>
+  //   </a>
+  // ));
 
   const { logout } = useAuth0();
 

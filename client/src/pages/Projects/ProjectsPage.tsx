@@ -1,32 +1,52 @@
-import { Button, Group, Stack, Table, Text, Title } from "@mantine/core";
-import { FunctionalHeader, SimpleHeader, TextHeader } from "../../components/Headers";
+import { Button, Stack, Table, Text } from "@mantine/core";
+import { FunctionalHeader } from "../../components/Headers";
 import { Project } from "../../classes/models";
 import { useEffect, useState } from "react";
 import { deleteProject, getProjects, postProject } from "../../classes/HTTPhelpers";
-import { IconCoin, IconPlus } from "@tabler/icons-react";
+import { IconPlus } from "@tabler/icons-react";
 import classes from "./ProjectsPage.module.css";
 import { useDisclosure } from "@mantine/hooks";
 import NewProjectModal from "../../components/NewProjectModal";
-import { handleLegacySelectEvents } from "echarts/types/src/legacy/dataSelectAction.js";
+// import { handleLegacySelectEvents } from "echarts/types/src/legacy/dataSelectAction.js";
+// import { IconCoin, IconPlus } from "@tabler/icons-react";
+// import classes from "./ProjectsPage.module.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [opened, { open, close }] = useDisclosure();
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    getProjects().then(
-      (response) => {
-        const sortedProjects = response.sort((a,b) => b.dateCreated - a.dateCreated);
-        setProjects(sortedProjects);
-      }
-    );
-  }, []);
+    const makeAuthenticatedRequest = async () => {
+      try {
+        const token = await getAccessTokenSilently();
 
+        getProjects(token).then(
+          (response) => {
+            const sortedProjects = response.sort((a,b) => b.dateCreated - a.dateCreated);
+            setProjects(sortedProjects);
+          }
+        );
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    makeAuthenticatedRequest();
+  }, [getAccessTokenSilently]);
+
+  // todo: prefer this syntax to try...catch?
   const handleDeleteProject = (id: string) => {
-    deleteProject(id).then(() => {
-      const updatedProjects = projects.filter((project) => project.id !== id);
-      setProjects(updatedProjects);
-    })
+    getAccessTokenSilently().then((token) => {
+      deleteProject(id, token).then(() => {
+        const updatedProjects = projects.filter((project) => project.id !== id);
+        setProjects(updatedProjects);
+      })
+    }).catch((error) => {
+      console.error(error);
+    }) 
   }
 
   const formatDate = (timestamp: number): string => {
@@ -61,10 +81,21 @@ function ProjectsPage() {
     )
   }
 
-  const handleAddProject = (project : Project) => {
-    setProjects([...projects, project]);
-    postProject(project);
-  }
+  const handleAddProject = (project: Project) => {
+    const makeAuthenticatedRequest = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        
+        setProjects([...projects, project]);
+        postProject(project, token);
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    
+    makeAuthenticatedRequest();
+  };
 
   const addProjectButton = () => {
     return (

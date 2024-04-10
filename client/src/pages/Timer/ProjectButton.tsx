@@ -4,8 +4,55 @@ import { IconFolderOpen, IconPlus, IconPointFilled } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { Project } from "../../classes/models";
 import { getProjects, postProject } from "../../classes/HTTPhelpers";
-import classes from "./ProjectButton.module.css";
-import NewProjectModal from "../../components/NewProjectModal";
+// import classes from "./ProjectButton.module.css";
+// import NewProjectModal from "../../components/NewProjectModal";
+import { useAuth0 } from "@auth0/auth0-react";
+// import classes from "./ProjectButton.module.css";
+
+interface NewProjectModalProps {
+  opened: boolean;
+  close: () => void,
+  onAddProject: (project: Project) => void;
+}
+
+function NewProjectModal({ opened, close, onAddProject }: NewProjectModalProps): JSX.Element {
+
+  const [projectName, setProjectName] = useState("");
+  const [projectColor, setProjectColor] = useState(DEFAULT_THEME.colors.red[4]);
+
+  const handleCreateProject = () => {
+    const newProject = new Project(projectColor, projectName, Date.now(), Date.now().toString());
+    onAddProject(newProject);
+    close();
+    setProjectName("");
+    setProjectColor(DEFAULT_THEME.colors.red[4]);
+  }
+
+  return (
+    <Modal opened={opened} onClose={close} title="Create new project" centered>
+      <Stack>
+        <TextInput
+          withAsterisk
+          placeholder={"Project name"}
+          value={projectName}
+          onChange={(event) => setProjectName(event.currentTarget.value)}
+        />
+        <ColorPicker
+          format="hex"
+          value={projectColor}
+          onChange={(color) => setProjectColor(color)}
+          withPicker={false}
+          fullWidth
+          swatches={
+            Object.values(DEFAULT_THEME.colors).map(colorArray => colorArray[4])
+          }
+        />
+        <Text>{projectColor}</Text>
+        <Button w={"100%"} onClick={handleCreateProject}>Create project</Button>
+      </Stack>
+    </Modal>
+  )
+}
 
 interface ProjectButtonProps {
   selectedProject: Project | null;
@@ -15,18 +62,41 @@ interface ProjectButtonProps {
 export function ProjectButton({ selectedProject, setSelectedProject }: ProjectButtonProps) {
   const [opened, { open, close }] = useDisclosure();
   const [projects, setProjects] = useState<Project[]>([]);
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    getProjects().then(
-      (response) => {
-        setProjects(response);
+    const makeAuthenticatedRequest = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+
+        getProjects(token).then(
+          (response) => {
+            setProjects(response);
+          }
+        );
+
+      } catch (error) {
+        console.error(error);
       }
-    );
-  }, []);
+    }
+
+    makeAuthenticatedRequest();
+  }, [getAccessTokenSilently]);
 
   const handleAddProject = (project: Project) => {
-    setProjects([...projects, project]);
-    postProject(project);
+    const makeAuthenticatedRequest = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        
+        setProjects([...projects, project]);
+        postProject(project, token);
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    
+    makeAuthenticatedRequest();
   };
 
   return (
