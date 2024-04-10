@@ -1,4 +1,4 @@
-import { DEFAULT_THEME, Modal, Button, TextInput, ColorPicker, Text, Stack } from "@mantine/core";
+import { DEFAULT_THEME, Modal, Button, TextInput, ColorPicker, Text, Stack, Divider } from "@mantine/core";
 import { useState } from "react";
 import { Project } from "../classes/models";
 import classes from "./NewProjectModal.module.css";
@@ -39,6 +39,8 @@ export default function NewProjectModal({ opened, close, onAddProject }: NewProj
           onChange={(event) => setProjectName(event.currentTarget.value)}
           className={classes.test}
         />
+  
+        
         <ColorPicker
           format="hex"
           swatchesPerRow={10}
@@ -54,13 +56,14 @@ export default function NewProjectModal({ opened, close, onAddProject }: NewProj
           style={{
             backgroundColor: projectColor,
             textAlign: 'center',
-            borderRadius: 'var(--mantine-radius-lg)',
-            padding: '5px 15px',
-            marginBottom: '10px',
+            borderRadius: 'var(--mantine-radius-xl)',
+            padding: '25px 25px',
+            width: 'fit-content',
+            alignSelf: 'center'
           }}    
         >
-           
         </Text>
+        
         <Button color="#a36384" className={classes.submitBtn} onClick={handleCreateProject}>Create project</Button>
       </Stack>
     </Modal>
