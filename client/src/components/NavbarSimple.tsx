@@ -1,8 +1,9 @@
 import { Menu, Text } from '@mantine/core';
-import { IconClock, IconChartBar, IconBuildingStore, IconMenu2, IconFolderOpen, IconLogout } from '@tabler/icons-react';
+import { IconClock, IconChartBar, IconBuildingStore, IconMenu2, IconFolderOpen, IconLogout, IconSettings } from '@tabler/icons-react';
 import classes from './NavbarSimple.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useEffect, useState } from 'react';
 
 interface NavbarProps {
   active: string;
@@ -13,32 +14,58 @@ const data = [
   { link: '/timer', label: 'Timer', icon: IconClock },
   { link: '/store', label: 'Store', icon: IconBuildingStore },
   { link: '/statistics', label: 'Stats', icon: IconChartBar },
-  { link: '/projects', label: 'Projects', icon: IconFolderOpen }
+  { link: '/projects', label: 'Projects', icon: IconFolderOpen },
+  { link: '/admin', label: 'Admin', icon: IconSettings }
 ];
 
 // const footerData = [
 //   { link: '/settings', label: 'More', icon: IconMenu2 }
 // ];
 
+
+
 export function NavbarSimple({ active, setActive }: NavbarProps) {
   const navigate = useNavigate();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const { getAccessTokenSilently, getIdTokenClaims, user } = useAuth0();
 
-  const links = data.map((item) => (
-    <a
-      className={classes.link}
-      data-active={item.label === active || undefined}
-      href={item.link}
-      key={item.label}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(item.label);
-        navigate(item.link);
-      }}
-    >
-      <item.icon className={classes.linkIcon} stroke={1.5} />
-      <span>{item.label}</span>
-    </a>
-  ));
+  // let isUserAdmin = false;
+  
+  useEffect(() => {
+    getIdTokenClaims().then((token) => {
+      if (token && token['roleType/roles']) {
+        const roles = token['roleType/roles'];
+        setIsAdmin(roles.includes('Admin'));
+      }
+    }).catch(error => {
+      console.error('Error fetching token: ', error);
+      setIsAdmin(false);
+    })
+  }, [getIdTokenClaims]);
+
+  const links = data.map((item) => {
+    if (item.label === 'Admin' && !isAdmin) {
+      return (
+        <div key={item.label}></div>
+      )
+    } else {
+    return (
+      <a
+        className={classes.link}
+        data-active={item.label === active || undefined}
+        href={item.link}
+        key={item.label}
+        onClick={(event) => {
+          event.preventDefault();
+          setActive(item.label);
+          navigate(item.link);
+        }}
+      >
+        <item.icon className={classes.linkIcon} stroke={1.5} />
+        <span>{item.label}</span>
+      </a>
+    )}
+  });
 
   // const footerLinks = footerData.map((item) => (
   //   <a
