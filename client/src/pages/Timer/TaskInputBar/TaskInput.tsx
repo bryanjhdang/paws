@@ -42,10 +42,10 @@ export function TaskInput({
             selectedProject={selectedProject}
             setSelectedProject={setSelectedProject}
           />
-          <TimerButton 
+          {/* <TimerButton 
             task={task}
             selectedProject={selectedProject}
-          />
+          /> */}
         </Flex>
       </Flex>
     </>
