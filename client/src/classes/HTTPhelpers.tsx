@@ -43,7 +43,7 @@ export async function addCoins(numCoins: number, accessToken: string): Promise<n
 			headers: { Authorization: `Bearer ${accessToken}` }
 		})
 		.then((response) => {
-			resolve(response.data.totalCoins);
+			resolve(response.data.coins);
 		}, (error) => {
 			reject(error);
 		})
