@@ -20,7 +20,7 @@ function StoreItem({ catItem, onBuy, onEquip, isOwned, isInUse }: StoreItemProps
         <Button
           className={classes.itemPurchaseButton}
           onClick={() => onBuy(catItem.id, catItem.cost)}
-          color="#6ca74a"
+          color="#4D9B31"
         >
           <IconCoin stroke={1.5} />
           <Text className={classes.itemPriceText}>{catItem.cost}</Text>
@@ -33,6 +33,7 @@ function StoreItem({ catItem, onBuy, onEquip, isOwned, isInUse }: StoreItemProps
         <Button 
           onClick={() => onEquip(catItem.id, catItem.isRestCat)} 
           className={classes.itemNotInUseButton}
+          color="#a36384"
         >
           <Text>Use</Text>
         </Button>
