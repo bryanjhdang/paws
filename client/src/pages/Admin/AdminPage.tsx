@@ -1,14 +1,29 @@
-// import { useState } from "react";
-import { Stack } from "@mantine/core";
+import { Stack, Text } from "@mantine/core";
 import { SimpleHeader } from "../../components/Headers";
-// import { useAuth0 } from "@auth0/auth0-react";
-// import classes from "./SettingsPage.module.css";
+import { useEffect, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function AdminPage() {
+  const [isAdmin, setIsAdmin] = useState(false);
+  const { getIdTokenClaims } = useAuth0();
+
+  useEffect(() => {
+    getIdTokenClaims().then((token) => {
+      if (token && token['roleType/roles']) {
+        const roles = token['roleType/roles'];
+        setIsAdmin(roles.includes('Admin'));
+      }
+    }).catch(error => {
+      console.error('Error fetching token: ', error);
+      setIsAdmin(false);
+    })
+  }, [getIdTokenClaims]);
+
   return (
     <>
       <SimpleHeader text="Admin" />
       <Stack p={40} flex={1}>
+        <Text>{isAdmin ? "authorized!" : "not authorized"}</Text>
       </Stack>
     </>
   )
