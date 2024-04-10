@@ -14,7 +14,6 @@ import BasePage from "./pages/BasePage";
 import ProjectsPage from "./pages/Projects/ProjectsPage";
 import '@mantine/notifications/styles.css';
 import { io } from "socket.io-client";
-import SocketConnection from "./pages/Timer/SocketConnection/SocketConnection";
 import { SocketContext } from "./context/SocketContext";
 
 export const App: React.FC = () => {

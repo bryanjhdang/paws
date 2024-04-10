@@ -4,41 +4,79 @@ import { Socket, io } from "socket.io-client"
 import { SocketContext, useSocketContext } from "../../../context/SocketContext";
 import { IconLink } from "@tabler/icons-react";
 import classes from "./SocketConnection.module.css";
+import { User } from "../../../classes/models";
+import { useAuth0 } from "@auth0/auth0-react";
+
+interface ConnectionProp {
+  connection: User
+}
+function Connection({ connection }: ConnectionProp) {
+  const [user, setUser] = useState(connection);
+  console.log(user);
+  return (
+    <Text
+    >
+      {`${user.displayName} is ${user.runningTime.name || "taking a break"}`}
+    </Text>
+  )
+}
 
 function SocketConnection() {
-    const socket: Socket = useSocketContext();
+  const socket: Socket = useSocketContext();
 
-    const [text, setText] = useState("");
+  const [joined, setJoined] = useState<boolean>(false);
+
+  const [users, setUsers] = useState<User[]>([]);
+
+  const { user, isLoading } = useAuth0();
 
 
-    useEffect(() => {
-        socket.on('users', (data) => {
-            console.log(data);
-            
-        });
 
-       return () => {
-        socket.off("users");
-       } 
+  useEffect(() => {
+    socket.on('users', (data: User[]) => {
+      console.log(data);
+      let x = user?.sub;
+      // data.filter((e) => e.id != user?.sub)
+      setUsers(data);
     });
 
-    function connectToWebsocket() {
-        socket.emit("join")
+    return () => {
+      socket.off("users");
+    }
+  });
+
+  function socketConnect() {
+    if (joined) {
+      socket.emit("leave");
+      setJoined(false);
+      return;
     }
 
-    return (
-        <Stack className={classes.section}>
-            <Text className={classes.header}>Connect</Text>
-            <Button 
-                onClick={connectToWebsocket}
-                leftSection={<IconLink />}
-                className={classes.linkButton}
-            >
-                Click me to connect!
-            </Button>
-            <Text>{text}</Text>
-        </Stack>
-    )
+    socket.emit("join")
+    setJoined(true);
+  }
+
+  return (
+    <Stack className={classes.section}>
+      <Text className={classes.header}> Room </Text>
+      return
+      <Button
+        onClick={socketConnect}
+        leftSection={<IconLink />}
+        className={classes.linkButton}
+      >
+        {joined ? "Leave the room!" : "Connect to the room!"}
+      </Button>
+      {
+        users.map((user) => (
+          <Connection
+            key={user.id}
+            connection={user}
+          />
+        ))
+      }
+    </Stack>
+  )
 }
 
 export default SocketConnection
