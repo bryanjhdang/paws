@@ -3,11 +3,13 @@ import { SimpleHeader } from "../../components/Headers";
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { addCoins } from "../../classes/HTTPhelpers";
+import { PageLoader } from "../../components/PageLoader";
 
 function AdminPage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [numCoinsToAdd, setNumCoinsToAdd] = useState<string | number>(100);
   const { getIdTokenClaims, getAccessTokenSilently } = useAuth0();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getIdTokenClaims()
@@ -15,6 +17,7 @@ function AdminPage() {
         if (token && token["roleType/roles"]) {
           const roles = token["roleType/roles"];
           setIsAdmin(roles.includes("Admin"));
+          setLoading(false);
         }
       })
       .catch((error) => {
@@ -35,6 +38,8 @@ function AdminPage() {
         console.error(error);
       });
   };
+
+  if (loading) return <PageLoader/>
 
   return (
     <>
