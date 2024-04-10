@@ -2,12 +2,15 @@ import { Stack, Text, Button, Group, NumberInput } from "@mantine/core";
 import { SimpleHeader } from "../../components/Headers";
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { addCoins } from "../../classes/HTTPhelpers";
+import { addCoins, getCoins } from "../../classes/HTTPhelpers";
+import { IconCoin } from "@tabler/icons-react";
+import classes from "./StorePage.module.css";
 
 function AdminPage() {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [coins, setCoins] = useState<number>(0);
   const [numCoinsToAdd, setNumCoinsToAdd] = useState<string | number>(100);
-  const { getIdTokenClaims, getAccessTokenSilently } = useAuth0();
+  const { user, getIdTokenClaims, getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     getIdTokenClaims()
@@ -22,6 +25,26 @@ function AdminPage() {
         setIsAdmin(false);
       });
   }, [getIdTokenClaims]);
+
+  useEffect(() => {
+    const makeAuthenticatedRequest = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        const userId = user?.sub || "not logged in";
+
+        getCoins(userId, token).then(
+          (response) => {
+            console.log(response);
+            setCoins(response);
+          }
+        )
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    makeAuthenticatedRequest();
+  }, [getAccessTokenSilently]);
 
   const handleAddCoins = (numCoins: number) => {
     getAccessTokenSilently()
@@ -43,6 +66,9 @@ function AdminPage() {
         /* Admin content */
         <Stack p={40} align="flex-start">
           <Group>
+            <Button variant="outline" size="md" color="green">
+              {coins}
+            </Button>
             <NumberInput
               value={numCoinsToAdd}
               onChange={setNumCoinsToAdd}
