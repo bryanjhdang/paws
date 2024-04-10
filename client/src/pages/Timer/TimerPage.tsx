@@ -52,13 +52,13 @@ function TimerPage() {
             setSelectedProject={setSelectedProject}
           />
           
-          { pet && (
+          {/* { pet && (
             timerStatus.getIsRunning() === false ? (
               <Image className={classes.restAnim} w={400} h={400} src={getPathById(true, pet.restId)} />
             ) : (
               <Image className={classes.workAnim} w={400} h={400} src={getPathById(false, pet.workId)}/>
             )
-          )}
+          )} */}
         </Flex>
         <Flex direction={"column"} gap={20}>
           <TodoList setTask={setTask} />
