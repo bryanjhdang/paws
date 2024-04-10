@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Stack, Text } from "@mantine/core"
+import { Accordion, ActionIcon, Button, Stack, Text } from "@mantine/core"
 import { useContext, useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client"
 import { SocketContext, useSocketContext } from "../../../context/SocketContext";
@@ -7,7 +7,7 @@ import classes from "./SocketConnection.module.css";
 import { User } from "../../../classes/models";
 import { useAuth0 } from "@auth0/auth0-react";
 
-interface ConnectionProp {
+/* interface ConnectionProp {
   connection: User
 }
 function Connection({ connection }: ConnectionProp) {
@@ -17,18 +17,33 @@ function Connection({ connection }: ConnectionProp) {
       {`${connection.displayName} is ${connection.runningTime.name || "taking a break"}`}
     </Text>
   )
+} */
+
+interface UserListProps {
+    users: User[]
+}
+function UserList({ users }: UserListProps) {
+    const items = users.map((user) => (
+        <Accordion.Item key={user.id} value={user.displayName}>
+          <Accordion.Control >{user.displayName}</Accordion.Control>
+          <Accordion.Panel>{user.runningTime.name}</Accordion.Panel>
+        </Accordion.Item>
+      ));
+
+    return (
+        <>
+            <Accordion variant="filled" radius={"md"}>
+                {items}
+            </Accordion>
+        </>
+    );
 }
 
 function SocketConnection() {
   const socket: Socket = useSocketContext();
-
   const [joined, setJoined] = useState<boolean>(false);
-
   const [users, setUsers] = useState<User[]>([]);
-
   const { user } = useAuth0();
-
-
 
   useEffect(() => {
     function updateUsers(data: User[]) {
@@ -55,8 +70,7 @@ function SocketConnection() {
 
   return (
     <Stack className={classes.section}>
-      <Text className={classes.header}> Room </Text>
-      return
+      <Text className={classes.header}> Study Room </Text>
       <Button
         onClick={socketConnect}
         leftSection={<IconLink />}
@@ -64,14 +78,7 @@ function SocketConnection() {
       >
         {joined ? "Leave the room!" : "Connect to the room!"}
       </Button>
-      {
-        users.map((user) => (
-          <Connection
-            key={user.id}
-            connection={user}
-          />
-        ))
-      }
+      <UserList users={users} />
     </Stack>
   )
 }
