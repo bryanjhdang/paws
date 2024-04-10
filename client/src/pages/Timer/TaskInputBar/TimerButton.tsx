@@ -74,10 +74,10 @@ export function TimerButton({
               const timeRemaining = Math.floor(
                 (response.runningTime.plannedEndTime - Date.now()) / 1000
               );
-              setTimeout(() => {
-                timerContext.setIsRunning(true);
+                console.log("one");
                 timerContext.setTimeRemaining(timeRemaining);
-              }, 1000);
+                timerContext.setIsRunning(true);
+                console.log("two")
             } else {
             }
           }
@@ -88,7 +88,7 @@ export function TimerButton({
     };
 
     makeAuthenticatedRequest();
-  }, []);
+  }, [getAccessTokenSilently, user?.sub]);
 
   return (
     <>
