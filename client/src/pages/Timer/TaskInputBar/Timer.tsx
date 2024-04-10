@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect, useRef } from "react";
 
 import {
-  RingProgress,
   Title,
   Text,
   Slider,
@@ -27,19 +27,20 @@ import { useAuth0 } from "@auth0/auth0-react";
 interface TimerProps {
   task: string;
   selectedProject: Project | null;
+  setStart: (time : number | undefined) => void;
 }
 
-export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
+export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Element {
   const { user, getAccessTokenSilently } = useAuth0();
 
   /* ---------------------------------- State --------------------------------- */
   const [timerValue, setTimerValue] = useState<number>(0); // in seconds
   const [timerProgressTextValue, setTimerProgressTextValue] =
     useState<string>(`0:00`);
-  const [timerProgressWheelValue, setTimerProgressWheelValue] =
-    useState<number>(0);
-  const [timerProgressWheelRounding, setTimerProgressWheelRounding] =
-    useState<boolean>(false);
+  // const [timerProgressWheelValue, setTimerProgressWheelValue] =
+  //   useState<number>(0);
+  // const [timerProgressWheelRounding, setTimerProgressWheelRounding] =
+  //   useState<boolean>(false);
 
   const [mountTimerInput, setMountTimerInput] = useState<boolean>(true);
   const [timerRunning, setTimerRunning] = useState<boolean>(false);
@@ -66,29 +67,30 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
     // until it is 2 characters long. this is for seconds < 10
     return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
   }
-  function convertSecondsToProgressWheelValue(seconds: number): number {
-    let value: number = 0;
+  
+  // function convertSecondsToProgressWheelValue(seconds: number): number {
+  //   let value: number = 0;
 
-    /* 
-        ring progress value to minutes mapping (as ring only goes up to 100)
-        0 -> 0
-        25 -> 30 minutes
-        50 -> 60 minutes
-        75 -> 90 minutes
-        100 -> 120 minutes
-        therefore slider value to seconds and milliseconds mapping is:
-        0 -> 0
-        25 -> 1800 seconds -> 1800000 milliseconds
-        50 -> 3600 seconds -> 3600000 milliseconds
-        75 -> 5400 seconds -> 5400000 milliseconds
-        100 -> 7200 seconds -> 7200000 milliseconds
-    */
-    // formula to convert slider value to seconds
-    //seconds = Math.floor((value / 100) * 7200);
-    value = (seconds / 7200) * 100;
+  //   /* 
+  //       ring progress value to minutes mapping (as ring only goes up to 100)
+  //       0 -> 0
+  //       25 -> 30 minutes
+  //       50 -> 60 minutes
+  //       75 -> 90 minutes
+  //       100 -> 120 minutes
+  //       therefore slider value to seconds and milliseconds mapping is:
+  //       0 -> 0
+  //       25 -> 1800 seconds -> 1800000 milliseconds
+  //       50 -> 3600 seconds -> 3600000 milliseconds
+  //       75 -> 5400 seconds -> 5400000 milliseconds
+  //       100 -> 7200 seconds -> 7200000 milliseconds
+  //   */
+  //   // formula to convert slider value to seconds
+  //   //seconds = Math.floor((value / 100) * 7200);
+  //   value = (seconds / 7200) * 100;
 
-    return value;
-  }
+  //   return value;
+  // }
 
   useEffect(() => {
     const makeAuthenticatedRequest = async () => {
@@ -97,28 +99,29 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
         const userId = user?.sub || "invalid user";
 
         // TODO: don't send userId, let the backend handle automatically?
-        getAccount(userId, token).then(
-          (response) => {        
-            if (response.runningTime.plannedEndTime) {
-              if (Date.now() < response.runningTime.plannedEndTime) {
-                const timeRemaining = Math.floor((response.runningTime.plannedEndTime - Date.now())/1000);
-                setTimerValue(timeRemaining); 
-                setTimerRunning(true);
-                setMountTimerInput(false);
-              } else {
-                postTimeEntryStop(response.runningTime.plannedEndTime, token);
-              }
+        getAccount(userId, token).then((response) => {
+          if (response.runningTime.plannedEndTime) {
+            if (Date.now() < response.runningTime.plannedEndTime) {
+              const timeRemaining = Math.floor(
+                (response.runningTime.plannedEndTime - Date.now()) / 1000
+              );
+              setTimerValue(timeRemaining);
+              setTimerRunning(true);
+              timerContext.setIsRunning(true);
+              timerContext.setTimeRemaining(timeRemaining);
+              setMountTimerInput(false);
+            } else {
+              postTimeEntryStop(response.runningTime.plannedEndTime, token);
             }
           }
-        )
-
+        });
       } catch (error) {
         console.error(error);
       }
     };
 
     makeAuthenticatedRequest();
-  }, [getAccessTokenSilently, user?.sub])
+  }, [getAccessTokenSilently, user?.sub]);
 
   /* ------------------------- Timer Lifecycle Methods ------------------------ */
   const intervalReference = useRef<NodeJS.Timeout | null>(null);
@@ -139,9 +142,9 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
           setTimerProgressTextValue(
             convertSecondsToProgressTextValue(timerValue - 1) // update the timer display text
           );
-          setTimerProgressWheelValue(
-            convertSecondsToProgressWheelValue(timerValue - 1) // update the timer display wheel
-          );
+          // setTimerProgressWheelValue(
+          //   convertSecondsToProgressWheelValue(timerValue - 1) // update the timer display wheel
+          // );
           timerContext.setTimeRemaining(timerValue - 1);
 
           // if the timer value is 0, that means that the timer has finished
@@ -158,7 +161,7 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
           // this is an edge case where the timer value is 0, but the timer is still running
           setTimerValue(0);
           setTimerProgressTextValue(convertSecondsToProgressTextValue(0));
-          setTimerProgressWheelValue(convertSecondsToProgressWheelValue(0));
+          // setTimerProgressWheelValue(convertSecondsToProgressWheelValue(0));
 
           timerContext.setTimeRemaining(timerValue - 1);
 
@@ -201,6 +204,7 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
     setTimerRunning(false);
     timerContext.setIsRunning(false);
     setMountTimerInput(true);
+    setStart(undefined);
   }
   function handleTimerStartButton(): void {
     const newTimeEntry = new TimeEntry(
@@ -215,6 +219,8 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
       postTimeEntryStart(newTimeEntry, token);
     });
 
+    setStart(Date.now());
+
     console.log(
       "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
     );
@@ -224,27 +230,29 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
     setTimerRunning(true); // sets the trigger to start the timer
     timerContext.setIsRunning(true);
     setMountTimerInput(false);
+    console.log("inside timer start");
+    console.log(timerContext.getIsRunning());
   }
   function handleTimerSlider(value: number): void {
     // if rounding is enabled, it shows even when the value is 0
     // therefore we need to disable it when the value is 0
     if (value !== 0) {
-      setTimerProgressWheelRounding(true);
+      // setTimerProgressWheelRounding(true);
     } else {
-      setTimerProgressWheelRounding(false);
+      // setTimerProgressWheelRounding(false);
     }
 
     let seconds = convertSliderValueToSeconds(value);
     setTimerValue(seconds);
     setTimerProgressTextValue(convertSecondsToProgressTextValue(seconds));
-    setTimerProgressWheelValue(convertSecondsToProgressWheelValue(seconds));
+    // setTimerProgressWheelValue(convertSecondsToProgressWheelValue(seconds));
   }
 
   /* ------------------------------- Components ------------------------------- */
   function timerProgressText(): JSX.Element {
     return (
       <>
-        <Title order={1} size={100}>
+        <Title order={1} size={80}>
           <Text
             inherit
             span
@@ -267,7 +275,8 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
       <>
         <Button
           size="xl"
-          w={"50%"}
+          w={300}
+          h={40}
           onClick={handleTimerStartButton}
           variant="gradient"
           gradient={{
@@ -298,7 +307,40 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
   function timerProgressWheel(): JSX.Element {
     return (
       <>
-        <RingProgress
+        <Center>
+          <Flex
+            direction={"column"}
+            justify={"center"}
+            align={"center"}
+            w={"100%"}
+            flex={1}
+          >
+            {timerProgressText()}
+
+            <Transition
+              mounted={!mountTimerInput}
+              transition={"slide-down"}
+              duration={500}
+              timingFunction="ease"
+              keepMounted
+            >
+              {(transitionStyle) => (
+                <Flex
+                  style={{ ...transitionStyle, zIndex: 1 }}
+                  w={"100%"}
+                  justify={"center"}
+                  align={"center"}
+                  p={10}
+                  direction={"row"}
+                  gap={10}
+                >
+                  {timerStopButton()}
+                </Flex>
+              )}
+            </Transition>
+          </Flex>
+        </Center>
+        {/*  <RingProgress
           size={600}
           thickness={30}
           roundCaps={timerProgressWheelRounding}
@@ -306,78 +348,46 @@ export function Timer({ task, selectedProject }: TimerProps): JSX.Element {
             { value: timerProgressWheelValue, color: "rgba(255, 157, 71, 1)" },
           ]}
           label={
-            <Center>
-              <Flex
-                direction={"column"}
-                justify={"center"}
-                align={"center"}
-                w={"100%"}
-                flex={1}
-              >
-                {timerProgressText()}
-
-                <Transition
-                  mounted={!mountTimerInput}
-                  transition={"slide-down"}
-                  duration={500}
-                  timingFunction="ease"
-                  keepMounted
-                >
-                  {(transitionStyle) => (
-                    <Flex
-                      style={{ ...transitionStyle, zIndex: 1 }}
-                      w={"100%"}
-                      justify={"center"}
-                      align={"center"}
-                      p={10}
-                      direction={"row"}
-                      gap={10}
-                    >
-                      {timerStopButton()}
-                    </Flex>
-                  )}
-                </Transition>
-              </Flex>
-            </Center>
+            
           }
-        />
+        /> */}
       </>
     );
   }
   function timerSlider(): JSX.Element {
     const maxValue: number = 120;
     const marks = [
-      { value: 0, label: "0 minutes" },
+      { value: 0, label: "0" },
       { value: 5, label: "" },
       { value: 10, label: "" },
       { value: 15, label: "" },
       { value: 20, label: "" },
       { value: 25, label: "" },
-      { value: 30, label: "30 minutes" },
+      { value: 30, label: "30" },
       { value: 35, label: "" },
       { value: 40, label: "" },
       { value: 45, label: "" },
       { value: 50, label: "" },
       { value: 55, label: "" },
-      { value: 60, label: "60 minutes" },
+      { value: 60, label: "60" },
       { value: 65, label: "" },
       { value: 70, label: "" },
       { value: 75, label: "" },
       { value: 80, label: "" },
       { value: 85, label: "" },
-      { value: 90, label: "90 minutes" },
+      { value: 90, label: "90" },
       { value: 95, label: "" },
       { value: 100, label: "" },
       { value: 105, label: "" },
       { value: 110, label: "" },
       { value: 115, label: "" },
-      { value: 120, label: "120 minutes" },
+      { value: 120, label: "120" },
     ];
 
     return (
       <>
         <Slider
-          w={"60%"}
+          w={300}
           showLabelOnHover={false}
           color={"#f1d179"}
           onChange={(value) => handleTimerSlider(value)}
