@@ -28,7 +28,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 interface TimerProps {
   task: string;
   selectedProject: Project | null;
-  setStart: (time : number | undefined) => void;
+  setStart: (time: number | undefined) => void;
 }
 
 export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Element {
@@ -68,7 +68,7 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
     // until it is 2 characters long. this is for seconds < 10
     return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
   }
-  
+
   // function convertSecondsToProgressWheelValue(seconds: number): number {
   //   let value: number = 0;
 
@@ -269,12 +269,7 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
             inherit
             span
             fw={900}
-            variant="gradient"
-            gradient={{
-              from: "rgba(255, 157, 71, 1)",
-              to: "rgba(252, 210, 96, 1)",
-              deg: 90,
-            }}
+            c={"#f5ad14"}
           >
             {timerProgressTextValue}
           </Text>
@@ -290,12 +285,8 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
           w={300}
           h={40}
           onClick={handleTimerStartButton}
-          variant="gradient"
-          gradient={{
-            from: "yellow",
-            to: "orange",
-            deg: 90,
-          }}
+          variant="filled"
+          color="#f5ad14"
         >
           START
         </Button>
@@ -305,14 +296,17 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
   function timerStopButton(): JSX.Element {
     return (
       <>
-        <ActionIcon
-          variant="default"
-          bg={"red"}
+        <Button
           size="xl"
+          w={300}
+          h={40}
           onClick={handleTimerStopButton}
+          variant="filled"
+          color="red"
+          mt={10}
         >
-          <IconPlayerStop />
-        </ActionIcon>
+          STOP
+        </Button>
       </>
     );
   }
@@ -342,9 +336,7 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
                   w={"100%"}
                   justify={"center"}
                   align={"center"}
-                  p={10}
                   direction={"row"}
-                  gap={10}
                 >
                   {timerStopButton()}
                 </Flex>
@@ -370,29 +362,9 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
     const maxValue: number = 120;
     const marks = [
       { value: 0, label: "0" },
-      { value: 5, label: "" },
-      { value: 10, label: "" },
-      { value: 15, label: "" },
-      { value: 20, label: "" },
-      { value: 25, label: "" },
       { value: 30, label: "30" },
-      { value: 35, label: "" },
-      { value: 40, label: "" },
-      { value: 45, label: "" },
-      { value: 50, label: "" },
-      { value: 55, label: "" },
       { value: 60, label: "60" },
-      { value: 65, label: "" },
-      { value: 70, label: "" },
-      { value: 75, label: "" },
-      { value: 80, label: "" },
-      { value: 85, label: "" },
       { value: 90, label: "90" },
-      { value: 95, label: "" },
-      { value: 100, label: "" },
-      { value: 105, label: "" },
-      { value: 110, label: "" },
-      { value: 115, label: "" },
       { value: 120, label: "120" },
     ];
 
@@ -401,7 +373,7 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
         <Slider
           w={300}
           showLabelOnHover={false}
-          color={"#f1d179"}
+          color={"#f5ad14"}
           onChange={(value) => handleTimerSlider(value)}
           max={maxValue}
           marks={marks}
@@ -414,10 +386,6 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
     <>
       <Flex
         direction={"column"}
-        justify={"center"}
-        align={"center"}
-        w={"100%"}
-        flex={1}
       >
         {timerProgressWheel()}
 
@@ -431,9 +399,6 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
           {(transitionStyle) => (
             <Flex
               style={{ ...transitionStyle, zIndex: 1 }}
-              w={"100%"}
-              justify={"center"}
-              align={"center"}
               direction={"column"}
             >
               {timerSlider()}

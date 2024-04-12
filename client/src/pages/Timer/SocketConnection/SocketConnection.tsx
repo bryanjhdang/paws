@@ -21,7 +21,7 @@ interface UserLabelProps {
 function UserLabel({ user }: UserLabelProps) {
   return (
     <Group wrap="nowrap">
-      {user.runningTime.startTime == undefined ? (
+      {user.runningTime.startTime === undefined ? (
         <IconCircleFilled color="orange" size={12} />
       ) : (
         <IconCircleFilled color="green" size={12} />

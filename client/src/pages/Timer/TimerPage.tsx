@@ -70,7 +70,7 @@ function TimerPage() {
 
         </Flex>
         <Flex direction={"column"} gap={20}>
-            <Timer task={task} selectedProject={selectedProject} setStart={setStartTime} />
+          <Timer task={task} selectedProject={selectedProject} setStart={setStartTime} />
           <TodoList setTask={setTask} />
           <SocketConnection />
         </Flex>
