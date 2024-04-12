@@ -147,7 +147,7 @@ export function postTimeEntryStart(timeEntry: TimeEntry, accessToken: string): v
 			endTime: timeEntry.endTime
 		}
 	})
-	.then((response) => {
+	.then(() => {
 		// console.log(response);
 	}, (error) => {
 		throw(error);
