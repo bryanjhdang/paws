@@ -1,5 +1,5 @@
 import { Accordion, Image, Button, Group, Stack, Text } from "@mantine/core";
-
+import { notifications } from "@mantine/notifications";
 import { useEffect, useState } from "react";
 
 import { Socket } from "socket.io-client";
@@ -95,12 +95,24 @@ function SocketConnection() {
 
   function socketConnect() {
     if (joined) {
+      setUsers([]);
+      notifications.show({
+        title: "Left room",
+        message: "We're sad to see you go!",
+        color: "green",
+        withBorder: true
+      })
       socket.emit("leave");
       setJoined(false);
-      setUsers([]);
       return;
     }
 
+    notifications.show({
+      title: "Joined room",
+      message: "Let's get to work!",
+      color: "green",
+      withBorder: true
+    })
     socket.emit("join");
     setJoined(true);
   }

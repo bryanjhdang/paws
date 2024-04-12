@@ -29,21 +29,20 @@ function TimerPage() {
         const token = await getAccessTokenSilently();
         const userId = user?.sub || "not logged in";
 
-        const projectsResponse = await getProjects(token);
+        const [projectsResponse, accountResponse] = await Promise.all([
+          getProjects(token),
+          getAccount(userId, token)
+        ]);
 
-        getAccount(userId, token).then(
-          (response) => {
-            setPet(response.pet);
-            setStartTime(response.runningTime.startTime);
-            setTask(response.runningTime.name);
+        setPet(accountResponse.pet);
+        setStartTime(accountResponse.runningTime.startTime);
+        setTask(accountResponse.runningTime.name);
 
-            const currentProjectId = response.runningTime.projectId;
-            const foundProject = projectsResponse.find(project => project.id === currentProjectId);
-            setSelectedProject(foundProject ?? null);
+        const currentProjectId = accountResponse.runningTime.projectId;
+        const foundProject = projectsResponse.find(project => project.id === currentProjectId);
+        setSelectedProject(foundProject ?? null);
 
-            setLoading(false);
-          }
-        )
+        setLoading(false);
       } catch (error) {
         console.error(error);
       }
@@ -52,7 +51,7 @@ function TimerPage() {
     makeAuthenticatedRequest();
   }, [getAccessTokenSilently, user?.sub]);
 
-  if (loading) return <PageLoader/>
+  if (loading) return <PageLoader />
 
   return (
     <TimerContext.Provider value={timerStatus}>

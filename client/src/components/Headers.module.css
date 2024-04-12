@@ -3,6 +3,7 @@
   font-weight: 500;
   color: white;
   /* color: #794B62; */
+  z-index: 10;
 }
 
 .simpleHeader {
@@ -15,6 +16,7 @@
   top: 0;
   margin-bottom: 20px;
   /* width: 100%; */
+  z-index: 10;
 }
 
 .functionalHeader {
@@ -27,4 +29,5 @@
   position: sticky;
   top: 0;
   margin-bottom: 20px;
+  z-index: 10;
 }
