@@ -33,7 +33,6 @@ function TimerPage() {
 
         getAccount(userId, token).then(
           (response) => {
-            console.log(response);
             setPet(response.pet);
             setStartTime(response.runningTime.startTime);
             setTask(response.runningTime.name);
