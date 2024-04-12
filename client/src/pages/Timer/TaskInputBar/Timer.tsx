@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect, useRef } from "react";
+import { notifications } from "@mantine/notifications";
 
 import {
   Title,
@@ -27,7 +28,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 interface TimerProps {
   task: string;
   selectedProject: Project | null;
-  setStart: (time : number | undefined) => void;
+  setStart: (time: number | undefined) => void;
 }
 
 export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Element {
@@ -67,7 +68,7 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
     // until it is 2 characters long. this is for seconds < 10
     return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
   }
-  
+
   // function convertSecondsToProgressWheelValue(seconds: number): number {
   //   let value: number = 0;
 
@@ -155,7 +156,7 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
             setTimerRunning(false);
             timerContext.setIsRunning(false);
             setMountTimerInput(true);
-            console.log("Timer Finished");
+            // console.log("Timer Finished");
           }
         } else {
           // this is an edge case where the timer value is 0, but the timer is still running
@@ -165,14 +166,14 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
 
           timerContext.setTimeRemaining(timerValue - 1);
 
-          console.log("Timer finished with " + timerValue + " seconds");
+          // console.log("Timer finished with " + timerValue + " seconds");
 
           clearInterval(intervalReference.current!);
           intervalReference.current = null;
           setTimerRunning(false);
           timerContext.setIsRunning(false);
           setMountTimerInput(true);
-          console.log("edge case timer stopped");
+          // console.log("edge case timer stopped");
         }
       }, 1000);
     }
@@ -188,7 +189,7 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
 
   /* ----------------------------- Event Handlers ----------------------------- */
   function handleTimerStopButton(): void {
-    console.log("Timer Stopped");
+    // console.log("Timer Stopped");
 
     // make a post request to stop the timer
     getAccessTokenSilently().then((token) => {
@@ -198,7 +199,7 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
     // just some extra safety checks to ensure that the timer is stopped
     clearInterval(intervalReference.current!);
     intervalReference.current = null;
-    console.log("Time remaining: " + timerValue + " seconds");
+    // console.log("Time remaining: " + timerValue + " seconds");
     // you can use the timerValue state to do something with the remaining time if need be
 
     setTimerRunning(false);
@@ -207,6 +208,17 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
     setStart(undefined);
   }
   function handleTimerStartButton(): void {
+
+    if (timerValue == 0) {
+      notifications.show({
+        title: "Unable to start timer",
+        message: "Pick a time!",
+        color: "red",
+        withBorder: true
+      })
+      return;
+    }
+
     const newTimeEntry = new TimeEntry(
       "NULL",
       Date.now(),
@@ -221,17 +233,17 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
 
     setStart(Date.now());
 
-    console.log(
-      "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
-    );
+    // console.log(
+    //   "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
+    // );
 
     // the amount of time the timer will run for is set in the timerValue state so use that
 
     setTimerRunning(true); // sets the trigger to start the timer
     timerContext.setIsRunning(true);
     setMountTimerInput(false);
-    console.log("inside timer start");
-    console.log(timerContext.getIsRunning());
+    // console.log("inside timer start");
+    // console.log(timerContext.getIsRunning());
   }
   function handleTimerSlider(value: number): void {
     // if rounding is enabled, it shows even when the value is 0
@@ -257,12 +269,7 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
             inherit
             span
             fw={900}
-            variant="gradient"
-            gradient={{
-              from: "rgba(255, 157, 71, 1)",
-              to: "rgba(252, 210, 96, 1)",
-              deg: 90,
-            }}
+            c={"#f5ad14"}
           >
             {timerProgressTextValue}
           </Text>
@@ -278,12 +285,8 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
           w={300}
           h={40}
           onClick={handleTimerStartButton}
-          variant="gradient"
-          gradient={{
-            from: "yellow",
-            to: "orange",
-            deg: 90,
-          }}
+          variant="filled"
+          color="#f5ad14"
         >
           START
         </Button>
@@ -293,14 +296,17 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
   function timerStopButton(): JSX.Element {
     return (
       <>
-        <ActionIcon
-          variant="default"
-          bg={"red"}
+        <Button
           size="xl"
+          w={300}
+          h={40}
           onClick={handleTimerStopButton}
+          variant="filled"
+          color="#f5ad14"
+          mt={10}
         >
-          <IconPlayerStop />
-        </ActionIcon>
+          STOP
+        </Button>
       </>
     );
   }
@@ -330,9 +336,7 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
                   w={"100%"}
                   justify={"center"}
                   align={"center"}
-                  p={10}
                   direction={"row"}
-                  gap={10}
                 >
                   {timerStopButton()}
                 </Flex>
@@ -358,29 +362,9 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
     const maxValue: number = 120;
     const marks = [
       { value: 0, label: "0" },
-      { value: 5, label: "" },
-      { value: 10, label: "" },
-      { value: 15, label: "" },
-      { value: 20, label: "" },
-      { value: 25, label: "" },
       { value: 30, label: "30" },
-      { value: 35, label: "" },
-      { value: 40, label: "" },
-      { value: 45, label: "" },
-      { value: 50, label: "" },
-      { value: 55, label: "" },
       { value: 60, label: "60" },
-      { value: 65, label: "" },
-      { value: 70, label: "" },
-      { value: 75, label: "" },
-      { value: 80, label: "" },
-      { value: 85, label: "" },
       { value: 90, label: "90" },
-      { value: 95, label: "" },
-      { value: 100, label: "" },
-      { value: 105, label: "" },
-      { value: 110, label: "" },
-      { value: 115, label: "" },
       { value: 120, label: "120" },
     ];
 
@@ -389,7 +373,7 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
         <Slider
           w={300}
           showLabelOnHover={false}
-          color={"#f1d179"}
+          color={"#f5ad14"}
           onChange={(value) => handleTimerSlider(value)}
           max={maxValue}
           marks={marks}
@@ -402,10 +386,6 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
     <>
       <Flex
         direction={"column"}
-        justify={"center"}
-        align={"center"}
-        w={"100%"}
-        flex={1}
       >
         {timerProgressWheel()}
 
@@ -419,9 +399,6 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
           {(transitionStyle) => (
             <Flex
               style={{ ...transitionStyle, zIndex: 1 }}
-              w={"100%"}
-              justify={"center"}
-              align={"center"}
               direction={"column"}
             >
               {timerSlider()}

@@ -57,7 +57,7 @@ petController.patch('/equip', (req: Request, res: Response) => {
     try {
         var query = {
             restId: req.query.restId ? parseInt(req.query.restId.toString()) : 0,
-            workId : req.query.workId ? parseInt(req.query.workId.toString()) : 0
+            workId : req.query.workId ? parseInt(req.query.workId.toString()) : 4 // this is so hacky jesus
         } 
     } catch (err) {
         return res.status(StatusCodes.UNPROCESSABLE_ENTITY)

@@ -7,7 +7,7 @@ import SocketConnection from "./SocketConnection/SocketConnection";
 import { Timer } from "./TaskInputBar/Timer";
 import { TimerContext } from "../../context/TimerContext";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getAccount } from "../../classes/HTTPhelpers";
+import { getAccount, getProjects } from "../../classes/HTTPhelpers";
 import { getPathById } from "../../classes/shopItems";
 import classes from "./TimerPage.module.css";
 import { PageLoader } from "../../components/PageLoader";
@@ -29,14 +29,20 @@ function TimerPage() {
         const token = await getAccessTokenSilently();
         const userId = user?.sub || "not logged in";
 
-        getAccount(userId, token).then(
-          (response) => {
-            setPet(response.pet);
-            setStartTime(response.runningTime.startTime);
-            setTask(response.runningTime.name);
-            setLoading(false);
-          }
-        )
+        const [projectsResponse, accountResponse] = await Promise.all([
+          getProjects(token),
+          getAccount(userId, token)
+        ]);
+
+        setPet(accountResponse.pet);
+        setStartTime(accountResponse.runningTime.startTime);
+        setTask(accountResponse.runningTime.name);
+
+        const currentProjectId = accountResponse.runningTime.projectId;
+        const foundProject = projectsResponse.find(project => project.id === currentProjectId);
+        setSelectedProject(foundProject ?? null);
+
+        setLoading(false);
       } catch (error) {
         console.error(error);
       }
@@ -45,7 +51,7 @@ function TimerPage() {
     makeAuthenticatedRequest();
   }, [getAccessTokenSilently, user?.sub]);
 
-  if (loading) return <PageLoader/>
+  if (loading) return <PageLoader />
 
   return (
     <TimerContext.Provider value={timerStatus}>
@@ -70,7 +76,7 @@ function TimerPage() {
 
         </Flex>
         <Flex direction={"column"} gap={20}>
-            <Timer task={task} selectedProject={selectedProject} setStart={setStartTime} />
+          <Timer task={task} selectedProject={selectedProject} setStart={setStartTime} />
           <TodoList setTask={setTask} />
           <SocketConnection />
         </Flex>

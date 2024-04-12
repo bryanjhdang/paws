@@ -32,7 +32,7 @@ export function CardGroup({ timeEntries }: { timeEntries: any[] }) {
     if (dateRange[0] && dateRange[1] && dateRange[0] <= dateRange[1]) {
       filterUpdated();
     } else {
-      console.log("dateRange is not valid. Not filtering data.");
+      console.error("dateRange is not valid. Not filtering data.");
     }
   }, [timeEntries, dateRange]);
 

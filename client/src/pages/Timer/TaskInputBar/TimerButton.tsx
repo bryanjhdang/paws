@@ -78,10 +78,8 @@ export function TimerButton({
               const timeRemaining = Math.floor(
                 (response.runningTime.plannedEndTime - Date.now()) / 1000
               );
-                console.log("one");
                 timerContext.setTimeRemaining(timeRemaining);
                 timerContext.setIsRunning(true);
-                console.log("two")
             } 
             // else {
             // 

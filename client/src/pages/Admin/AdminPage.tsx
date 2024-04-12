@@ -42,7 +42,6 @@ function AdminPage() {
         const userId = user?.sub || "not logged in";
 
         getCoins(userId, token).then((response) => {
-          console.log(response);
           setCoins(response);
         });
       } catch (error) {
@@ -59,7 +58,6 @@ function AdminPage() {
         // const userId = user?.sub || "not logged in";
         addCoins(numCoins, token)
           .then((response) => {
-            console.log(response);
             setCoins(response);
           })
           .catch((error) => {

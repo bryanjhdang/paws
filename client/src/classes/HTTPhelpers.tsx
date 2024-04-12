@@ -136,7 +136,6 @@ export function getTimeEntry(accessToken: string): Promise<TimeEntry[]> {
 }
 
 export function postTimeEntryStart(timeEntry: TimeEntry, accessToken: string): void {
-	console.log(timeEntry);
 	axios({
 		method: 'post',
 		url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/start`,
@@ -149,14 +148,13 @@ export function postTimeEntryStart(timeEntry: TimeEntry, accessToken: string): v
 		}
 	})
 	.then((response) => {
-		console.log(response);
+		// console.log(response);
 	}, (error) => {
 		throw(error);
 	});
 }
 
 export function postTimeEntryStop(endTimeNumber: number, accessToken: string): void {
-	console.log(endTimeNumber);
 	axios({
 		method: 'post',
 		url: `${import.meta.env.VITE_API_SERVER_URL}/timeEntry/stop`,
@@ -186,7 +184,7 @@ export async function postProject(project: Project, accessToken: string) {
 	.then((response) => {
 		project.id = response.data.projectId;
 	}, (error) => {
-		console.log(error);
+		console.error(error);
 	});
 }
 
@@ -237,7 +235,7 @@ export async function postTodo(todo: Todo, accessToken: string) {
 	.then((response) => {
 		todo.id = response.data.id;
 	}, (error) => {
-		console.log(error);
+		console.error(error);
 	});
 }
 

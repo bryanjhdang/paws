@@ -1,5 +1,5 @@
 import { Accordion, Image, Button, Group, Stack, Text } from "@mantine/core";
-
+import { notifications } from "@mantine/notifications";
 import { useEffect, useState } from "react";
 
 import { Socket } from "socket.io-client";
@@ -21,7 +21,7 @@ interface UserLabelProps {
 function UserLabel({ user }: UserLabelProps) {
   return (
     <Group wrap="nowrap">
-      {user.runningTime.startTime == undefined ? (
+      {user.runningTime.startTime === undefined ? (
         <IconCircleFilled color="orange" size={12} />
       ) : (
         <IconCircleFilled color="green" size={12} />
@@ -95,11 +95,24 @@ function SocketConnection() {
 
   function socketConnect() {
     if (joined) {
+      setUsers([]);
+      notifications.show({
+        title: "Left room",
+        message: "We're sad to see you go!",
+        color: "green",
+        withBorder: true
+      })
       socket.emit("leave");
       setJoined(false);
       return;
     }
 
+    notifications.show({
+      title: "Joined room",
+      message: "Let's get to work!",
+      color: "green",
+      withBorder: true
+    })
     socket.emit("join");
     setJoined(true);
   }
@@ -111,6 +124,7 @@ function SocketConnection() {
         onClick={socketConnect}
         leftSection={<IconLink />}
         className={classes.linkButton}
+        color="#f5ad14"
       >
         {joined ? "Leave the room!" : "Connect to the room!"}
       </Button>

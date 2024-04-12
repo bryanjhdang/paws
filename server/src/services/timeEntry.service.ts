@@ -37,7 +37,6 @@ export class TimeEntryService {
           reject(err);
         }
       } else {
-        console.log("User currently has no running time entry");
         reject(new Error("User currently has no running time entry"));
       }
     });

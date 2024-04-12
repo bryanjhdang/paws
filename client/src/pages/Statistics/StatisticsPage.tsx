@@ -21,7 +21,6 @@ function StatisticsPage() {
       try {
         const token = await getAccessTokenSilently();
         getTimeEntry(token).then((response) => {
-          console.log(response);
           setTimeEntries(response);
           setLoading(false);
         });
