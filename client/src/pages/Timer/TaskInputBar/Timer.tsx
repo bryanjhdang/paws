@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect, useRef } from "react";
+import { notifications } from "@mantine/notifications";
 
 import {
   Title,
@@ -207,6 +208,17 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
     setStart(undefined);
   }
   function handleTimerStartButton(): void {
+
+    if (timerValue == 0) {
+      notifications.show({
+        title: "Unable to start timer",
+        message: "Pick a time!",
+        color: "red",
+        withBorder: true
+      })
+      return;
+    }
+
     const newTimeEntry = new TimeEntry(
       "NULL",
       Date.now(),
