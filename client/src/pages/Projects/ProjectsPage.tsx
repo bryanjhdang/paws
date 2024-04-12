@@ -26,6 +26,7 @@ function ProjectsPage() {
 
         getProjects(token).then(
           (response) => {
+            console.log(response);
             const sortedProjects = response.sort((a, b) => b.dateCreated - a.dateCreated);
             setProjects(sortedProjects);
             setLoading(false);

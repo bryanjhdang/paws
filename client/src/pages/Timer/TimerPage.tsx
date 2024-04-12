@@ -7,7 +7,7 @@ import SocketConnection from "./SocketConnection/SocketConnection";
 import { Timer } from "./TaskInputBar/Timer";
 import { TimerContext } from "../../context/TimerContext";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getAccount } from "../../classes/HTTPhelpers";
+import { getAccount, getProjects } from "../../classes/HTTPhelpers";
 import { getPathById } from "../../classes/shopItems";
 import classes from "./TimerPage.module.css";
 import { PageLoader } from "../../components/PageLoader";
@@ -29,11 +29,19 @@ function TimerPage() {
         const token = await getAccessTokenSilently();
         const userId = user?.sub || "not logged in";
 
+        const projectsResponse = await getProjects(token);
+
         getAccount(userId, token).then(
           (response) => {
+            console.log(response);
             setPet(response.pet);
             setStartTime(response.runningTime.startTime);
             setTask(response.runningTime.name);
+
+            const currentProjectId = response.runningTime.projectId;
+            const foundProject = projectsResponse.find(project => project.id === currentProjectId);
+            setSelectedProject(foundProject ?? null);
+
             setLoading(false);
           }
         )

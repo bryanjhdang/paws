@@ -302,7 +302,7 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
           h={40}
           onClick={handleTimerStopButton}
           variant="filled"
-          color="red"
+          color="#f5ad14"
           mt={10}
         >
           STOP
