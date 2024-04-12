@@ -5,12 +5,11 @@ import { Pet, Project, TimerStatus } from "../../classes/models";
 import TodoList from "./Todo/TodoList";
 import SocketConnection from "./SocketConnection/SocketConnection";
 import { Timer } from "./TaskInputBar/Timer";
-import { TimerContext } from "../../context/TimerContext";
+import { TimerContext, useTimerContext } from "../../context/TimerContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getAccount } from "../../classes/HTTPhelpers";
 import { getPathById } from "../../classes/shopItems";
 import classes from "./TimerPage.module.css";
-import { PageLoader } from "../../components/PageLoader";
 
 function TimerPage() {
   const [task, setTask] = useState<string>("");
@@ -21,7 +20,6 @@ function TimerPage() {
 
   const [pet, setPet] = useState<Pet>();
   const [startTime, setStartTime] = useState<number | undefined>();
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const makeAuthenticatedRequest = async () => {
@@ -31,10 +29,10 @@ function TimerPage() {
 
         getAccount(userId, token).then(
           (response) => {
+            console.log(response);
             setPet(response.pet);
             setStartTime(response.runningTime.startTime);
             setTask(response.runningTime.name);
-            setLoading(false);
           }
         )
       } catch (error) {
@@ -44,8 +42,6 @@ function TimerPage() {
 
     makeAuthenticatedRequest();
   }, [getAccessTokenSilently, user?.sub]);
-
-  if (loading) return <PageLoader/>
 
   return (
     <TimerContext.Provider value={timerStatus}>
@@ -70,7 +66,7 @@ function TimerPage() {
 
         </Flex>
         <Flex direction={"column"} gap={20}>
-            <Timer task={task} selectedProject={selectedProject} setStart={setStartTime} />
+            {/* <Timer task={task} selectedProject={selectedProject} setStart={setStartTime} /> */}
           <TodoList setTask={setTask} />
           <SocketConnection />
         </Flex>
