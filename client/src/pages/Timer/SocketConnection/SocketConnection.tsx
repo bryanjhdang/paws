@@ -97,6 +97,7 @@ function SocketConnection() {
     if (joined) {
       socket.emit("leave");
       setJoined(false);
+      setUsers([]);
       return;
     }
 
@@ -111,6 +112,7 @@ function SocketConnection() {
         onClick={socketConnect}
         leftSection={<IconLink />}
         className={classes.linkButton}
+        color="#f5ad14"
       >
         {joined ? "Leave the room!" : "Connect to the room!"}
       </Button>
