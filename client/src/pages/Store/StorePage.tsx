@@ -36,7 +36,6 @@ function StorePage() {
           setLoading(false);    
         });
 
-        console.log(petData);
 
       } catch (error) {
         console.error(error);
@@ -88,16 +87,11 @@ function StorePage() {
   const handleEquipItem = (id: number, isRestCat: boolean) => {
     if (!petData) return;
 
-    console.log(id);
-    console.log(isRestCat);
-
     const updatedPet = new Pet(
       isRestCat ? id : petData.restId,
       !isRestCat ? id : petData.workId, 
       petData.ownedCats
     );
-
-    console.log(updatedPet);
     
     getAccessTokenSilently().then((token) => {
       equipPet(updatedPet, token).then(() => {

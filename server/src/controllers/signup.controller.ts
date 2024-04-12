@@ -12,7 +12,6 @@ signupController.post('/', (req: Request, res: Response) => {
   // const nickname = req.body.nickname;
   const userId = req.body.user_id;
   const email = req.body.email;
-  console.log("req from auth: making new user");
 
   if (!email) {
     return res.status(StatusCodes.BAD_REQUEST).json("message : Missing email field in body");

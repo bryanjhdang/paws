@@ -156,7 +156,7 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
             setTimerRunning(false);
             timerContext.setIsRunning(false);
             setMountTimerInput(true);
-            console.log("Timer Finished");
+            // console.log("Timer Finished");
           }
         } else {
           // this is an edge case where the timer value is 0, but the timer is still running
@@ -166,14 +166,14 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
 
           timerContext.setTimeRemaining(timerValue - 1);
 
-          console.log("Timer finished with " + timerValue + " seconds");
+          // console.log("Timer finished with " + timerValue + " seconds");
 
           clearInterval(intervalReference.current!);
           intervalReference.current = null;
           setTimerRunning(false);
           timerContext.setIsRunning(false);
           setMountTimerInput(true);
-          console.log("edge case timer stopped");
+          // console.log("edge case timer stopped");
         }
       }, 1000);
     }
@@ -189,7 +189,7 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
 
   /* ----------------------------- Event Handlers ----------------------------- */
   function handleTimerStopButton(): void {
-    console.log("Timer Stopped");
+    // console.log("Timer Stopped");
 
     // make a post request to stop the timer
     getAccessTokenSilently().then((token) => {
@@ -199,7 +199,7 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
     // just some extra safety checks to ensure that the timer is stopped
     clearInterval(intervalReference.current!);
     intervalReference.current = null;
-    console.log("Time remaining: " + timerValue + " seconds");
+    // console.log("Time remaining: " + timerValue + " seconds");
     // you can use the timerValue state to do something with the remaining time if need be
 
     setTimerRunning(false);
@@ -233,17 +233,17 @@ export function Timer({ task, selectedProject, setStart }: TimerProps): JSX.Elem
 
     setStart(Date.now());
 
-    console.log(
-      "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
-    );
+    // console.log(
+    //   "Timer Started for " + convertSecondsToProgressTextValue(timerValue)
+    // );
 
     // the amount of time the timer will run for is set in the timerValue state so use that
 
     setTimerRunning(true); // sets the trigger to start the timer
     timerContext.setIsRunning(true);
     setMountTimerInput(false);
-    console.log("inside timer start");
-    console.log(timerContext.getIsRunning());
+    // console.log("inside timer start");
+    // console.log(timerContext.getIsRunning());
   }
   function handleTimerSlider(value: number): void {
     // if rounding is enabled, it shows even when the value is 0
